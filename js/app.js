@@ -688,7 +688,8 @@
       '<div class="set-group">' +
         '<div class="set-title">Uygulama</div>' +
         '<div class="set-row set-row--btn" data-act="install-pwa"><span>Uygulamayı yükle (PWA)</span>' + Icons.icon("plusSquare", { size: 18 }) + "</div>" +
-        '<div class="set-row"><span>Sürüm</span><i class="set-val">1.0.0 · yerel demo</i></div>' +
+        '<div class="set-row set-row--btn" data-act="hard-refresh"><span>Önbelleği temizle ve yenile</span>' + Icons.icon("refresh", { size: 18 }) + "</div>" +
+        '<div class="set-row"><span>Sürüm</span><i class="set-val">1.1.0 · içerik: ' + C.esc(Store.state.seedRev || "—") + "</i></div>" +
         '<div class="set-row"><span>Veri konumu</span><i class="set-val">Bu cihaz (localStorage)</i></div>' +
         '<div class="set-row"><span>Depolanan gönderi</span><i class="set-val">' + Store.state.posts.length + "</i></div>" +
       "</div>" +
@@ -2102,6 +2103,30 @@
         });
         break;
       case "install-pwa": promptInstall(); break;
+      case "hard-refresh":
+        C.confirmSheet({
+          title: "Önbelleği temizle ve yenile?",
+          text: "Telefonda eski sürüm takılı kaldıysa bunu kullan: kayıtlı önbellek silinir ve uygulama yeniden yüklenir. Profil verilerin (paylaştığın gönderiler) silinmez.",
+          confirmLabel: "Temizle ve yenile"
+        }).then(function (ok) {
+          if (!ok) return;
+          C.toast("Önbellek temizleniyor…", { icon: "refresh", duration: 1500 });
+          var isler = [];
+          if (window.caches && caches.keys) {
+            isler.push(caches.keys().then(function (ks) {
+              return Promise.all(ks.map(function (k) { return caches.delete(k); }));
+            }).catch(function () {}));
+          }
+          if (navigator.serviceWorker && navigator.serviceWorker.getRegistrations) {
+            isler.push(navigator.serviceWorker.getRegistrations().then(function (rs) {
+              return Promise.all(rs.map(function (r) { return r.unregister(); }));
+            }).catch(function () {}));
+          }
+          Promise.all(isler).then(function () {
+            setTimeout(function () { location.reload(); }, 700);
+          }, function () { setTimeout(function () { location.reload(); }, 700); });
+        });
+        break;
       case "logout":
         C.confirmSheet({ title: "Çıkış yap?", text: "Bu demo yerel çalıştığı için gerçek bir oturum yok. Veriler cihazda kalır.", confirmLabel: "Çıkış yap" }).then(function (ok) {
           if (ok) C.toast("Bu demoda oturum kapatma devre dışı", { icon: "info" });
@@ -2243,7 +2268,20 @@
       console.log("[sw] ?nosw=1 verildi, servis çalışanı atlandı");
       return;
     }
-    navigator.serviceWorker.register("sw.js").catch(function (err) {
+
+    // Yeni servis çalışanı devreye girdiğinde sayfayı bir kez yenile:
+    // böylece güncellenen sürüm (yeni içerik) hemen görünür.
+    var yenilendi = false;
+    navigator.serviceWorker.addEventListener("controllerchange", function () {
+      if (yenilendi) return;
+      yenilendi = true;
+      console.log("[sw] yeni sürüm devrede, sayfa yenileniyor");
+      location.reload();
+    });
+
+    navigator.serviceWorker.register("sw.js").then(function (reg) {
+      try { reg.update(); } catch (e) { /* yoksay */ }
+    }).catch(function (err) {
       console.warn("[sw] kayıt başarısız:", err);
     });
   }

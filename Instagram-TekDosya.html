@@ -2942,6 +2942,9 @@ window.IG = window.IG || {};
 
   IG.seed = {
     meId: "u0",
+    /* İÇERİK SÜRÜMÜ: tohum içeriği her değiştiğinde bu değeri güncelle.
+       Tarayıcıda eski kayıt varsa uygulama kendini otomatik yeniler. */
+    rev: "2026-10-15-kendi-fotograflar",
     /* Profilde gösterilecek istatistikler. Takipçi/takip sayıları birebir bu
        değerler olacak şekilde normalleştirilir (demo grafiği hesaba katılır). */
     stats: { followers: 215, following: 444, posts: 58 },
@@ -2969,7 +2972,7 @@ window.IG = window.IG || {};
 (function (IG) {
   "use strict";
 
-  var KEY = "instaclone.tr.v4";
+  var KEY = "instaclone.tr.v5";
   var state = null;
   var listeners = [];
   var persistTimer = null;
@@ -3004,7 +3007,8 @@ window.IG = window.IG || {};
     }
 
     return {
-      version: 4,
+      version: 5,
+      seedRev: IG.seed.rev || "",
       createdAt: now,
       meId: s.meId,
       users: s.users,
@@ -3043,7 +3047,9 @@ window.IG = window.IG || {};
       var raw = localStorage.getItem(KEY);
       if (!raw) return null;
       var parsed = JSON.parse(raw);
-      if (!parsed || parsed.version !== 4 || !parsed.users || !parsed.posts) return null;
+      if (!parsed || parsed.version !== 5 || !parsed.users || !parsed.posts) return null;
+      // İçerik sürümü değiştiyse eski kaydı kullanma (yeni içerik görünsün)
+      if ((parsed.seedRev || "") !== (IG.seed.rev || "")) return null;
       return parsed;
     } catch (e) {
       console.warn("[store] kayıt okunamadı:", e);
@@ -3549,7 +3555,8 @@ window.IG = window.IG || {};
   function importState(obj) {
     if (!obj || !obj.users || !obj.posts || !obj.follows || !obj.chats) return false;
     if (!obj.meId) return false;
-    obj.version = 4;
+    obj.version = 5;
+    obj.seedRev = IG.seed.rev || "";
     obj.highlights = obj.highlights || [];
     state = obj;
     persist(true);
@@ -4758,7 +4765,8 @@ window.IG = window.IG || {};
       '<div class="set-group">' +
         '<div class="set-title">Uygulama</div>' +
         '<div class="set-row set-row--btn" data-act="install-pwa"><span>Uygulamayı yükle (PWA)</span>' + Icons.icon("plusSquare", { size: 18 }) + "</div>" +
-        '<div class="set-row"><span>Sürüm</span><i class="set-val">1.0.0 · yerel demo</i></div>' +
+        '<div class="set-row set-row--btn" data-act="hard-refresh"><span>Önbelleği temizle ve yenile</span>' + Icons.icon("refresh", { size: 18 }) + "</div>" +
+        '<div class="set-row"><span>Sürüm</span><i class="set-val">1.1.0 · içerik: ' + C.esc(Store.state.seedRev || "—") + "</i></div>" +
         '<div class="set-row"><span>Veri konumu</span><i class="set-val">Bu cihaz (localStorage)</i></div>' +
         '<div class="set-row"><span>Depolanan gönderi</span><i class="set-val">' + Store.state.posts.length + "</i></div>" +
       "</div>" +
@@ -6172,6 +6180,30 @@ window.IG = window.IG || {};
         });
         break;
       case "install-pwa": promptInstall(); break;
+      case "hard-refresh":
+        C.confirmSheet({
+          title: "Önbelleği temizle ve yenile?",
+          text: "Telefonda eski sürüm takılı kaldıysa bunu kullan: kayıtlı önbellek silinir ve uygulama yeniden yüklenir. Profil verilerin (paylaştığın gönderiler) silinmez.",
+          confirmLabel: "Temizle ve yenile"
+        }).then(function (ok) {
+          if (!ok) return;
+          C.toast("Önbellek temizleniyor…", { icon: "refresh", duration: 1500 });
+          var isler = [];
+          if (window.caches && caches.keys) {
+            isler.push(caches.keys().then(function (ks) {
+              return Promise.all(ks.map(function (k) { return caches.delete(k); }));
+            }).catch(function () {}));
+          }
+          if (navigator.serviceWorker && navigator.serviceWorker.getRegistrations) {
+            isler.push(navigator.serviceWorker.getRegistrations().then(function (rs) {
+              return Promise.all(rs.map(function (r) { return r.unregister(); }));
+            }).catch(function () {}));
+          }
+          Promise.all(isler).then(function () {
+            setTimeout(function () { location.reload(); }, 700);
+          }, function () { setTimeout(function () { location.reload(); }, 700); });
+        });
+        break;
       case "logout":
         C.confirmSheet({ title: "Çıkış yap?", text: "Bu demo yerel çalıştığı için gerçek bir oturum yok. Veriler cihazda kalır.", confirmLabel: "Çıkış yap" }).then(function (ok) {
           if (ok) C.toast("Bu demoda oturum kapatma devre dışı", { icon: "info" });
@@ -6313,7 +6345,20 @@ window.IG = window.IG || {};
       console.log("[sw] ?nosw=1 verildi, servis çalışanı atlandı");
       return;
     }
-    navigator.serviceWorker.register("sw.js").catch(function (err) {
+
+    // Yeni servis çalışanı devreye girdiğinde sayfayı bir kez yenile:
+    // böylece güncellenen sürüm (yeni içerik) hemen görünür.
+    var yenilendi = false;
+    navigator.serviceWorker.addEventListener("controllerchange", function () {
+      if (yenilendi) return;
+      yenilendi = true;
+      console.log("[sw] yeni sürüm devrede, sayfa yenileniyor");
+      location.reload();
+    });
+
+    navigator.serviceWorker.register("sw.js").then(function (reg) {
+      try { reg.update(); } catch (e) { /* yoksay */ }
+    }).catch(function (err) {
       console.warn("[sw] kayıt başarısız:", err);
     });
   }

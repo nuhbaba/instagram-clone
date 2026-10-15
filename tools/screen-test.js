@@ -276,6 +276,7 @@ ok("ayarlarda tema anahtarı", settings.includes("theme-toggle"));
 ok("ayarlarda sıfırlama", settings.includes("reset-data"));
 ok("ayarlarda JSON yedeği al/geri yükle", settings.includes("export-data") && settings.includes("import-data"));
 ok("ayarlarda örnek gönderileri temizle", settings.includes("clear-placeholders"));
+ok("ayarlarda önbellek temizleme", settings.includes("hard-refresh"));
 ok("ayarlarda kaydedilenler kısayolu", settings.includes("go-saved"));
 ok("ayarlarda depolanan gönderi", settings.includes(String(Store.state.posts.length)));
 

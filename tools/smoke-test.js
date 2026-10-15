@@ -202,7 +202,7 @@ const before = Store.likedCount(Store.post("p1"));
 Store.toggleLike("p1");
 eq("beğeni arttı", Store.likedCount(Store.post("p1")), before + 1);
 Store.persist(true); // debounce'u atla, gerçekten yazıldı mı diye bak
-ok("beğeni kalıcı (localStorage)", JSON.parse(storage.get("instaclone.tr.v4")).posts.find((p) => p.id === "p1").liked === true);
+ok("beğeni kalıcı (localStorage)", JSON.parse(storage.get("instaclone.tr.v5")).posts.find((p) => p.id === "p1").liked === true);
 Store.toggleLike("p1");
 eq("beğeni geri alındı", Store.likedCount(Store.post("p1")), before);
 
@@ -290,7 +290,7 @@ ok("geçerli yedek kabul edilir", Store.importState(yedek) === true);
 eq("geri yüklenen gönderi sayısı", Store.state.posts.length, TOPLAM_GONDERI + 1);
 eq("geri yüklenen kullanıcı adı", Store.me().username, yedekKullanici);
 eq("geri yüklenen profil adı", Store.me().name, yedekProfilAdi);
-ok("yedek kalıcı yazıldı", JSON.parse(storage.get("instaclone.tr.v4")).posts.length === TOPLAM_GONDERI + 1);
+ok("yedek kalıcı yazıldı", JSON.parse(storage.get("instaclone.tr.v5")).posts.length === TOPLAM_GONDERI + 1);
 
 console.log("\nKalıcılık (kayıtlı veri yeniden okunuyor mu)");
 Store.persist(true);
@@ -299,6 +299,16 @@ const kayitliKullanici = Store.me().username;
 Store.init();   // localStorage'dan baştan yükler
 eq("yeniden yüklemede gönderi sayısı korunur", Store.state.posts.length, kayitliGonderi);
 eq("yeniden yüklemede profil korunur", Store.me().username, kayitliKullanici);
+
+console.log("\nİçerik sürümü (eski cihaz kaydı atılır mı)");
+const eskiKayit = JSON.parse(JSON.stringify(Store.state));
+eskiKayit.seedRev = "cok-eski-icerik";
+eskiKayit.posts = eskiKayit.posts.slice(0, 3);
+storage.set("instaclone.tr.v5", JSON.stringify(eskiKayit));
+Store.init();
+eq("eski içerik sürümü atıldı", Store.state.seedRev, IG.seed.rev);
+eq("yeni tohumdaki gönderi sayısı", Store.state.posts.length, TOPLAM_GONDERI);
+ok("kendi fotoğraflarım geri geldi", Store.postsOf(Store.meId).slice(0, 9).every((p) => p.src.indexOf("media/photo-") === 0));
 
 console.log("\nÖrnek gönderileri temizleme");
 const temizlenen = Store.clearPlaceholders();

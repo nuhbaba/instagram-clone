@@ -6,7 +6,7 @@ window.IG = window.IG || {};
 (function (IG) {
   "use strict";
 
-  var KEY = "instaclone.tr.v4";
+  var KEY = "instaclone.tr.v5";
   var state = null;
   var listeners = [];
   var persistTimer = null;
@@ -41,7 +41,8 @@ window.IG = window.IG || {};
     }
 
     return {
-      version: 4,
+      version: 5,
+      seedRev: IG.seed.rev || "",
       createdAt: now,
       meId: s.meId,
       users: s.users,
@@ -80,7 +81,9 @@ window.IG = window.IG || {};
       var raw = localStorage.getItem(KEY);
       if (!raw) return null;
       var parsed = JSON.parse(raw);
-      if (!parsed || parsed.version !== 4 || !parsed.users || !parsed.posts) return null;
+      if (!parsed || parsed.version !== 5 || !parsed.users || !parsed.posts) return null;
+      // İçerik sürümü değiştiyse eski kaydı kullanma (yeni içerik görünsün)
+      if ((parsed.seedRev || "") !== (IG.seed.rev || "")) return null;
       return parsed;
     } catch (e) {
       console.warn("[store] kayıt okunamadı:", e);
@@ -586,7 +589,8 @@ window.IG = window.IG || {};
   function importState(obj) {
     if (!obj || !obj.users || !obj.posts || !obj.follows || !obj.chats) return false;
     if (!obj.meId) return false;
-    obj.version = 4;
+    obj.version = 5;
+    obj.seedRev = IG.seed.rev || "";
     obj.highlights = obj.highlights || [];
     state = obj;
     persist(true);
