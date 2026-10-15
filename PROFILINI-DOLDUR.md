@@ -14,7 +14,21 @@ hiçbir şey sunucuya gönderilmez.
 | Profil fotoğrafı | `media/gunseli-01.jpg` (projeye gömülü, herkese görünür) |
 | Öne çıkan | **Anılar** dairesi — kapağı aynı fotoğraf |
 | Ad / kullanıcı adı | Günseli Beyhan · `gunseli_beyhan` |
-| Biyografi, gönderiler | Boş — sen dolduracaksın |
+| İstatistikler | **58 gönderi · 215 takipçi · 444 takip** |
+| Gönderi ızgarası | 58 **örnek (yer tutucu)** görselle dolu görünüyor |
+| Biyografi | Boş — sen dolduracaksın |
+
+**Örnek gönderiler ne demek?** Profilin "58 gönderi" göstermesi ve ızgaranın dolu
+görünmesi için 58 stok fotoğraf yerleştirildi. Bunlar akışta ve keşfette **görünmez**,
+sadece profilde dururlar. Kendi fotoğraflarını eklemeye başladığında:
+
+- **Tek tek kaldırmak için:** bir örnek görsele dokun → **⋯ → Örnek gönderiyi kaldır**
+- **Hepsini birden kaldırmak için:** Ayarlar → **Örnek gönderileri temizle (58)**
+- Kendi fotoğrafların her zaman en başta görünür (yeniden eskiye sıralanır)
+
+> Gönderi sayısı gerçek ızgaradaki öğe sayısıdır: örnekleri silip kendi fotoğraflarını
+> eklersen sayı da ona göre değişir. Tam 58'de kalmasını istiyorsan 58 fotoğraf ekle ya
+> da sayıyı sabitlememi söyle.
 
 Profil fotoğrafını veya öne çıkanın kapağını **uygulama içinden** değiştirmek istersen:
 profil fotoğrafı için *Profili düzenle → Fotoğrafı değiştir*; öne çıkan için

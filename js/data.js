@@ -156,7 +156,10 @@ window.IG = window.IG || {};
       comments: o.comments || [],
       atUsers: o.atUsers || [],
       audio: o.audio || "",
-      archived: false
+      archived: false,
+      /* Örnek (yer tutucu) gönderi: profilde görünür, akışta/keşfette görünmez.
+         Kullanıcı kendi fotoğraflarını ekledikçe bunları silebilir. */
+      placeholder: !!o.placeholder
     };
   }
 
@@ -354,6 +357,30 @@ window.IG = window.IG || {};
   ];
 
   /* ------------------------------------------------------------------ */
+  /* Profil ızgarası: 58 örnek (yer tutucu) gönderi                      */
+  /* Profilin "58 gönderi" göstermesi ve ızgaranın dolu görünmesi için.  */
+  /* Bunlar akışta ve keşfette görünmez; Ayarlar > "Örnek gönderileri    */
+  /* temizle" ile tek dokunuşta kaldırılabilir. Kendi fotoğraflarını     */
+  /* ekledikçe bunları silip yerine koyabilirsin.                        */
+  /* ------------------------------------------------------------------ */
+  (function () {
+    var ornek = [];
+    for (var i = 1; i <= 58; i++) {
+      var no = (i < 10 ? "0" : "") + i;
+      ornek.push(P({
+        userId: "u0",
+        src: PIC("gunseli-" + no, 1080, i % 3 === 0 ? 1350 : 1080),
+        mins: 60 * 24 * (3 + i * 2),
+        likes: 32 + ((i * 47) % 420),
+        caption: "",
+        alt: "profil " + no,
+        placeholder: true
+      }));
+    }
+    POSTS = POSTS.concat(ornek);
+  })();
+
+  /* ------------------------------------------------------------------ */
   /* Hikâyeler                                                           */
   /* ------------------------------------------------------------------ */
   function story(userId, items) {
@@ -529,6 +556,9 @@ window.IG = window.IG || {};
 
   IG.seed = {
     meId: "u0",
+    /* Profilde gösterilecek istatistikler. Takipçi/takip sayıları birebir bu
+       değerler olacak şekilde normalleştirilir (demo grafiği hesaba katılır). */
+    stats: { followers: 215, following: 444, posts: 58 },
     users: USERS,
     posts: POSTS,
     stories: STORIES,

@@ -93,6 +93,9 @@ içinde görünür.
 ### Profil
 - Instagram'ın güncel profil düzeniyle birebir: avatar (+ hikâye ekleme rozeti),
   `gönderi / takipçi / takip` istatistikleri, ad, kategori, biyografi, bağlantı
+- **Hazır profil:** `gunseli_beyhan` · **58 gönderi · 215 takipçi · 444 takip** ·
+  58 öğelik dolu ızgara (örnek görseller — Ayarlar'dan veya gönderi menüsünden
+  tek tek temizlenebilir) · "Anılar" öne çıkanı · profil fotoğrafı
 - Kendi profilinde tek geniş **Profili düzenle** düğmesi; başka profillerde
   takip et / takibi bırak (onay menüsüyle) ve mesaj gönder
 - Öne çıkanlar şeridi: kapağı ve adı olan daireler; kendi profilinde başta **+ Yeni**
@@ -198,10 +201,12 @@ python tools/make_icons.py
 - **Tek kullanıcı:** gerçek bir sunucu/çok kullanıcılı yapı yoktur; karşı taraflar
   simülasyondur. Bu yüzden iki cihaz arasında senkronizasyon olmaz (JSON yedeğiyle
   elle taşınabilir).
-- **Profil içeriği cihaza özeldir:** yüklediğin fotoğraflar yalnızca kendi
-  tarayıcında saklanır; GitHub Pages'teki yayında boş profil görünür. Herkesin
-  görmesi için fotoğrafların başlangıç içeriğine gömülmesi gerekir
-  ([PROFILINI-DOLDUR.md](PROFILINI-DOLDUR.md) → 4. bölüm).
+- **Profil içeriği cihaza özeldir:** uygulamada eklediğin fotoğraflar yalnızca kendi
+  tarayıcında saklanır; GitHub Pages'teki yayında yalnızca depoya gömülü görseller
+  (profil fotoğrafı, öne çıkan kapağı) görünür. Herkesin görmesi için fotoğrafların
+  başlangıç içeriğine gömülmesi gerekir ([PROFILINI-DOLDUR.md](PROFILINI-DOLDUR.md)).
+- **Izgaradaki 58 görsel örnektir:** profilin dolu görünmesi için yerleştirilmiş stok
+  fotoğraflardır, gerçek kişilerin gönderileri değildir; akışta ve keşfette görünmezler.
 - **Gerçek video yok:** Reels'ler fotoğraf + otomatik oynatma efektiyle temsil edilir.
 - **Hikâye ekleme** ve kamera ile canlı çekim bu sürümde yok (galeri/dosya yükleme ve
   toplu yükleme var).

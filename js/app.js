@@ -664,6 +664,9 @@
         '<div class="set-row set-row--btn" data-act="go-saved"><span>Kaydedilenler</span>' + Icons.icon("bookmarkTab", { size: 18 }) + "</div>" +
         '<div class="set-row set-row--btn" data-act="share-profile"><span>Profili paylaş</span>' + Icons.icon("share", { size: 18 }) + "</div>" +
         '<div class="set-row set-row--btn" data-act="create-open"><span>Yeni gönderi paylaş</span>' + Icons.icon("plusSquare", { size: 18 }) + "</div>" +
+        (Store.placeholderCount()
+          ? '<div class="set-row set-row--btn" data-act="clear-placeholders"><span>Örnek gönderileri temizle (' + Store.placeholderCount() + ")</span>" + Icons.icon("trash", { size: 18 }) + "</div>"
+          : "") +
       "</div>" +
 
       '<div class="set-group">' +
@@ -1320,7 +1323,7 @@
         { value: "archive", label: p.archived ? "Arşivden çıkar" : "Arşivle", icon: "bookmarkTab" },
         { value: "edit", label: "Açıklamayı düzenle", icon: "text" },
         { value: "link", label: "Bağlantıyı kopyala", icon: "share" },
-        { value: "delete", label: "Gönderiyi sil", icon: "trash", danger: true }
+        { value: "delete", label: p.placeholder ? "Örnek gönderiyi kaldır" : "Gönderiyi sil", icon: "trash", danger: true }
       ];
     } else {
       items = [
@@ -1341,7 +1344,11 @@
       } else if (v === "link") {
         copyLink(postId);
       } else if (v === "delete") {
-        C.confirmSheet({ title: "Gönderiyi sil?", text: "Bu gönderi kalıcı olarak silinecek.", confirmLabel: "Sil" }).then(function (ok) {
+        C.confirmSheet({
+          title: p.placeholder ? "Örnek gönderiyi kaldır?" : "Gönderiyi sil?",
+          text: p.placeholder ? "Bu yalnızca profildeki örnek bir görseldir; kaldırılabilir." : "Bu gönderi kalıcı olarak silinecek.",
+          confirmLabel: "Kaldır"
+        }).then(function (ok) {
           if (!ok) return;
           Store.deletePost(postId);
           C.toast("Gönderi silindi", { icon: "trash" });
@@ -2063,6 +2070,20 @@
       }
       case "toggle-autoplay": Store.setSetting("autoplay", !Store.state.settings.autoplay); renderScreen(); break;
       case "toggle-datasaver": Store.setSetting("dataSaver", !Store.state.settings.dataSaver); renderScreen(); break;
+      case "clear-placeholders": {
+        var adet = Store.placeholderCount();
+        C.confirmSheet({
+          title: "Örnek gönderileri temizle?",
+          text: adet + " örnek gönderi profilden kaldırılacak. Kendi eklediğin gönderiler etkilenmez.",
+          confirmLabel: "Temizle"
+        }).then(function (ok) {
+          if (!ok) return;
+          var silinen = Store.clearPlaceholders();
+          C.toast(silinen + " örnek gönderi kaldırıldı", { icon: "trash" });
+          renderScreen();
+        });
+        break;
+      }
       case "export-data": exportData(); break;
       case "import-data":
         if ($("#importInput")) $("#importInput").click();

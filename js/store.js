@@ -6,7 +6,7 @@ window.IG = window.IG || {};
 (function (IG) {
   "use strict";
 
-  var KEY = "instaclone.tr.v3";
+  var KEY = "instaclone.tr.v4";
   var state = null;
   var listeners = [];
   var persistTimer = null;
@@ -22,8 +22,26 @@ window.IG = window.IG || {};
   function seed() {
     var s = clone(IG.seed);
     var now = Date.now();
+
+    /* Profil istatistikleri: istenen takipçi/takip sayıları birebir görünsün
+       diye tabanlar demo takip grafiğine göre normalleştirilir.
+       (Ekrandaki sayı = taban + grafikteki karşılıklı takipler) */
+    var me = byId(s.users, s.meId);
+    var stats = s.stats || {};
+    if (me) {
+      if (typeof stats.followers === "number") {
+        var grafTakipci = s.users.filter(function (u) {
+          return (s.follows[u.id] || []).indexOf(me.id) !== -1;
+        }).length;
+        me.followersBase = Math.max(0, stats.followers - grafTakipci);
+      }
+      if (typeof stats.following === "number") {
+        me.followingBase = Math.max(0, stats.following - (s.follows[me.id] || []).length);
+      }
+    }
+
     return {
-      version: 3,
+      version: 4,
       createdAt: now,
       meId: s.meId,
       users: s.users,
@@ -62,7 +80,7 @@ window.IG = window.IG || {};
       var raw = localStorage.getItem(KEY);
       if (!raw) return null;
       var parsed = JSON.parse(raw);
-      if (!parsed || parsed.version !== 2 || !parsed.users || !parsed.posts) return null;
+      if (!parsed || parsed.version !== 4 || !parsed.users || !parsed.posts) return null;
       return parsed;
     } catch (e) {
       console.warn("[store] kayıt okunamadı:", e);
@@ -162,17 +180,19 @@ window.IG = window.IG || {};
   }
 
   /** Takip ettiğim kişilerin + kendi gönderilerimin akışı (reels hariç). */
+  /** Akış: takip ettiklerimin + kendi gerçek gönderilerim.
+      Örnek (yer tutucu) gönderiler yalnızca profilde görünür. */
   function feed() {
     var following = state.follows[state.meId] || [];
     return state.posts.filter(function (p) {
       if (p.kind === "reel") return false;
-      if (p.archived) return false;
+      if (p.archived || p.placeholder) return false;
       return p.userId === state.meId || following.indexOf(p.userId) !== -1;
     }).sort(function (a, b) { return b.at - a.at; });
   }
 
   function reels() {
-    return state.posts.filter(function (p) { return p.kind === "reel" && !p.archived; })
+    return state.posts.filter(function (p) { return p.kind === "reel" && !p.archived && !p.placeholder; })
       .sort(function (a, b) { return b.at - a.at; });
   }
 
@@ -181,8 +201,21 @@ window.IG = window.IG || {};
   }
 
   function explore() {
-    return state.posts.filter(function (p) { return !p.archived; })
+    return state.posts.filter(function (p) { return !p.archived && !p.placeholder; })
       .sort(function (a, b) { return b.likesBase - a.likesBase; });
+  }
+
+  /** Profildeki örnek (yer tutucu) gönderileri kaldırır; kaç tane silindiğini döndürür. */
+  function clearPlaceholders() {
+    var before = state.posts.length;
+    state.posts = state.posts.filter(function (p) { return !p.placeholder; });
+    var silinen = before - state.posts.length;
+    if (silinen) { persist(); emit("placeholders-clear"); }
+    return silinen;
+  }
+
+  function placeholderCount() {
+    return state.posts.filter(function (p) { return p.placeholder; }).length;
   }
 
   function savedPosts() {
@@ -553,7 +586,7 @@ window.IG = window.IG || {};
   function importState(obj) {
     if (!obj || !obj.users || !obj.posts || !obj.follows || !obj.chats) return false;
     if (!obj.meId) return false;
-    obj.version = 3;
+    obj.version = 4;
     obj.highlights = obj.highlights || [];
     state = obj;
     persist(true);
@@ -591,6 +624,7 @@ window.IG = window.IG || {};
     followCount: followsCount,
     postsOf: postsOf, postCount: postCount, feed: feed, reels: reels, reelsOf: reelsOf,
     explore: explore, savedPosts: savedPosts, taggedPosts: taggedPosts,
+    clearPlaceholders: clearPlaceholders, placeholderCount: placeholderCount,
     likedCount: likedCount, commentsCount: commentsCount,
     storiesFor: storiesFor, storySeen: storySeen, unseenCount: unseenCount, storyBar: storyBar,
     highlightsOf: highlightsOf, addHighlight: addHighlight, updateHighlight: updateHighlight,
