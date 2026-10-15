@@ -2431,7 +2431,7 @@ window.IG = window.IG || {};
   function P(o) {
     pseq++;
     return {
-      id: "p" + pseq,
+      id: o.id || ("p" + pseq),
       userId: o.userId,
       kind: o.kind || "post",
       src: o.src,
@@ -2699,13 +2699,20 @@ window.IG = window.IG || {};
     "media/photo-09.jpg"
   ];
 
+  /* Profilden kaldırılan gönderiler (kullanıcı isteğiyle).
+     Listenin başına eklemek yeterli — diğer gönderilerin numaraları kaymaz. */
+  var KALDIRILAN_GONDERILER = ["p83"];
+
   (function () {
     var ornek = [];
     for (var i = 1; i <= 58; i++) {
       var no = (i < 10 ? "0" : "") + i;
+      var pid = "p" + (25 + i);
+      if (KALDIRILAN_GONDERILER.indexOf(pid) !== -1) continue;
       var detay = DUGUN_BASLIKLARI[i] || {};
       var yorumlar = (detay.y || []).map(function (r) { return C(r[0], r[1], r[2], r[3]); });
       ornek.push(P({
+        id: pid,
         userId: "u0",
         src: KENDI_FOTOGRAFLARIM[i - 1] || ("media/wedding-" + no + ".jpg"),
         mins: 60 * 24 * (3 + i * 2),
@@ -2727,6 +2734,7 @@ window.IG = window.IG || {};
   /* ------------------------------------------------------------------ */
   POSTS = POSTS.concat([
     P({
+      id: "p84",
       userId: "u1", src: "media/photo-09.jpg", mins: 200, likes: 3120,
       location: "Galata", atUsers: ["u0"],
       caption: "Günseli için hazırladığım albümden bir kare 🤍 Işık tam istediğim gibiydi.\n#düğünfotoğrafı #albüm",
@@ -2736,12 +2744,14 @@ window.IG = window.IG || {};
       ]
     }),
     P({
+      id: "p85",
       userId: "u7", src: "media/wedding-03.jpg", mins: 620, likes: 2480,
       location: "Kına Gecesi", atUsers: ["u0"],
       caption: "Kına gecemizden bir kare 🎉 Bu geceyi hiç unutmayacağız.\n#kına #kınagecesi #aile",
       comments: [C("u0", "Hepinize teşekkürler, harikaydı ❤️", 500, 22)]
     }),
     P({
+      id: "p86",
       userId: "u9", src: "media/wedding-11.jpg", mins: 1300, likes: 1870,
       location: "Pastane", atUsers: ["u0"],
       caption: "Düğün pastası denemesi: üç kat, üstü canlı şakayık 🌸\n#düğünpastası #tatlı",
@@ -2944,10 +2954,10 @@ window.IG = window.IG || {};
     meId: "u0",
     /* İÇERİK SÜRÜMÜ: tohum içeriği her değiştiğinde bu değeri güncelle.
        Tarayıcıda eski kayıt varsa uygulama kendini otomatik yeniler. */
-    rev: "2026-10-15-yabancisiz-kareler",
+    rev: "2026-10-15-p83-kaldirildi",
     /* Profilde gösterilecek istatistikler. Takipçi/takip sayıları birebir bu
        değerler olacak şekilde normalleştirilir (demo grafiği hesaba katılır). */
-    stats: { followers: 215, following: 444, posts: 58 },
+    stats: { followers: 215, following: 444, posts: 57 },
     users: USERS,
     posts: POSTS,
     stories: STORIES,

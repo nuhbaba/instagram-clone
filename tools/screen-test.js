@@ -219,7 +219,7 @@ ok("bildirimlerde takip düğmesi", activity.includes('data-act="follow"'));
 const meProfile = render("/profile/gunseli_beyhan");
 ok("profilde istatistikler", meProfile.includes("pstat") && meProfile.includes("gönderi"));
 ok("profilde kendi düğmeleri", meProfile.includes("Profili düzenle"));
-ok("kendi profilimde 58 gönderilik ızgara", (meProfile.match(/class="cell"/g) || []).length === 58);
+ok("kendi profilimde 57 gönderilik ızgara", (meProfile.match(/class="cell"/g) || []).length === 57);
 ok("profilde boş durum görünmüyor", !meProfile.includes("pempty"));
 ok("profilde tam 3 sekme (gönderi/reels/etiket)", (meProfile.match(/class="tab[ "]/g) || []).length === 3);
 ok("profilde sekmeler", meProfile.includes("tabs"));
