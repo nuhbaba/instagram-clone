@@ -23,21 +23,49 @@ hiçbir şey sunucuya gönderilmez.
 | Akış | Bu düğün gönderileri akışta da görünür |
 
 **Bu içerikler senaryo/yer tutucudur.** Fotoğrafındaki düğün temasına uygun olarak
-yazılmış kurgusal metinlerdir (gerçek mekân, tarih veya kişi adı içermez) ve düğün
-görselleri **tamamen üretilmiş** tasarımlardır — içlerinde gerçek kişi fotoğrafı yoktur.
+yazılmış kurgusal metinlerdir (gerçek mekân, tarih veya kişi adı içermez).
+
+**Izgaradaki fotoğraflar** ise Openverse ve Wikimedia Commons'tan alınmış **özgür
+lisanslı gerçek düğün fotoğraflarıdır** (listesi: [CREDITS.md](CREDITS.md)). Senin
+fotoğrafların değildir — kendi fotoğraflarını koymak için aşağıdaki 3. adıma bak.
+
+---
+
+## 3) Kendi fotoğraflarını koy (en önemli adım)
+
+1. Fotoğrafları **`fotograflar/`** klasörüne kopyala. Sıralama dosya adına göre olur:
+   `01-gelinlik.jpg`, `02-kina.jpg`, `03-nikah.jpg` … (ilk sıradaki, ızgaranın ilk
+   karesi olur)
+2. Şu komutu çalıştır:
+
+   ```bash
+   python tools/import-photos.py
+   ```
+
+   Betik her fotoğrafı kareye kırpar, 720×720 yapar, **meta verileri (EXIF/konum)
+   temizler** ve ızgarayı senin fotoğraflarınla doldurur.
+   Sadece ilk 30'u almak için `--adet 30`, 58'den fazlası için `--hepsi`.
+3. Tek dosyalık sürümü tazele ve yayına al:
+
+   ```bash
+   node tools/build-single.js
+   git add -A && git commit -m "Kendi fotoğraflarımı ekle" && git push
+   ```
+
+> Fotoğrafları bana iletmeyi tercih edersen (sohbete sürükle veya klasöre koy),
+> ben de aktarıp yayına alabilirim — hangisi kolaysa.
+
 Kendi gerçek içeriğini koymak istersen:
 
 - **Gönderi açıklaması:** gönderiyi aç → **⋯ → Açıklamayı düzenle**
-- **Kendi fotoğrafın:** **＋ → Toplu seç** ile yükle, örnek görselleri
-  *Örnek gönderiyi kaldır* ile sil
 - **Metinleri topluca değiştirmemi** istersen (ör. gerçek mekân/tarih yazmak) söyle,
   depodaki içeriği güncelleyip yayına alayım
 
-**Fotoğrafı yeniden üretmek** (görselleri değiştirmek) için:
+**Yer tutucu görselleri yeniden üretmek** için (istersen):
 
 ```bash
-python tools/make-wedding-set.py     # 58 düğün temalı görsel üretir
-node tools/build-single.js           # tek dosyalık sürümü tazeler
+python tools/fetch-wedding-photos.py   # gerçek, özgür lisanslı düğün fotoğrafları
+node tools/build-single.js             # tek dosyalık sürümü tazeler
 ```
 
 **Örnek gönderiler ne demek?** Profilin "58 gönderi" göstermesi ve ızgaranın dolu

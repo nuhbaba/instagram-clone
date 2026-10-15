@@ -7,6 +7,16 @@ _chrome.log
 _console.txt
 _single-check.png
 
+# Kendi fotoğraflarının orijinalleri (aktarılmış kopyalar media/ altında tutulur)
+fotograflar/*
+!fotograflar/OKU-BENI.txt
+
+# Aday görsel havuzu (yalnızca seçilenler media/ altına kopyalanır)
+screenshots/_*
+media/_aday/
+tools/_pool.json
+tools/_aday.json
+
 # Node
 node_modules/
 npm-debug.log*

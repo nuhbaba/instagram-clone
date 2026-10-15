@@ -150,7 +150,9 @@ instagram-clone/
 ├─ TELEFONA-YUKLE.md       # telefona kurma / yayınlama kılavuzu
 ├─ PROFILINI-DOLDUR.md     # profili kendi içeriğinle doldurma kılavuzu
 ├─ css/styles.css          # tasarım sistemi: tema değişkenleri, tüm bileşenler
-├─ media/                  # üretilmiş düğün görselleri (58) + profil fotoğrafı ve kapaklar
+├─ media/                  # profil fotoğrafı, düğün fotoğrafları (58) ve kapaklar
+├─ fotograflar/            # KENDİ fotoğraflarını koyduğun klasör (OKU-BENI.txt)
+├─ CREDITS.md              # ızgaradaki fotoğrafların kaynak/lisans listesi
 ├─ js/
 │  ├─ icons.js             # Instagram'a benzer SVG ikon seti (doğrulama rozeti dâhil)
 │  ├─ data.js              # Türkçe örnek içerik: 16 hesap, 25 gönderi, hikâyeler, DM'ler
@@ -211,9 +213,11 @@ python tools/make_icons.py
   tarayıcında saklanır; GitHub Pages'teki yayında yalnızca depoya gömülü görseller
   (profil fotoğrafı, öne çıkan kapağı) görünür. Herkesin görmesi için fotoğrafların
   başlangıç içeriğine gömülmesi gerekir ([PROFILINI-DOLDUR.md](PROFILINI-DOLDUR.md)).
-- **Izgaradaki 58 görsel örnektir:** profilin dolu görünmesi için
-  `tools/make-wedding-set.py` ile üretilmiş tasarımlardır (yüzük, kalp, çiçek, davetiye
-  motifleri). İçlerinde gerçek kişi fotoğrafı yoktur; akışta ve keşfette görünmezler.
+- **Izgaradaki 58 fotoğraf örnektir:** Wikimedia Commons'tan alınmış özgür lisanslı
+  (CC0 / kamu malı / CC BY / CC BY-SA) düğün fotoğraflarıdır; kaynak ve lisans listesi
+  [CREDITS.md](CREDITS.md) içindedir. Senin fotoğrafların değildir — kendi
+  fotoğraflarını koymak için `python tools/import-photos.py`
+  ([PROFILINI-DOLDUR.md](PROFILINI-DOLDUR.md)). Akışta ve keşfette görünmezler.
 - **Düğün metinleri kurgusaldır:** gönderi başlıkları, sohbetler ve bildirimler
   fotoğraftaki düğün temasına uygun yazılmış demo içeriktir; gerçek mekân, tarih veya
   kişi adı içermez.

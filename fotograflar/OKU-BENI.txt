@@ -1,0 +1,32 @@
+KENDİ FOTOĞRAFLARINI BURAYA KOY
+===============================
+
+1) Düğün fotoğraflarını (veya profilinde görmek istediğin fotoğrafları)
+   bu klasöre kopyala. Sıralama dosya adına göre yapılır:
+       01-gelinlik.jpg, 02-kina.jpg, 03-nikah.jpg ...
+   (Yani ilk sıradaki fotoğraf profildeki ızgaranın ilk karesi olur.)
+
+2) Şu komutu çalıştır:
+
+       python tools/import-photos.py
+
+   Betik her fotoğrafı kareye kırpar, 720x720'ye küçültür, meta verileri
+   (EXIF/konum) temizler ve medya klasörüne aktarır; ardından profil
+   ızgarasını senin fotoğraflarınla doldurur.
+
+   Yalnızca ilk 30 fotoğrafı almak için:  python tools/import-photos.py --adet 30
+   58'den fazlasını da almak için:        python tools/import-photos.py --hepsi
+
+3) Tek dosyalık sürümü tazele:
+
+       node tools/build-single.js
+
+4) Yayına al (GitHub Pages otomatik güncellenir):
+
+       git add -A
+       git commit -m "Kendi fotoğraflarımı ekle"
+       git push
+
+NOT: Bu klasördeki orijinal fotoğraflar depoya eklenmez (yalnızca aktarılmış
+kopyalar eklenir). Böylece depo şişmez. İstersen orijinalleri de ekleyebiliriz,
+söyle yeter.

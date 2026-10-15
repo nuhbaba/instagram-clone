@@ -365,31 +365,40 @@ window.IG = window.IG || {};
   /* düzenleyebilir, kendi fotoğraflarınla değiştirebilirsin.            */
   /* ------------------------------------------------------------------ */
   var DUGUN_BASLIKLARI = {
-    1: { c: "Hazırlıklar başladı 🤍 Mutluluğumuzu paylaşmak için sabırsızlanıyoruz.\n#düğün #hazırlık", l: "İstanbul", y: [["u5", "Heyecanınız buradan hissediliyor 🤍", 90, 14]] },
-    2: { c: "Gelinlik provası günü… Aynada kendimi görünce gözlerim doldu 🥹\n#gelinlik #prova", l: "Atölye", y: [["u3", "Duvak tam yerine oturdu, harika olacak ✨", 70, 9]] },
-    3: { c: "Kına gecemizden bir kare ❤️ Ellerinize sağlık, hepiniz harikaydınız.\n#kına #kınagecesi", l: "Kına Gecesi" },
-    4: { c: "Davetiyelerimiz hazır — kalbimize dokunan bir tasarım oldu ✨\n#davetiye #düğündavetiyesi", l: "İstanbul" },
-    5: { c: "Nikâh masasına doğru… 🤍\n#nikâh #mutluluk", l: "Nikâh Salonu" },
-    6: { c: "Çiçek seçimi: beyaz şakayık ve zeytin dalı 🌿\n#çiçek #düğünçiçeği", l: "Çiçekçi" },
-    7: { c: "İlk dans provası 😄 (Ayak parmaklarım hâlâ sağlam)\n#ilkdans #düğün", l: "Düğün Salonu" },
-    8: { c: "Balayı planı: iki bavul, bir harita, sonsuz kahkaha ✈️\n#balayı #geziyorum", l: "Havaalanı" },
-    9: { c: "Annemin gençlik fotoğrafıyla yan yana koyduk — aynı gelinlik, aynı heyecan 🤍\n#aile #geleneksel", l: "Ev" },
-    10: { c: "Davetiye zarfını ilk açan halam oldu 💌\n#aile #davetiye", l: "İzmir" },
-    11: { c: "Pasta tadımı: fıstıklı mı frambuazlı mı? Oylar yorumlara 😋\n#pasta #düğünpastası", l: "Pastane", y: [["u9", "İkisi de hazır, gelsin bakalım 🍰", 200, 11]] },
-    12: { c: "Kuaför randevusu alındı — saç modeli için fikirlerinizi bekliyorum 💇‍♀️\n#gelinsaçı #hazırlık", l: "Kuaför" },
-    13: { c: "Düğün mekânında son kontrol 🤍 Manzara bizi bekliyor.\n#düğünmekanı #boğaz", l: "Boğaz" },
-    14: { c: "Fotoğrafçımızla altın saat çekimi 🎞️\n#düğünfotoğrafı #altınsaat", l: "Galata", y: [["u1", "O ışık tam istediğim gibiydi 📷", 320, 18]] },
-    15: { c: "“Sonsuza dek” sözü… 🤍\n#sonsuzadek #düğün", l: "Düğün Salonu" },
-    16: { c: "Misafir defterine yazılan ilk not: “Aşkınız daim olsun.” 💐\n#düğünhatırası #anıdefteri", l: "Düğün Salonu" },
-    17: { c: "Nikâh şahitlerimizle son prova 😄\n#nikâh #aile", l: "Nikâh Salonu" },
-    18: { c: "Gelin arabası süslemesi tamam 🚗🤍\n#gelinarabası #düğün", l: "İstanbul" },
-    19: { c: "İkramlar için kahve istasyonu kuruluyor ☕️\n#düğünikramı #kahve", l: "Kokteyl Alanı", y: [["u14", "Baristalar hazır, merak etmeyin ☕️", 260, 7]] },
-    20: { c: "Fotoğraf köşemiz: polaroid ve altın çerçeveler 📸\n#düğünköşesi #hatıra", l: "Düğün Salonu" },
-    21: { c: "Kuzenlerimle son akşam yemeği 🍽️ Yarın büyük gün!\n#aile #düğün", l: "Kadıköy" },
-    22: { c: "Çiçek buketimizin ilk hâli 🌸\n#buket #gelinbuketi", l: "Çiçekçi" },
-    23: { c: "Işıklar, müzik, sahne… Her şey hazır 🎶\n#düğünmüziği #sahne", l: "Düğün Salonu" },
-    24: { c: "Balayı için ilk durak planlandı 🗺️\n#balayı #yolculuk", l: "Kapadokya" }
+    1: { c: "Hazırlıklar başladı 🤍\n#düğün #hazırlık", l: "İstanbul", y: [["u5", "Heyecanınız buradan hissediliyor 🤍", 90, 14]] },
+    2: { c: "Bu detaylara bayıldım 🤍\n#düğün", l: "", y: [["u1", "Işık çok güzel düşmüş 📷", 70, 9]] },
+    3: { c: "Işıklar, çiçekler, sevdiklerimiz 🌸\n#düğün", l: "Düğün Salonu" },
+    4: { c: "Bu günü hiç unutmayacağız ✨\n#nikâh", l: "Nikâh Salonu" },
+    5: { c: "En sevdiğim karelerden biri 🤍\n#düğün", l: "" },
+    6: { c: "Çiçekler konuşsun 🌿\n#düğünçiçeği", l: "" },
+    7: { c: "Küçük detaylar, büyük mutluluk ✨\n#düğün", l: "" },
+    8: { c: "Sonsuza dek… 🤍\n#sonsuzadek", l: "" },
+    9: { c: "Ailemizin en mutlu günü 💐\n#aile", l: "İstanbul" },
+    10: { c: "Davetiyelerden bir hatıra 💌\n#davetiye", l: "" },
+    11: { c: "Tatlı bir telaş 🍰\n#düğünpastası", l: "Pastane", y: [["u9", "İkisi de hazır, gelsin bakalım 🍰", 200, 11]] },
+    12: { c: "Hazırlık heyecanı 💇‍♀️\n#hazırlık", l: "" },
+    13: { c: "Manzara bizi bekliyordu 🤍\n#düğünmekanı", l: "Boğaz" },
+    14: { c: "Altın saat çekimleri 🎞️\n#düğünfotoğrafı", l: "Galata", y: [["u1", "O ışık tam istediğim gibiydi 📷", 320, 18]] },
+    15: { c: "Bir söz, bir ömür 🤍\n#nikâh", l: "" },
+    16: { c: "Misafir defterinden notlar 💐\n#düğünhatırası", l: "" },
+    17: { c: "Yanımızda olan herkese teşekkürler ✨\n#aile", l: "" },
+    18: { c: "Gelin arabası süslemesi 🚗🤍\n#düğün", l: "" },
+    19: { c: "İkramlar hazır ☕️\n#düğünikramı", l: "Kokteyl Alanı", y: [["u14", "Baristalar hazır, merak etmeyin ☕️", 260, 7]] },
+    20: { c: "Hatıra köşemiz 📸\n#düğün", l: "" },
+    21: { c: "Sevdiklerimizle son akşam 🍽️\n#aile", l: "" },
+    22: { c: "Çiçeklerin dili 🌸\n#buket", l: "" },
+    23: { c: "Sahne hazır 🎶\n#düğünmüziği", l: "" },
+    24: { c: "Balayı planları 🗺️\n#balayı", l: "" }
   };
+
+  /* ------------------------------------------------------------------ */
+  /* KENDİ FOTOĞRAFLARIN                                                 */
+  /* Fotoğraflarını `fotograflar/` klasörüne koyup                        */
+  /* `python tools/import-photos.py` çalıştırdığında bu liste otomatik    */
+  /* dolar; ızgaradaki yer tutucuların yerini senin fotoğrafların alır.   */
+  /* (Ayrıntı: PROFILINI-DOLDUR.md)                                       */
+  /* ------------------------------------------------------------------ */
+  var KENDI_FOTOGRAFLARIM = [];
 
   (function () {
     var ornek = [];
@@ -399,7 +408,7 @@ window.IG = window.IG || {};
       var yorumlar = (detay.y || []).map(function (r) { return C(r[0], r[1], r[2], r[3]); });
       ornek.push(P({
         userId: "u0",
-        src: "media/wedding-" + no + ".jpg",
+        src: KENDI_FOTOGRAFLARIM[i - 1] || ("media/wedding-" + no + ".jpg"),
         mins: 60 * 24 * (3 + i * 2),
         likes: 32 + ((i * 47) % 420),
         caption: detay.c || "",
