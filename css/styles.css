@@ -990,9 +990,9 @@ svg.ic--verified { display: inline-block; vertical-align: -1px; margin-left: 3px
   color: var(--text);
 }
 
-.pstat b { font-size: 17px; font-weight: 700; }
+.pstat b { font-size: 16px; font-weight: 700; }
 
-.pstat span { font-size: 12.5px; color: var(--text-2); }
+.pstat span { font-size: 13px; color: var(--text-2); }
 
 .phead__bio { margin-top: 12px; display: flex; flex-direction: column; gap: 3px; }
 
@@ -1101,6 +1101,137 @@ svg.ic--verified { display: inline-block; vertical-align: -1px; margin-left: 3px
 }
 
 .grid-empty .ic { opacity: .55; }
+
+/* --- Instagram profil ekranı: boş durum, +Yeni, avatar rozeti --- */
+
+/* Kendi profilinde boş ızgara yerine görünen "Gönderi paylaş" bloğu */
+.pempty {
+  padding: 46px 34px 54px;
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.pempty__icon {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-strong);
+  display: grid;
+  place-items: center;
+  color: var(--text-2);
+  margin-bottom: 6px;
+}
+
+.pempty h3 { font-size: 15px; font-weight: 600; color: var(--text); }
+
+.pempty p { font-size: 13.5px; line-height: 1.45; color: var(--text-2); max-width: 260px; }
+
+.pempty .btn { margin-top: 8px; }
+
+.pempty__hint {
+  font-size: 11.5px !important;
+  color: var(--text-3) !important;
+  line-height: 1.5 !important;
+  max-width: 280px !important;
+  margin-top: 4px;
+}
+
+/* Öne çıkanlar: "+ Yeni" dairesi */
+.highlight__ring--new {
+  border-style: dashed;
+  border-color: var(--border-strong);
+  color: var(--text-2);
+}
+
+/* Kendi avatarında hikâye ekleme rozeti */
+.phead__avatar-wrap { position: relative; display: inline-block; cursor: pointer; }
+
+.phead__avatar-plus {
+  position: absolute;
+  right: 1px;
+  bottom: 1px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  border: 2.5px solid var(--bg);
+}
+
+/* Biyografi boşken görünen "Biyografi ekle" bağlantısı */
+.phead__addbio {
+  align-self: flex-start;
+  font-size: 13px;
+  color: var(--text-3);
+  padding: 1px 0;
+}
+
+/* Kaydedilenler ekranı başlığı */
+.saved-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.saved-head__icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-strong);
+  display: grid;
+  place-items: center;
+  flex: none;
+  color: var(--text);
+}
+
+.saved-head span:last-child { display: flex; flex-direction: column; gap: 2px; }
+
+.saved-head b { font-size: 14px; font-weight: 600; }
+
+.saved-head i { font-size: 12.5px; color: var(--text-2); font-style: normal; }
+
+/* Toplu fotoğraf yükleme */
+.batch-head { padding: 14px 16px 4px; display: flex; flex-direction: column; gap: 3px; }
+
+.batch-head b { font-size: 15px; }
+
+.batch-head span { font-size: 12.5px; color: var(--text-2); }
+
+.batch-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+  padding: 12px 2px 4px;
+  max-height: 46vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.batch-grid::-webkit-scrollbar { display: none; }
+
+.batch-cell { position: relative; aspect-ratio: 1 / 1; overflow: hidden; background: var(--fallback); display: block; }
+
+.batch-cell__img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.batch-cell__del {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, .65);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  backdrop-filter: blur(4px);
+}
 
 /* -------------------------------------------------------- 9) Mesajlar */
 .dm-bar {

@@ -20,10 +20,11 @@ window.IG = window.IG || {};
   /* ------------------------------------------------------------------ */
   var USERS = [
     {
-      id: "u0", username: "deniz.yildiz", name: "Deniz Yıldız", avatar: AVATAR(12),
-      bio: "📍 İstanbul · kahve & kod ☕️💻\nYeni bir şeyler öğrenmeye devam.",
-      link: "denizyildiz.dev", verified: false, private: false,
-      followersBase: 842, followingBase: 312, category: "Dijital içerik üreticisi"
+      /* Bu hesap senin profilin: fotoğraflarını uygulamadan ekleyerek doldurursun.
+         Avatar boş bırakıldı; uygulama baş harflerden (GB) yerel bir avatar üretir. */
+      id: "u0", username: "gunseli_beyhan", name: "Günseli Beyhan", avatar: "",
+      bio: "", link: "", verified: false, private: false,
+      followersBase: 0, followingBase: 0, category: ""
     },
     {
       id: "u1", username: "elifkaman", name: "Elif Kaman", avatar: AVATAR(45),
@@ -163,6 +164,7 @@ window.IG = window.IG || {};
       userId: "u1", src: PIC("istanbul-sokak-01", 1080, 1350), mins: 38, likes: 4820,
       location: "Balat, İstanbul",
       caption: "Sabahın ilk ışığı Balat'ın sokaklarında dolaşırken yakaladığım o sessizlik. 🧡\n#sokakfotoğrafçılığı #istanbul #balat",
+      atUsers: ["u0"],
       comments: [
         C("u0", "Işık muhteşem, kadraj da öyle 👏", 30, 12),
         C("u7", "Bu sokağı çok seviyorum, tam köşede bir kahveci var ☕️", 22, 5, [["u1", "Kesinlikle orası! Bir gün birlikte gidelim 🙌", 18, 2]]),
@@ -208,7 +210,7 @@ window.IG = window.IG || {};
       userId: "u11", src: PIC("kedi-bahce-06", 1080, 1080), mins: 520, likes: 8940,
       location: "Pati Bahçesi",
       caption: "Bugün 6 yavru sahiplendirildi. 🐈 Vazgeçmeyin, hepsi bir yuva buluyor.\nKısırlaştırma destek kampanyası profil bağlantısında.\n#sahiplen #kedi #patibahcesi",
-      atUsers: ["u5", "u13"],
+      atUsers: ["u0", "u5", "u13"],
       comments: [
         C("u13", "Kalp kalp kalp 💚", 500, 11),
         C("u5", "Harika haber, tebrikler!", 480, 6)
@@ -320,30 +322,32 @@ window.IG = window.IG || {};
       caption: "Kumaş nasıl doğar? 20 saniyede anlattım 🧵 #moda #üretim",
       audio: "Orijinal ses — zehra.demir", comments: []
     }),
-    /* ---------------- BENİM GÖNDERİLERİM (p23, p24, p25) ---------------- */
+    /* ---------------- ÖRNEK İÇERİK (senin profilin başlangıçta boştur) ----
+       Bu üç gönderi demo hesaplara aittir; böylece akış canlı kalır.
+       Kendi profilin (u0 · gunseli_beyhan) 0 gönderiyle başlar. */
     P({
-      userId: "u0", src: PIC("deniz-proje-23", 1080, 1080), mins: 7, likes: 214,
+      userId: "u4", src: PIC("deniz-proje-23", 1080, 1080), mins: 7, likes: 214,
       location: "İstanbul",
       caption: "Küçük ama işe yarayan bir şeye başladım. 🚀\nİlerlemeyi buradan paylaşacağım, geri bildirime açığım.\n#yazılım #kişiselproje",
       comments: [
-        C("u4", "Merakla bekliyorum! 👀", 5, 3),
+        C("u12", "Merakla bekliyorum! 👀", 5, 3),
         C("u1", "İlk yorum benden olsun 🙌", 3, 1)
       ]
     }),
     P({
-      userId: "u0", src: PIC("deniz-kahve-24", 1080, 1350), mins: 430, likes: 342,
+      userId: "u14", src: PIC("deniz-kahve-24", 1080, 1350), mins: 430, likes: 342,
       location: "Hakan Demir Kavurma Atölyesi",
       caption: "Cumartesi ritüeli: filtre kahve ve defter. ☕️📓\nBu haftanın planı defterde hazır.\n#kahve #haftasonu",
       comments: [
-        C("u14", "Afiyet olsun! Yeni çekirdek nasıl?", 400, 4, [["u0", "Bergamot notası çok net, bayıldım ☕️", 390, 2]]),
-        C("u5", "Kahve ve defter ikilisi 🥰", 300, 6)
+        C("u5", "Afiyet olsun! Yeni çekirdek nasıl?", 400, 4, [["u14", "Bergamot notası çok net, bayıldım ☕️", 390, 2]]),
+        C("u9", "Kahve ve defter ikilisi 🥰", 300, 6)
       ]
     }),
     P({
-      userId: "u0", kind: "reel", src: PIC("deniz-reel-25", 1080, 1920), mins: 62, likes: 1840,
+      userId: "u15", kind: "reel", src: PIC("deniz-reel-25", 1080, 1920), mins: 62, likes: 1840,
       location: "İstanbul",
       caption: "Şehirde 15 saniye 🌆 #istanbul #reels",
-      audio: "Orijinal ses — deniz.yildiz",
+      audio: "Orijinal ses — tolgabay",
       comments: [C("u7", "Bu geçiş çok iyi 🔥", 44, 11)]
     })
   ];
@@ -365,10 +369,8 @@ window.IG = window.IG || {};
   }
 
   var STORIES = [
-    story("u0", [
-      [PIC("story-deniz-1", 1080, 1920), 20, "Sabah kahvesi ☕️", "Orijinal ses"],
-      [PIC("story-deniz-2", 1080, 1920), 8, "Ofisten manzara", "Lo-fi Beats"]
-    ]),
+    /* u0 (gunseli_beyhan) için başlangıçta hikâye yok: "Hikâyen" girişinden
+       kendi hikâyeni ekleyebilirsin. */
     story("u1", [
       [PIC("story-elif-1", 1080, 1920), 45, "Yeni seri hazırlanıyor 📷", "Orijinal ses"],
       [PIC("story-elif-2", 1080, 1920), 35, "", ""],
@@ -397,22 +399,20 @@ window.IG = window.IG || {};
 
   /* ------------------------------------------------------------------ */
   /* Bildirimler                                                         */
+  /* Henüz gönderi paylaşmadığın için bildirimler takip / etiketleme     */
+  /* türündedir. Kendi gönderini paylaştığında beğeni ve yorum           */
+  /* bildirimleri de akmaya başlar.                                      */
   /* ------------------------------------------------------------------ */
   var NOTIFICATIONS = [
-    { id: "n1", type: "like", userId: "u1", postId: "p23", mins: 6, thumb: PIC("deniz-proje-23", 200, 200), text: "gönderini beğendi" },
-    { id: "n2", type: "follow", userId: "u3", mins: 14, text: "seni takip etmeye başladı" },
-    { id: "n3", type: "comment", userId: "u7", postId: "p23", mins: 25, thumb: PIC("deniz-proje-23", 200, 200), text: "yorum yaptı: “İlerlemeyi merak ediyorum, kolay gelsin 👏”" },
-    { id: "n4", type: "like", userId: "u3", postId: "p23", mins: 40, thumb: PIC("deniz-proje-23", 200, 200), text: "ve 128 kişi daha gönderini beğendi" },
-    { id: "n5", type: "mention", userId: "u4", mins: 70, thumb: PIC("kod-ekran-04", 200, 200), text: "bir gönderide senden bahsetti" },
-    { id: "n6", type: "story", userId: "u9", mins: 95, thumb: PIC("story-ayse-1", 200, 200), text: "hikâyeni beğendi" },
-    { id: "n7", type: "follow", userId: "u10", mins: 130, text: "seni takip etmeye başladı" },
-    { id: "n8", type: "like", userId: "u13", postId: "p24", mins: 180, thumb: PIC("deniz-kahve-24", 200, 200), text: "gönderini beğendi" },
-    { id: "n9", type: "comment", userId: "u5", postId: "p24", mins: 240, thumb: PIC("deniz-kahve-24", 200, 200), text: "yorum yaptı: “Kahve ve defter ikilisi 🥰”" },
-    { id: "n10", type: "tag", userId: "u11", postId: "p25", mins: 320, thumb: PIC("deniz-reel-25", 200, 200), text: "bir gönderide seni etiketledi" },
-    { id: "n11", type: "like", userId: "u2", postId: "p25", mins: 400, thumb: PIC("deniz-reel-25", 200, 200), text: "ve 12 kişi daha gönderini beğendi" },
-    { id: "n12", type: "follow", userId: "u15", mins: 520, text: "seni takip etmeye başladı" },
-    { id: "n13", type: "like", userId: "u6", postId: "p23", mins: 700, thumb: PIC("deniz-proje-23", 200, 200), text: "gönderini beğendi" },
-    { id: "n14", type: "comment", userId: "u14", postId: "p24", mins: 900, thumb: PIC("deniz-kahve-24", 200, 200), text: "yorum yaptı: “Yeni çekirdek geldi, bekleriz ☕️”" }
+    { id: "n1", type: "follow", userId: "u1", mins: 12, text: "seni takip etmeye başladı" },
+    { id: "n2", type: "tag", userId: "u1", postId: "p1", mins: 35, thumb: PIC("istanbul-sokak-01", 200, 200), text: "bir gönderide seni etiketledi" },
+    { id: "n3", type: "follow", userId: "u9", mins: 70, text: "seni takip etmeye başladı" },
+    { id: "n4", type: "mention", userId: "u4", mins: 150, thumb: PIC("kod-ekran-04", 200, 200), text: "bir gönderide senden bahsetti" },
+    { id: "n5", type: "follow", userId: "u7", mins: 260, text: "seni takip etmeye başladı" },
+    { id: "n6", type: "tag", userId: "u11", postId: "p6", mins: 420, thumb: PIC("kedi-bahce-06", 200, 200), text: "bir gönderide seni etiketledi" },
+    { id: "n7", type: "follow", userId: "u14", mins: 700, text: "seni takip etmeye başladı" },
+    { id: "n8", type: "follow", userId: "u3", mins: 1500, text: "seni takip etmeye başladı" },
+    { id: "n9", type: "follow", userId: "u15", mins: 2600, text: "seni takip etmeye başladı" }
   ];
 
   /* ------------------------------------------------------------------ */

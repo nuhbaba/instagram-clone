@@ -26,7 +26,7 @@
     commentPost: null,
     query: "",
     recent: [],
-    create: { src: null, kind: "post", caption: "", location: "", isNew: false },
+    create: { src: null, batch: [], kind: "post", caption: "", location: "", isNew: false },
     lastTap: { id: null, at: 0 },
     welcomeShown: false,
     refreshing: false
@@ -54,6 +54,7 @@
       case "explore": params.q = parts[1] || null; break;
       case "post": params.id = parts[1] || null; break;
       case "settings":
+      case "saved":
       case "create":
       case "activity":
       case "reels":
@@ -138,11 +139,15 @@
       var u = r.params.username ? Store.userByUsername(r.params.username) : Store.me();
       var isMe = u && u.id === Store.meId;
       html = '<div class="appbar__title appbar__title--tight">' + (u ? C.esc(u.username) : "Profil") +
-        (u && u.private ? " " + Icons.icon("lock", { size: 14 }) : "") + "</div>" +
+        (u && u.private ? " " + Icons.icon("lock", { size: 14 }) : "") +
+        (isMe ? " " + Icons.icon("chevronDown", { size: 14 }) : "") + "</div>" +
         '<div class="appbar__right">' +
         (isMe ? iconButton("create-open", "plusSquare", "Yeni gönderi") : iconButton("chat-with", "messenger", "Mesaj gönder")) +
         (isMe ? iconButton("settings-open", "menu", "Ayarlar") : "") +
         "</div>";
+    } else if (r.name === "saved") {
+      html = '<div class="appbar__back"><button class="icon-btn" data-act="back" aria-label="Geri">' + Icons.icon("arrowLeft") + "</button></div>" +
+        '<div class="appbar__title">Kaydedilenler</div><div class="appbar__right"></div>';
     } else if (r.name === "direct") {
       html = '<div class="appbar__back"><button class="icon-btn" data-act="back" aria-label="Geri">' + Icons.icon("arrowLeft") + "</button></div>" +
         '<div class="appbar__title">' + (r.params.chatId ? C.esc((Store.user((Store.chat(r.params.chatId) || {}).userId) || {}).username || "Sohbet") : "Mesajlar") + "</div>" +
@@ -151,13 +156,15 @@
       html = '<div class="appbar__back"><button class="icon-btn" data-act="back" aria-label="Geri">' + Icons.icon("arrowLeft") + "</button></div>" +
         '<div class="appbar__title">Ayarlar</div><div class="appbar__right"></div>';
     } else if (r.name === "create") {
-      var step = UI.create.src ? "share" : "pick";
+      var step = UI.create.batch && UI.create.batch.length ? "batch" : UI.create.src ? "share" : "pick";
       html = '<div class="appbar__back"><button class="icon-btn" data-act="create-back" aria-label="Geri">' + Icons.icon("arrowLeft") + "</button></div>" +
         '<div class="appbar__title">Yeni gönderi</div>' +
         '<div class="appbar__right">' +
         (step === "share"
           ? '<button class="btn btn--primary btn--sm" data-act="create-share">Paylaş</button>'
-          : '<button class="btn btn--ghost btn--sm" data-act="create-file">Galeriden seç</button>') +
+          : step === "batch"
+            ? '<button class="btn btn--primary btn--sm" data-act="batch-share">' + UI.create.batch.length + " gönderi paylaş</button>"
+            : '<button class="btn btn--ghost btn--sm" data-act="create-file">Fotoğraf seç</button>') +
         "</div>";
     } else if (r.name === "post") {
       html = '<div class="appbar__back"><button class="icon-btn" data-act="back" aria-label="Geri">' + Icons.icon("arrowLeft") + "</button></div>" +
@@ -189,7 +196,7 @@
       { id: "explore", icon: "search", label: "Keşfet", active: r.name === "explore" },
       { id: "reels", icon: "reels", label: "Reels", active: r.name === "reels" },
       { id: "activity", icon: "heart", label: "Bildirimler", active: r.name === "activity", badge: b.notif },
-      { id: "profile", icon: "avatar", label: "Profil", active: r.name === "profile" && (!r.params.username || r.params.username === me.username) }
+      { id: "profile", icon: "avatar", label: "Profil", active: (r.name === "profile" && (!r.params.username || r.params.username === me.username)) || r.name === "saved" }
     ];
     bar.innerHTML = tabs.map(function (t) {
       var content = t.icon === "avatar"
@@ -387,15 +394,36 @@
   };
 
   /* ---------- 5) Profil ---------- */
-  function highlightsHTML(u) {
-    var posts = Store.postsOf(u.id);
-    if (!posts.length) return "";
-    var picks = posts.slice(0, 4);
-    return '<div class="highlights">' + picks.map(function (p, i) {
+  /* Instagram'ın güncel profil düzeni: avatar + istatistikler, ad/biyografi,
+     tek "Profili düzenle" düğmesi, öne çıkanlar (+ Yeni), 3 sekme ve ızgara. */
+
+  /** Öne çıkanlar şeridi. Kendi profilinde başa "+ Yeni" dairesi gelir. */
+  function highlightsHTML(u, isMe) {
+    var picks = Store.postsOf(u.id).slice(0, 5);
+    if (!isMe && !picks.length) return "";
+    var items = "";
+    if (isMe) {
+      items += '<button class="highlight" data-act="create-story">' +
+        '<span class="highlight__ring highlight__ring--new">' + Icons.icon("plus", { size: 24 }) + "</span>" +
+        '<span class="highlight__label">Yeni</span></button>';
+    }
+    items += picks.map(function (p, i) {
       return '<button class="highlight" data-act="post-open" data-post="' + p.id + '">' +
         '<span class="highlight__ring">' + C.media(p.src, "öne çıkan", 140, 140, "highlight__img") + "</span>" +
         '<span class="highlight__label">' + HIGHLIGHT_LABELS[i % HIGHLIGHT_LABELS.length] + "</span></button>";
-    }).join("") + "</div>";
+    }).join("");
+    return '<div class="highlights">' + items + "</div>";
+  }
+
+  /** Instagram'ın "henüz gönderi yok" görünümü. */
+  function profileEmptyHTML(isMe) {
+    return '<div class="pempty">' +
+      '<span class="pempty__icon">' + Icons.icon("camera", { size: 34 }) + "</span>" +
+      "<h3>Gönderi paylaş</h3>" +
+      "<p>Fotoğraf ve video paylaştığında profilinde görünecek.</p>" +
+      (isMe ? '<button class="btn btn--primary" data-act="create-open">İlk gönderini paylaş</button>' +
+        '<p class="pempty__hint">Bu profil senin fotoğrafların için hazır — “Oluştur” ekranından tek tek veya toplu yükleyebilirsin.</p>' : "") +
+    "</div>";
   }
 
   Screens.profile = function () {
@@ -408,37 +436,50 @@
     var isMe = u.id === me.id;
     var story = Store.storiesFor(u.id);
     var unseen = story ? Store.unseenCount(story) > 0 : false;
-    var tab = UI.tab.profile || "posts";
+    var tab = UI.tab.profile;
+    if (["posts", "reels", "tagged"].indexOf(tab) === -1) tab = "posts";
     var following = Store.isFollowing(u.id);
 
     var tabs = [
       { id: "posts", content: Icons.icon("grid", { size: 22 }), aria: "Gönderiler" },
       { id: "reels", content: Icons.icon("reels", { size: 22 }), aria: "Reels" },
-      { id: "saved", content: Icons.icon("bookmarkTab", { size: 22 }), aria: "Kaydedilenler", onlyMe: true },
       { id: "tagged", content: Icons.icon("personTag", { size: 22 }), aria: "Etiketlenenler" }
-    ].filter(function (t) { return !t.onlyMe || isMe; });
+    ];
 
-    var content;
+    var content = "";
     if (tab === "posts") content = Store.postsOf(u.id).map(C.gridCell).join("");
     else if (tab === "reels") content = Store.reelsOf(u.id).map(C.gridCell).join("");
-    else if (tab === "saved") content = isMe ? Store.savedPosts().map(C.gridCell).join("") : "";
     else content = Store.taggedPosts(u.id).map(C.gridCell).join("");
 
-    if (!content) {
-      content = '<div class="grid-empty">' + Icons.icon(tab === "saved" ? "bookmarkTab" : tab === "tagged" ? "personTag" : "camera", { size: 44 }) +
-        "<p>" + (tab === "saved" ? "Kaydettiğin gönderiler burada görünür." :
-          tab === "tagged" ? "Henüz etiketlendiğin bir gönderi yok." :
-          tab === "reels" ? "Henüz reels paylaşılmadı." : "Henüz gönderi paylaşılmadı.") + "</p></div>";
+    var block;
+    if (content) block = '<div class="grid3">' + content + "</div>";
+    else if (tab === "posts") block = profileEmptyHTML(isMe);
+    else {
+      block = '<div class="grid-empty">' +
+        Icons.icon(tab === "tagged" ? "personTag" : "reels", { size: 44 }) +
+        "<p>" + (tab === "tagged"
+          ? (isMe ? "Henüz etiketlendiğin bir gönderi yok." : "Bu hesap henüz bir gönderide etiketlenmemiş.")
+          : (isMe ? "Henüz reels paylaşmadın." : "Henüz reels paylaşılmadı.")) + "</p></div>";
+    }
+
+    var avatarHTML;
+    if (unseen) {
+      avatarHTML = C.storyRing(u, false, 84);
+    } else if (isMe) {
+      avatarHTML = '<span class="phead__avatar-wrap" data-act="create-story" role="button" aria-label="Hikâye ekle">' +
+        C.avatar(u, 84) +
+        '<span class="phead__avatar-plus">' + Icons.icon("plus", { size: 13, stroke: 3 }) + "</span></span>";
+    } else {
+      avatarHTML = '<span data-act="open-profile" data-user="' + u.id + '">' + C.avatar(u, 84) + "</span>";
     }
 
     var isNew = UI.create.isNew && isMe;
+    var hasBio = !!(u.bio && u.bio.trim());
 
     return '<div class="screen__inner screen__inner--flush">' +
       '<div class="phead">' +
         '<div class="phead__top">' +
-          '<span class="phead__avatar">' +
-            (unseen ? C.storyRing(u, false, 84) : '<span data-act="open-profile" data-user="' + u.id + '">' + C.avatar(u, 84) + "</span>") +
-          "</span>" +
+          '<span class="phead__avatar">' + avatarHTML + "</span>" +
           '<div class="phead__stats">' +
             C.stat(C.formatCountExact(Store.postCount(u.id)), "gönderi") +
             C.stat(C.formatCount(Store.followersCount(u)), "takipçi", "followers", u.id) +
@@ -447,25 +488,39 @@
         "</div>" +
         '<div class="phead__bio">' +
           '<div class="phead__name">' + C.esc(u.name) + (u.verified ? " " + Icons.verified(14) : "") + "</div>" +
-          '<div class="phead__category">' + C.esc(u.category || "") + "</div>" +
-          '<div class="phead__text">' + C.richText(u.bio || "") + "</div>" +
+          (u.category ? '<div class="phead__category">' + C.esc(u.category) + "</div>" : "") +
+          (hasBio ? '<div class="phead__text">' + C.richText(u.bio) + "</div>"
+            : (isMe ? '<button class="phead__addbio" data-act="edit-profile">Biyografi ekle</button>' : "")) +
           (u.link ? '<a class="lnk phead__link" data-act="open-link" data-link="' + C.esc(u.link) + '">' +
             Icons.icon("thread", { size: 14 }) + " " + C.esc(u.link) + "</a>" : "") +
-          (isNew ? '<div class="phead__new">Yeni gönderi paylaşıldı ✨</div>' : "") +
+          (isNew ? '<div class="phead__new">Gönderin paylaşıldı ✨</div>' : "") +
         "</div>" +
         '<div class="phead__buttons">' +
           (isMe
-            ? '<button class="btn btn--ghost btn--grow" data-act="edit-profile">Profili düzenle</button>' +
-              '<button class="btn btn--ghost btn--grow" data-act="share-profile">Profili paylaş</button>'
+            ? '<button class="btn btn--ghost btn--grow" data-act="edit-profile">Profili düzenle</button>'
             : C.followButton(u, { cls: "btn--grow" }) +
               '<button class="btn btn--ghost btn--grow" data-act="chat-with" data-user="' + u.id + '">Mesaj gönder</button>' +
               (following ? '<button class="btn btn--ghost btn--icon" data-act="unfollow-sheet" data-user="' + u.id + '" aria-label="Takibi bırak seçenekleri">' + Icons.icon("chevronDown", { size: 16 }) + "</button>" : "")) +
         "</div>" +
-        highlightsHTML(u) +
+        highlightsHTML(u, isMe) +
       "</div>" +
       C.tabs(tabs, tab) +
-      (content.indexOf("grid-empty") === 0 ? content : '<div class="grid3">' + content + "</div>") +
+      block +
     "</div>";
+  };
+
+  /* ---------- 5b) Kaydedilenler (Instagram'da olduğu gibi menüden açılır) --- */
+  Screens.saved = function () {
+    var list = Store.savedPosts();
+    var head = '<div class="saved-head">' +
+      '<span class="saved-head__icon">' + Icons.icon("bookmarkTab", { size: 20 }) + "</span>" +
+      "<span><b>Yalnızca sen görürsün</b><i>Kaydettiğin gönderiler yalnızca sana görünür.</i></span></div>";
+    var body = list.length
+      ? '<div class="grid3">' + list.map(C.gridCell).join("") + "</div>"
+      : '<div class="grid-empty">' + Icons.icon("bookmarkTab", { size: 44 }) +
+        "<p>Henüz bir gönderi kaydetmedin. Bir gönderinin sağ alt köşesindeki yer imine dokunarak kaydedebilirsin.</p>" +
+        '<button class="btn btn--primary" data-act="go" data-go="explore">Gönderi bul</button></div>';
+    return '<div class="screen__inner screen__inner--flush">' + head + body + "</div>";
   };
 
   /* ---------- 6) Mesajlar listesi ---------- */
@@ -584,6 +639,13 @@
         Icons.icon("chevronRight", { size: 18 }) + "</div>" +
 
       '<div class="set-group">' +
+        '<div class="set-title">Profil</div>' +
+        '<div class="set-row set-row--btn" data-act="go-saved"><span>Kaydedilenler</span>' + Icons.icon("bookmarkTab", { size: 18 }) + "</div>" +
+        '<div class="set-row set-row--btn" data-act="share-profile"><span>Profili paylaş</span>' + Icons.icon("share", { size: 18 }) + "</div>" +
+        '<div class="set-row set-row--btn" data-act="create-open"><span>Yeni gönderi paylaş</span>' + Icons.icon("plusSquare", { size: 18 }) + "</div>" +
+      "</div>" +
+
+      '<div class="set-group">' +
         '<div class="set-title">Görünüm</div>' +
         '<div class="set-row"><span>Koyu tema</span>' + sw("theme-toggle", s.theme === "dark") + "</div>" +
         '<div class="set-row"><span>Reels otomatik oynatma</span>' + sw("toggle-autoplay", s.autoplay) + "</div>" +
@@ -592,8 +654,10 @@
 
       '<div class="set-group">' +
         '<div class="set-title">Veri</div>' +
-        '<div class="set-row set-row--btn" data-act="export-data"><span>Verileri indir (JSON)</span>' + Icons.icon("download", { size: 18 }) + "</div>" +
+        '<div class="set-row set-row--btn" data-act="export-data"><span>Verileri indir (JSON yedeği)</span>' + Icons.icon("download", { size: 18 }) + "</div>" +
+        '<div class="set-row set-row--btn" data-act="import-data"><span>Yedeği geri yükle (JSON)</span>' + Icons.icon("upload", { size: 18 }) + "</div>" +
         '<div class="set-row set-row--btn is-danger" data-act="reset-data"><span>Tüm verileri sıfırla</span>' + Icons.icon("trash", { size: 18 }) + "</div>" +
+        '<input type="file" id="importInput" accept="application/json,.json" hidden>' +
       "</div>" +
 
       '<div class="set-group">' +
@@ -615,11 +679,38 @@
   /* ---------- 9) Yeni gönderi ---------- */
   Screens.create = function () {
     var c = UI.create;
+
+    /* --- toplu yükleme: birden fazla fotoğraf seçildiyse önizleme adımı --- */
+    if (c.batch && c.batch.length) {
+      return '<div class="screen__inner screen__inner--tight">' +
+        '<div class="batch-head"><b>' + c.batch.length + " fotoğraf seçildi</b>" +
+          "<span>Hepsi ayrı gönderi olarak paylaşılır.</span></div>" +
+        '<div class="batch-grid">' + c.batch.map(function (src, i) {
+          return '<span class="batch-cell">' + C.media(src, "seçim " + (i + 1), 400, 400, "batch-cell__img") +
+            '<button class="batch-cell__del" data-act="batch-remove" data-index="' + i + '" aria-label="Kaldır">' +
+            Icons.icon("close", { size: 12, stroke: 3 }) + "</button></span>";
+        }).join("") + "</div>" +
+        '<div class="create-form">' +
+          '<textarea id="captionInput" rows="3" placeholder="Hepsi için ortak açıklama (isteğe bağlı)…" data-act="caption-input">' + C.esc(c.caption) + "</textarea>" +
+          '<div class="create-row"><span>' + Icons.icon("location", { size: 18 }) + "</span>" +
+            '<input type="text" id="locationInput" placeholder="Konum ekle" value="' + C.esc(c.location) + '" data-act="location-input">' +
+            Icons.icon("chevronRight", { size: 16 }) + "</div>" +
+          '<div class="create-actions">' +
+            '<button class="btn btn--primary btn--grow" data-act="batch-share">' + c.batch.length + " gönderi paylaş</button>" +
+            '<button class="btn btn--ghost btn--grow" data-act="create-reset">İptal</button>' +
+          "</div>" +
+          '<p class="create-hint">Yüklediğin fotoğraflar tarayıcıda küçültülür ve yalnızca bu cihazda saklanır.</p>' +
+        "</div>" +
+        '<input type="file" id="fileInputMulti" accept="image/*" multiple hidden>' +
+        '<input type="file" id="cameraInput" accept="image/*" capture="environment" hidden>' +
+      "</div>";
+    }
+
     if (!c.src) {
       return '<div class="screen__inner screen__inner--tight">' +
         '<div class="create-top">' +
           '<div class="create-sel">' + Icons.icon("grid", { size: 22 }) + "<span>Galeri</span></div>" +
-          '<div class="create-sel" data-act="create-file">' + Icons.icon("image", { size: 22 }) + "<span>Dosyadan seç</span></div>" +
+          '<div class="create-sel" data-act="create-file">' + Icons.icon("image", { size: 22 }) + "<span>Toplu seç</span></div>" +
           '<div class="create-sel" data-act="create-camera">' + Icons.icon("camera", { size: 22 }) + "<span>Kamera</span></div>" +
         "</div>" +
         '<div class="grid3 grid3--gap">' +
@@ -628,10 +719,10 @@
               C.media(src, "galeri " + (i + 1), 400, 400, "cell__img") + "</button>";
           }).join("") +
         "</div>" +
-        '<input type="file" id="fileInput" accept="image/*" hidden>' +
+        '<input type="file" id="fileInputMulti" accept="image/*" multiple hidden>' +
         '<input type="file" id="cameraInput" accept="image/*" capture="environment" hidden>' +
-        '<p class="create-hint">Galeriden bir görsel seç ya da kendi fotoğrafını yükle. Yüklenen görseller ' +
-          "tarayıcıda küçültülüp bu cihazda saklanır.</p>" +
+        '<p class="create-hint">Galerideki örneklerden birini seç, ya da <b>Toplu seç</b> ile kendi ' +
+          "fotoğraflarını yükle (birden fazla seçebilirsin). Yüklenen görseller tarayıcıda küçültülüp bu cihazda saklanır.</p>" +
       "</div>";
     }
 
@@ -727,6 +818,7 @@
     }
     if (r.name === "feed") setupPullToRefresh(screen);
     if (r.name === "create") setupCreateInputs();
+    if (r.name === "settings") setupSettingsInputs();
     if (r.name === "explore" && UI.query) {
       var si = $("#searchInput");
       if (si) { si.focus(); si.setSelectionRange(si.value.length, si.value.length); }
@@ -819,25 +911,42 @@
     if (loc) loc.addEventListener("input", function () { UI.create.location = loc.value; });
     if (aud) aud.addEventListener("input", function () { UI.create.audio = aud.value; });
 
-    var fi = $("#fileInput");
+    var fi = $("#fileInputMulti");
     if (fi) fi.addEventListener("change", function () {
-      if (fi.files && fi.files[0]) loadImageFile(fi.files[0], function (dataUrl) {
-        UI.create.src = dataUrl;
+      var files = fi.files ? Array.prototype.slice.call(fi.files) : [];
+      if (!files.length) return;
+      if (files.length === 1) {
+        loadImageFile(files[0], function (dataUrl) {
+          UI.create.src = dataUrl;
+          UI.create.batch = [];
+          UI.create.isNew = false;
+          renderScreen();
+          renderAppBar();
+        });
+        return;
+      }
+      loadImageFiles(files, function (list) {
+        UI.create.src = null;
+        UI.create.batch = list;
         UI.create.isNew = false;
+        C.toast(list.length + " fotoğraf hazır", { icon: "check" });
         renderScreen();
         renderAppBar();
       });
+      fi.value = "";
     });
     var ci = $("#cameraInput");
     if (ci) ci.addEventListener("change", function () {
       if (ci.files && ci.files[0]) loadImageFile(ci.files[0], function (dataUrl) {
         UI.create.src = dataUrl;
+        UI.create.batch = [];
         renderScreen();
         renderAppBar();
       });
     });
   }
 
+  /** Tek dosyayı okuyup küçültür (en fazla 1080 px, JPEG). */
   function loadImageFile(file, cb) {
     if (!/^image\//.test(file.type)) { C.toast("Sadece görsel dosyaları destekleniyor", { icon: "info" }); return; }
     var reader = new FileReader();
@@ -858,6 +967,45 @@
     };
     reader.onerror = function () { C.toast("Dosya okunamadı", { icon: "info" }); };
     reader.readAsDataURL(file);
+  }
+
+  /** Birden fazla dosyayı sırayla işler; hepsi bitince listeyi döndürür. */
+  function loadImageFiles(files, cb) {
+    var out = [];
+    var i = 0;
+    var next = function () {
+      if (i >= files.length) { cb(out); return; }
+      var file = files[i++];
+      if (!/^image\//.test(file.type)) { next(); return; }
+      loadImageFile(file, function (dataUrl) { out.push(dataUrl); next(); });
+    };
+    next();
+  }
+
+  /** Ayarlar > "Yedeği geri yükle" dosya seçicisi. */
+  function setupSettingsInputs() {
+    var fi = $("#importInput");
+    if (!fi) return;
+    fi.addEventListener("change", function () {
+      if (!fi.files || !fi.files[0]) return;
+      var reader = new FileReader();
+      reader.onload = function () {
+        var obj;
+        try { obj = JSON.parse(reader.result); }
+        catch (e) { C.toast("JSON dosyası okunamadı", { icon: "info" }); return; }
+        if (Store.importState(obj)) {
+          UI.tab.profile = "posts";
+          applyTheme();
+          render();
+          C.toast("Yedek geri yüklendi · " + Store.postCount(Store.meId) + " gönderi", { icon: "check" });
+        } else {
+          C.toast("Bu dosya uygulamanın yedeği değil", { icon: "info" });
+        }
+      };
+      reader.onerror = function () { C.toast("Dosya okunamadı", { icon: "info" }); };
+      reader.readAsText(fi.files[0]);
+      fi.value = "";
+    });
   }
 
   /* ------------------------------------------------------------------ */
@@ -1506,8 +1654,9 @@
       /* --- gezinme --- */
       case "go": navigate(target.getAttribute("data-go")); break;
       case "back": goBack(); break;
-      case "create-open": UI.create = { src: null, kind: "post", caption: "", location: "", isNew: false }; navigate("create"); break;
+      case "create-open": UI.create = { src: null, batch: [], kind: "post", caption: "", location: "", isNew: false }; navigate("create"); break;
       case "settings-open": navigate("settings"); break;
+      case "go-saved": navigate("saved"); break;
       case "activity-open": navigate("activity"); break;
       case "direct-open": navigate("direct"); break;
       case "chat-with": openChatWith(userId); break;
@@ -1675,22 +1824,47 @@
       /* --- oluştur --- */
       case "create-pick":
         UI.create.src = target.getAttribute("data-src");
+        UI.create.batch = [];
         renderScreen(); renderAppBar();
         break;
       case "create-file":
-        if ($("#fileInput")) $("#fileInput").click();
+        if ($("#fileInputMulti")) $("#fileInputMulti").click();
         else C.toast("Dosya seçici yalnızca ilk adımda açılır", { icon: "info" });
         break;
       case "create-camera":
         if ($("#cameraInput")) $("#cameraInput").click();
         else C.toast("Kamera yalnızca ilk adımda açılır", { icon: "info" });
         break;
+      case "batch-remove": {
+        var bi = parseInt(target.getAttribute("data-index"), 10);
+        UI.create.batch.splice(bi, 1);
+        renderScreen(); renderAppBar();
+        break;
+      }
+      case "batch-share": {
+        var batch = UI.create.batch.slice();
+        if (!batch.length) { C.toast("Önce fotoğraf seç", { icon: "info" }); break; }
+        var caption = UI.create.caption, loc = UI.create.location;
+        UI.create = { src: null, batch: [], kind: "post", caption: "", location: "", isNew: true };
+        UI.tab.profile = "posts";
+        var ilk = null;
+        batch.forEach(function (src, i) {
+          var np = Store.addPost({ src: src, caption: caption, location: loc, kind: "post", alt: "yeni gönderi " + (i + 1) });
+          if (i === 0) ilk = np;
+        });
+        C.toast(batch.length + " gönderi paylaşıldı", { icon: "check" });
+        if (ilk) simulateEngagement(ilk.id);
+        renderAppBar(); renderTabBar();
+        navigate("profile/" + Store.me().username);
+        break;
+      }
       case "create-back":
-        if (UI.create.src) { UI.create.src = null; renderScreen(); renderAppBar(); }
+        if (UI.create.batch && UI.create.batch.length) { UI.create.batch = []; renderScreen(); renderAppBar(); }
+        else if (UI.create.src) { UI.create.src = null; renderScreen(); renderAppBar(); }
         else navigate("feed");
         break;
       case "create-reset":
-        UI.create = { src: null, kind: "post", caption: "", location: "", isNew: false };
+        UI.create = { src: null, batch: [], kind: "post", caption: "", location: "", isNew: false };
         renderScreen(); renderAppBar();
         break;
       case "toggle-reel": {
@@ -1705,7 +1879,7 @@
           src: c.src, caption: c.caption, location: c.location,
           kind: c.kind, audio: c.audio, alt: "yeni gönderi"
         });
-        UI.create = { src: null, kind: "post", caption: "", location: "", isNew: true };
+        UI.create = { src: null, batch: [], kind: "post", caption: "", location: "", isNew: true };
         UI.tab.profile = "posts";
         C.toast(c.kind === "reel" ? "Reels paylaşıldı" : "Gönderin paylaşıldı", { icon: "check" });
         simulateEngagement(np.id);
@@ -1755,6 +1929,10 @@
       case "toggle-autoplay": Store.setSetting("autoplay", !Store.state.settings.autoplay); renderScreen(); break;
       case "toggle-datasaver": Store.setSetting("dataSaver", !Store.state.settings.dataSaver); renderScreen(); break;
       case "export-data": exportData(); break;
+      case "import-data":
+        if ($("#importInput")) $("#importInput").click();
+        else C.toast("Yedek dosyası seçici açılamadı", { icon: "info" });
+        break;
       case "reset-data":
         C.confirmSheet({ title: "Tüm verileri sıfırla?", text: "Beğeniler, yorumlar, mesajlar ve paylaştığın gönderiler silinecek; örnek içerik geri yüklenecek.", confirmLabel: "Sıfırla" }).then(function (ok) {
           if (!ok) return;

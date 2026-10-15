@@ -6,7 +6,7 @@ window.IG = window.IG || {};
 (function (IG) {
   "use strict";
 
-  var KEY = "instaclone.tr.v1";
+  var KEY = "instaclone.tr.v2";
   var state = null;
   var listeners = [];
   var persistTimer = null;
@@ -23,7 +23,7 @@ window.IG = window.IG || {};
     var s = clone(IG.seed);
     var now = Date.now();
     return {
-      version: 1,
+      version: 2,
       createdAt: now,
       meId: s.meId,
       users: s.users,
@@ -61,7 +61,7 @@ window.IG = window.IG || {};
       var raw = localStorage.getItem(KEY);
       if (!raw) return null;
       var parsed = JSON.parse(raw);
-      if (!parsed || parsed.version !== 1 || !parsed.users || !parsed.posts) return null;
+      if (!parsed || parsed.version !== 2 || !parsed.users || !parsed.posts) return null;
       return parsed;
     } catch (e) {
       console.warn("[store] kayıt okunamadı:", e);
@@ -129,9 +129,16 @@ window.IG = window.IG || {};
     return (IG.seed.followingBaseOf ? 0 : 0) + (state.follows[userId] ? state.follows[userId].length : 0);
   }
 
+  /** Takipçi sayısı = temel sayı + demo grafında bu hesabı takip edenler.
+      Böylece "takip et" düğmesine basmak karşı tarafın sayacını gerçekten artırır. */
   function followersCount(u) {
     if (!u) return 0;
-    return u.followersBase + (isFollowing(u.id) ? 1 : 0);
+    var n = u.followersBase || 0;
+    for (var i = 0; i < state.users.length; i++) {
+      var list = state.follows[state.users[i].id];
+      if (list && list.indexOf(u.id) !== -1) n += 1;
+    }
+    return n;
   }
 
   function followingCount(u) {
@@ -501,6 +508,17 @@ window.IG = window.IG || {};
     emit("reset");
   }
 
+  /** Dışa aktarılmış bir JSON yedeğini geri yükler (profilini başka cihaza taşımak için). */
+  function importState(obj) {
+    if (!obj || !obj.users || !obj.posts || !obj.follows || !obj.chats) return false;
+    if (!obj.meId) return false;
+    obj.version = 2;
+    state = obj;
+    persist(true);
+    emit("import");
+    return true;
+  }
+
   function stats() {
     return {
       posts: state.posts.filter(function (p) { return p.userId === state.meId; }).length,
@@ -545,7 +563,8 @@ window.IG = window.IG || {};
     markNotificationsRead: markNotificationsRead, clearNotifications: clearNotifications,
     updateProfile: updateProfile, setTheme: setTheme, toggleTheme: toggleTheme, setSetting: setSetting,
     searchUsers: searchUsers, searchHashtags: searchHashtags,
-    reset: reset, stats: stats, persist: persist, uid: uid, clone: clone
+    reset: reset, stats: stats, persist: persist, uid: uid, clone: clone,
+    importState: importState
   };
 
   IG.Store = Store;

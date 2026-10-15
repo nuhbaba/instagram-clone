@@ -85,16 +85,17 @@ C.init();
 console.log("\nVeri katmanı");
 eq("kullanıcı sayısı", Store.state.users.length, 16);
 eq("gönderi sayısı", Store.state.posts.length, 25);
-eq("hikâye sayısı", Store.state.stories.length, 9);
+eq("hikâye sayısı", Store.state.stories.length, 8);
 eq("sohbet sayısı", Store.state.chats.length, 6);
-eq("bildirim sayısı", Store.state.notifications.length, 14);
-ok("me kullanıcısı bulundu", Store.me() && Store.me().username === "deniz.yildiz");
-eq("kendi gönderi sayım", Store.postCount(Store.meId), 3);
+eq("bildirim sayısı", Store.state.notifications.length, 9);
+ok("me kullanıcısı bulundu", Store.me() && Store.me().username === "gunseli_beyhan");
+eq("kendi gönderi sayım (temiz profil)", Store.postCount(Store.meId), 0);
+eq("kendi hikâyem yok", Store.storiesFor(Store.meId), null);
 
 console.log("\nSeçiciler");
 const feed = Store.feed();
 ok("akış yeterli uzunlukta (" + feed.length + ")", feed.length >= 10);
-ok("akışta kendi gönderilerim var", feed.some((p) => p.userId === Store.meId));
+ok("akışta kendi gönderim yok (temiz profil)", feed.every((p) => p.userId !== Store.meId));
 ok("akışta reels yok", feed.every((p) => p.kind !== "reel"));
 ok("akış yalnızca takip edilenler + ben", feed.every((p) => p.userId === Store.meId || Store.isFollowing(p.userId)));
 ok("akış yeniden-eskiye sıralı", feed.every((p, i) => i === 0 || feed[i - 1].at >= p.at));
@@ -102,11 +103,14 @@ eq("reels sayısı", Store.reels().length, 9);
 eq("keşfet tüm gönderiler", Store.explore().length, Store.state.posts.length);
 ok("keşfet popülerliğe göre sıralı", Store.explore()[0].likesBase >= Store.explore()[1].likesBase);
 eq("kaydedilenler", Store.savedPosts().length, 2);
-eq("takipçi sayısı (u1, takip ediliyor)", Store.followersCount(Store.user("u1")), 128401);
-eq("takipçi sayısı (u6, takip edilmiyor)", Store.followersCount(Store.user("u6")), 22400);
+const takipciSayisi = (id) => Store.state.users.filter((x) => (Store.state.follows[x.id] || []).indexOf(id) !== -1).length;
+eq("takipçi sayısı (u1) temel + graf", Store.followersCount(Store.user("u1")), 128400 + takipciSayisi("u1"));
+eq("takipçi sayısı (u6) temel + graf", Store.followersCount(Store.user("u6")), 22400 + takipciSayisi("u6"));
+ok("kendi takipçim graf sayesinde sıfırdan büyük", Store.followersCount(Store.me()) > 0);
 eq("beğeni sayısı", Store.likedCount(Store.post("p1")), 4820);
 eq("yorum sayısı (p1)", Store.commentsCount(Store.post("p1")), 4);
 eq("etiketlenen gönderiler (u5)", Store.taggedPosts("u5").length, 1);
+eq("etiketlendiğim gönderiler", Store.taggedPosts(Store.meId).length, 2);
 eq("hikâye sırası ilk eleman görülmemiş", Store.unseenCount(Store.storyBar()[0]) > 0, true);
 eq("boş hikâye görülmemiş sayısı", Store.unseenCount({ userId: "u0", items: [] }), 0);
 eq("sohbetler sabitlenmiş önce", Store.chats()[0].id, "d1");
@@ -157,7 +161,7 @@ const before = Store.likedCount(Store.post("p1"));
 Store.toggleLike("p1");
 eq("beğeni arttı", Store.likedCount(Store.post("p1")), before + 1);
 Store.persist(true); // debounce'u atla, gerçekten yazıldı mı diye bak
-ok("beğeni kalıcı (localStorage)", JSON.parse(storage.get("instaclone.tr.v1")).posts.find((p) => p.id === "p1").liked === true);
+ok("beğeni kalıcı (localStorage)", JSON.parse(storage.get("instaclone.tr.v2")).posts.find((p) => p.id === "p1").liked === true);
 Store.toggleLike("p1");
 eq("beğeni geri alındı", Store.likedCount(Store.post("p1")), before);
 
@@ -180,12 +184,14 @@ eq("yorum silindi", Store.commentsCount(Store.post("p1")), cCount);
 ok("gönderi yorumları temiz kaldı", Store.post("p1").comments.every((c) => c.id !== newComment.id));
 
 ok("u6 takip edilmiyor", Store.isFollowing("u6") === false);
+const u6Before = Store.followersCount(Store.user("u6"));
 Store.toggleFollow("u6");
 ok("u6 takip ediliyor", Store.isFollowing("u6") === true);
-eq("u6 takipçi +1", Store.followersCount(Store.user("u6")), 22401);
+eq("u6 takipçi +1", Store.followersCount(Store.user("u6")), u6Before + 1);
 eq("benim takip sayım +1", (Store.state.follows.u0 || []).length, 9);
 Store.toggleFollow("u6");
 eq("takip geri alındı", (Store.state.follows.u0 || []).length, 8);
+eq("takipçi sayısı geri döndü", Store.followersCount(Store.user("u6")), u6Before);
 
 const postCountBefore = Store.state.posts.length;
 const np = Store.addPost({ src: "https://example.com/a.jpg", caption: "deneme #test", location: "İzmir", kind: "post" });
@@ -221,9 +227,9 @@ eq("kullanıcı arama", Store.searchUsers("elif")[0].id, "u1");
 eq("kullanıcı adıyla arama", Store.userByUsername("@MERTCANOZ").id, "u2");
 eq("etiket arama", Store.searchHashtags("#kah")[0].tag, "kahve");
 
-Store.updateProfile({ name: "Deniz Y.", username: "Deniz.Yildiz!", bio: "yeni bio" });
-eq("profil adı güncellendi", Store.me().name, "Deniz Y.");
-eq("kullanıcı adı temizlendi", Store.me().username, "deniz.yildiz");
+Store.updateProfile({ name: "Günseli B.", username: "Gunseli.Beyhan!", bio: "yeni bio" });
+eq("profil adı güncellendi", Store.me().name, "Günseli B.");
+eq("kullanıcı adı temizlendi", Store.me().username, "gunseli.beyhan");
 eq("bio güncellendi", Store.me().bio, "yeni bio");
 
 Store.setTheme("light");
@@ -231,9 +237,24 @@ eq("tema açık", Store.state.settings.theme, "light");
 Store.toggleTheme();
 eq("tema koyu", Store.state.settings.theme, "dark");
 
+console.log("\nYedekleme / geri yükleme");
+Store.addPost({ src: "https://example.com/yedek.jpg", caption: "yedekte olacak gönderi", kind: "post" });
+const yedek = JSON.parse(JSON.stringify(Store.state));
+const yedekKullanici = Store.me().username;
+const yedekProfilAdi = Store.me().name;
+eq("yedekte 1 gönderi fazla", yedek.posts.length, 26);
+ok("geçersiz yedek reddedilir", Store.importState({ foo: 1 }) === false);
+ok("boş yedek reddedilir", Store.importState(null) === false);
+ok("geçerli yedek kabul edilir", Store.importState(yedek) === true);
+eq("geri yüklenen gönderi sayısı", Store.state.posts.length, 26);
+eq("geri yüklenen kullanıcı adı", Store.me().username, yedekKullanici);
+eq("geri yüklenen profil adı", Store.me().name, yedekProfilAdi);
+ok("yedek kalıcı yazıldı", JSON.parse(storage.get("instaclone.tr.v2")).posts.length === 26);
+
 Store.reset();
 eq("sıfırlama sonrası gönderi sayısı", Store.state.posts.length, 25);
-eq("sıfırlama sonrası profil", Store.me().username, "deniz.yildiz");
+eq("sıfırlama sonrası profil", Store.me().username, "gunseli_beyhan");
+eq("sıfırlama sonrası profil boş", Store.postCount(Store.meId), 0);
 
 /* --- özet -------------------------------------------------------------- */
 console.log("\n" + "─".repeat(58));

@@ -168,8 +168,9 @@ const routes = [
   ["/explore", "keşfet"],
   ["/reels", "reels"],
   ["/activity", "bildirimler"],
-  ["/profile/deniz.yildiz", "profil (ben)"],
+  ["/profile/gunseli_beyhan", "profil (ben)"],
   ["/profile/elifkaman", "profil (başkası)"],
+  ["/saved", "kaydedilenler"],
   ["/direct", "mesajlar"],
   ["/direct/d1", "sohbet d1"],
   ["/direct/d2", "sohbet d2 (son mesaj benim)"],
@@ -215,17 +216,26 @@ const activity = render("/activity");
 ok("bildirimler listesi", activity.includes("notif__text"));
 ok("bildirimlerde takip düğmesi", activity.includes('data-act="follow"'));
 
-const meProfile = render("/profile/deniz.yildiz");
+const meProfile = render("/profile/gunseli_beyhan");
 ok("profilde istatistikler", meProfile.includes("pstat") && meProfile.includes("gönderi"));
 ok("profilde kendi düğmeleri", meProfile.includes("Profili düzenle"));
-ok("profilde ızgara", meProfile.includes("grid3"));
+ok("kendi profilimde Instagram boş durumu", meProfile.includes("pempty") && meProfile.includes("Gönderi paylaş"));
+ok("kendi profilimde ilk gönderi düğmesi", meProfile.includes("İlk gönderini paylaş"));
+ok("profilde tam 3 sekme (gönderi/reels/etiket)", (meProfile.match(/class="tab[ "]/g) || []).length === 3);
 ok("profilde sekmeler", meProfile.includes("tabs"));
-ok("profilde öne çıkanlar", meProfile.includes("highlight"));
+ok("kendi profilimde +Yeni dairesi", meProfile.includes("highlight__ring--new"));
+ok("profile düzenleme / biyografi ekle", meProfile.includes("edit-profile"));
 
 const otherProfile = render("/profile/elifkaman");
 ok("başkasının profilinde takip düğmesi", otherProfile.includes('data-act="follow"'));
 ok("başkasının profilinde mesaj düğmesi", otherProfile.includes("Mesaj gönder"));
 ok("doğrulama rozeti", otherProfile.includes("ic--verified"));
+ok("başkasının profilinde öne çıkanlar", otherProfile.includes("highlight__ring"));
+ok("başkasının profilinde ızgara", otherProfile.includes("grid3"));
+
+const saved = render("/saved");
+ok("kaydedilenler ekranı", saved.includes("saved-head") && saved.includes("Yalnızca sen görürsün"));
+ok("kaydedilenlerde ızgara", saved.includes("grid3"));
 
 const inbox = render("/direct");
 ok("gelen kutusunda notlar", inbox.includes("notes") && inbox.includes("note__bubble"));
@@ -251,11 +261,14 @@ ok("sohbet giriş alanı", chatScreen.includes("chat__input") && chatScreen.incl
 const settings = render("/settings");
 ok("ayarlarda tema anahtarı", settings.includes("theme-toggle"));
 ok("ayarlarda sıfırlama", settings.includes("reset-data"));
+ok("ayarlarda JSON yedeği al/geri yükle", settings.includes("export-data") && settings.includes("import-data"));
+ok("ayarlarda kaydedilenler kısayolu", settings.includes("go-saved"));
 ok("ayarlarda depolanan gönderi", settings.includes(String(Store.state.posts.length)));
 
 const create = render("/create");
 ok("oluştur ekranında galeri", create.includes("create-sel") && (create.match(/cell--pick/g) || []).length > 5);
-ok("oluştur ekranında dosya girdileri", create.includes('id="fileInput"') && create.includes('id="cameraInput"'));
+ok("oluştur ekranında toplu yükleme", create.includes('id="fileInputMulti"') && create.includes("multiple"));
+ok("oluştur ekranında kamera girdisi", create.includes('id="cameraInput"'));
 
 const post = render("/post/p1");
 ok("gönderi detayında yorum bölümü", post.includes("detail__comments"));

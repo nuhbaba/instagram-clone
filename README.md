@@ -10,6 +10,12 @@ dosyasını açtığınız anda çalışır. Tüm veriler yalnızca **sizin ciha
 Telefondan canlı demo adresini açıp tarayıcı menüsünden **"Uygulamayı yükle"** derseniz
 ana ekrana eklenen tam ekran bir uygulama olur ([ayrıntılar](TELEFONA-YUKLE.md)).
 
+> **Profil:** Uygulama `gunseli_beyhan` hesabıyla **boş bir profille** açılır —
+> Instagram'da hiç gönderi paylaşmamış bir hesabın profil sayfası nasıl görünüyorsa
+> birebir öyle. Kendi fotoğraflarını ekleyerek doldurursun:
+> **[PROFILINI-DOLDUR.md](PROFILINI-DOLDUR.md)** (tek/çoklu yükleme, profil düzenleme,
+> cihazlar arası JSON yedeği).
+
 > **Not:** Bu uygulama Instagram'ın kopyası değil, Instagram ile **benzer** çalışan bağımsız
 > bir demodur. Instagram/Meta ile bir bağlantısı yoktur. Kaynak kodun tamamı bu klasördedir.
 
@@ -85,10 +91,14 @@ içinde görünür.
   etiket, hikâye), takip et / takip ediliyor düğmeleri, okunmamış vurgusu
 
 ### Profil
-- İstatistikler (gönderi / takipçi / takip), biyografi, bağlantı, doğrulama rozeti
-- Öne çıkanlar şeridi, Gönderiler / Reels / Kaydedilenler / Etiketlenenler sekmeleri
-- Kendi profilinde **Profili düzenle** (ad, kullanıcı adı, biyografi, bağlantı, fotoğraf)
-- Başka profillerde takip et / takibi bırak (onay menüsüyle), mesaj gönder
+- Instagram'ın güncel profil düzeniyle birebir: avatar (+ hikâye ekleme rozeti),
+  `gönderi / takipçi / takip` istatistikleri, ad, kategori, biyografi, bağlantı
+- Kendi profilinde tek geniş **Profili düzenle** düğmesi; başka profillerde
+  takip et / takibi bırak (onay menüsüyle) ve mesaj gönder
+- Öne çıkanlar şeridi (kendi profilinde başta **+ Yeni** dairesi)
+- 3 sekme: **Gönderiler**, **Reels**, **Etiketlenenler** — Instagram'da olduğu gibi
+  Kaydedilenler bir sekme değil, menüden açılan ayrı ekran
+- Hiç gönderi yoksa Instagram'ın "Gönderi paylaş" boş durumu görünür
 
 ### Mesajlar
 - Gelen kutusu: notlar (Notes), sabitlenmiş sohbetler, okunmamış rozetleri, çevrimiçi noktası
@@ -97,8 +107,9 @@ içinde görünür.
   buluşma, kahve, fotoğraf…)
 
 ### Yeni gönderi
-- Hazır galeriden seçme veya **kendi dosyanı yükleme** (görsel tarayıcıda küçültülüp
-  cihazda saklanır)
+- Hazır galeriden seçme, kamerayla çekme veya **kendi dosyalarını yükleme**
+- **Toplu yükleme:** birden fazla fotoğraf seçip ortak açıklamayla tek seferde paylaşma
+  (yüklenen görseller tarayıcıda 1080 px'e küçültülür)
 - Açıklama, konum, ses, "Reels olarak paylaş" anahtarı
 - Paylaştıktan sonra gönderiniz akışta ve profilinizde görünür; kısa süre sonra
   **beğeni ve yorum gelir** (demo canlılığı için)
@@ -110,8 +121,11 @@ içinde görünür.
 
 ### Ayarlar
 - Koyu / açık tema, Reels otomatik oynatma, veri tasarrufu
-- Verileri JSON olarak indirme, **tüm verileri sıfırlama** (örnek içerik geri yüklenir)
-- Uygulamayı yükle (PWA), sürüm ve depolama bilgisi
+- Kaydedilenler ekranı, profili paylaşma, yeni gönderi kısayolu
+- **Verileri indir (JSON yedeği)** ve **Yedeği geri yükle (JSON)** — profilini
+  cihazlar arasında taşımak için
+- **Tüm verileri sıfırlama** (örnek içerik geri yüklenir), Uygulamayı yükle (PWA),
+  sürüm ve depolama bilgisi
 
 ---
 
@@ -122,6 +136,10 @@ instagram-clone/
 ├─ index.html              # uygulama kabuğu (durum çubuğu, üst çubuk, ekran, sekmeler)
 ├─ manifest.webmanifest    # PWA bildirimi
 ├─ sw.js                   # servis çalışanı (kabuk önbelleği + görseller)
+├─ Instagram-TekDosya.html # tek dosyalık telefon sürümü (üretilmiş)
+├─ README.md               # bu dosya
+├─ TELEFONA-YUKLE.md       # telefona kurma / yayınlama kılavuzu
+├─ PROFILINI-DOLDUR.md     # profili kendi içeriğinle doldurma kılavuzu
 ├─ css/styles.css          # tasarım sistemi: tema değişkenleri, tüm bileşenler
 ├─ js/
 │  ├─ icons.js             # Instagram'a benzer SVG ikon seti (doğrulama rozeti dâhil)
@@ -146,8 +164,8 @@ instagram-clone/
 Node.js dışında hiçbir bağımlılık gerekmez (tarayıcı bile gerekmez):
 
 ```bash
-node tools/smoke-test.js     # 95 doğrulama: seçiciler, eylemler, HTML üretimi, XSS kaçışı
-node tools/screen-test.js    # 79 doğrulama: 15 rota çizimi, sohbet regresyonu, tema, katmanlar
+node tools/smoke-test.js     # 108 doğrulama: seçiciler, eylemler, HTML üretimi, yedekleme, XSS kaçışı
+node tools/screen-test.js    # 91 doğrulama: 16 rota çizimi, sohbet regresyonu, tema, katmanlar
 ```
 
 `screen-test.js`, sahte bir DOM üzerinde `app.js`'i gerçekten çalıştırır ve **her rotayı
@@ -176,12 +194,17 @@ python tools/make_icons.py
 ## Bilinen sınırlar (dürüst liste)
 
 - **Tek kullanıcı:** gerçek bir sunucu/çok kullanıcılı yapı yoktur; karşı taraflar
-  simülasyondur. Bu yüzden iki cihaz arasında senkronizasyon olmaz.
+  simülasyondur. Bu yüzden iki cihaz arasında senkronizasyon olmaz (JSON yedeğiyle
+  elle taşınabilir).
+- **Profil içeriği cihaza özeldir:** yüklediğin fotoğraflar yalnızca kendi
+  tarayıcında saklanır; GitHub Pages'teki yayında boş profil görünür. Herkesin
+  görmesi için fotoğrafların başlangıç içeriğine gömülmesi gerekir
+  ([PROFILINI-DOLDUR.md](PROFILINI-DOLDUR.md) → 4. bölüm).
 - **Gerçek video yok:** Reels'ler fotoğraf + otomatik oynatma efektiyle temsil edilir.
-- **Hikâye yükleme** ve kamera ile canlı çekim bu sürümde yok (galeri/dosya yükleme var).
+- **Hikâye ekleme** ve kamera ile canlı çekim bu sürümde yok (galeri/dosya yükleme ve
+  toplu yükleme var).
 - Örnek fotoğraflar internetten gelir; internet yoksa yerel gradyanlara düşer.
-- Beğeni/yorum/takipçi sayıları demo amaçlı "temel sayı + sizin etkileşiminiz" şeklinde
-  hesaplanır.
+- Beğeni/yorum/takipçi sayıları demo verisidir; gerçek kişilerin istatistikleri değildir.
 
 ---
 

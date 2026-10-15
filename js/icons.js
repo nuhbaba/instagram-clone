@@ -67,6 +67,7 @@ window.IG = window.IG || {};
     lock: '<rect x="4.6" y="10.4" width="14.8" height="10.4" rx="3" ' + SO + '/><path d="M8.4 10.4V7.8a3.6 3.6 0 0 1 7.2 0v2.6" ' + SO + "/>",
     info: '<circle cx="12" cy="12" r="9.2" ' + SO + '/><path d="M12 10.8v6" ' + SO + '/><circle cx="12" cy="7.6" r="1.2" ' + SF + "/>",
     download: '<path d="M12 3.4v11.2" ' + SO + '/><path d="m7.4 10.4 4.6 4.6 4.6-4.6" ' + SO + '/><path d="M4.6 19.6h14.8" ' + SO + "/>",
+    upload: '<path d="M12 20.6V9.4" ' + SO + '/><path d="m7.4 13.6 4.6-4.6 4.6 4.6" ' + SO + '/><path d="M4.6 4.4h14.8" ' + SO + "/>",
     eye: '<path d="M2.4 12S6 5.8 12 5.8 21.6 12 21.6 12 18 18.2 12 18.2 2.4 12 2.4 12Z" ' + SO + '/><circle cx="12" cy="12" r="3.1" ' + SO + "/>",
     volume: '<path d="M11 5.4 6.6 9.2H3.4v5.6h3.2L11 18.6Z" ' + SO + '/><path d="M15 9.4a3.7 3.7 0 0 1 0 5.2" ' + SO + '/><path d="M17.8 7a7.4 7.4 0 0 1 0 10" ' + SO + "/>",
     mute: '<path d="M11 5.4 6.6 9.2H3.4v5.6h3.2L11 18.6Z" ' + SO + '/><path d="m15.4 9.8 5 4.4M20.4 9.8l-5 4.4" ' + SO + "/>",
