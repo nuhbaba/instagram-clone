@@ -1,11 +1,12 @@
 """Havuzdan seçilen fotoğrafları profil ızgarasına yerleştirir.
 
 Kullanım:
-    python tools/select-wedding-photos.py --sec 12,45,3,88,...
+    python tools/select-wedding-photos.py --sec 12,45,3,n009,88,...
 
-Seçilen sıra numaraları (havuzdaki 1 tabanlı indeksler) sırayla
-media/wedding-01.jpg, wedding-02.jpg … olarak kopyalanır ve CREDITS.md
-kaynak/lisans listesi bu seçime göre yeniden yazılır.
+- Sayılar ilk havuzdaki (tools/_pool.json) 1 tabanlı indekslerdir.
+- "n012" gibi n ile başlayanlar ikinci havuzdan (tools/_aday2.json) seçilir.
+- Seçilenler sırayla media/wedding-01.jpg, wedding-02.jpg … olarak kopyalanır ve
+  CREDITS.md kaynak/lisans listesi bu seçime göre yeniden yazılır.
 """
 
 from __future__ import annotations
@@ -17,9 +18,19 @@ import shutil
 import sys
 
 ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
-POOL_DIR = os.path.join(ROOT, "media", "_aday")
-POOL_JSON = os.path.join(ROOT, "tools", "_pool.json")
+HOVUZLAR = {
+    "": (os.path.join(ROOT, "media", "_aday"), os.path.join(ROOT, "tools", "_pool.json")),
+    "n": (os.path.join(ROOT, "media", "_aday2"), os.path.join(ROOT, "tools", "_aday2.json")),
+}
 MEDIA = os.path.join(ROOT, "media")
+
+
+def havuz_yukle(on_ek: str):
+    dizin, json_yolu = HOVUZLAR[on_ek]
+    if not os.path.exists(json_yolu):
+        return [], dizin
+    with open(json_yolu, encoding="utf-8") as f:
+        return json.load(f), dizin
 
 
 def main() -> None:
@@ -28,25 +39,30 @@ def main() -> None:
     except Exception:
         pass
     ap = argparse.ArgumentParser()
-    ap.add_argument("--sec", required=True, help="virgülle ayrılmış havuz indeksleri (1 tabanlı)")
+    ap.add_argument("--sec", required=True,
+                    help="virgülle ayrılmış indeksler; ikinci havuz için n012 gibi")
     args = ap.parse_args()
 
-    with open(POOL_JSON, encoding="utf-8") as f:
-        havuz = json.load(f)
-
     secim = []
-    for p in args.sec.replace(" ", "").split(","):
-        if not p:
+    for ham in args.sec.replace(" ", "").split(","):
+        if not ham:
             continue
-        i = int(p)
+        on_ek = "n" if ham[:1].lower() == "n" else ""
+        try:
+            i = int(ham[1:] if on_ek else ham)
+        except ValueError:
+            continue
+        havuz, dizin = havuz_yukle(on_ek)
         if 1 <= i <= len(havuz):
-            secim.append(havuz[i - 1])
+            k = dict(havuz[i - 1])
+            k["_dizin"] = dizin
+            secim.append(k)
     if not secim:
         print("Geçerli seçim yok.")
         sys.exit(1)
 
     for n, k in enumerate(secim, start=1):
-        kaynak = os.path.join(POOL_DIR, k["dosya"])
+        kaynak = os.path.join(k["_dizin"], k["dosya"])
         hedef = os.path.join(MEDIA, "wedding-%02d.jpg" % n)
         if not os.path.exists(kaynak):
             print("  ! eksik: %s" % kaynak)
