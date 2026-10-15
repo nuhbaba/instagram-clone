@@ -412,7 +412,7 @@ window.IG = window.IG || {};
 
   /* Profilden kaldırılan gönderiler (kullanıcı isteğiyle).
      Listenin başına eklemek yeterli — diğer gönderilerin numaraları kaymaz. */
-  var KALDIRILAN_GONDERILER = ["p83"];
+  var KALDIRILAN_GONDERILER = ["p49", "p83"];
 
   (function () {
     var ornek = [];
@@ -665,10 +665,10 @@ window.IG = window.IG || {};
     meId: "u0",
     /* İÇERİK SÜRÜMÜ: tohum içeriği her değiştiğinde bu değeri güncelle.
        Tarayıcıda eski kayıt varsa uygulama kendini otomatik yeniler. */
-    rev: "2026-10-15-p83-kaldirildi",
+    rev: "2026-10-16-p49-p83-kaldirildi",
     /* Profilde gösterilecek istatistikler. Takipçi/takip sayıları birebir bu
        değerler olacak şekilde normalleştirilir (demo grafiği hesaba katılır). */
-    stats: { followers: 215, following: 444, posts: 57 },
+    stats: { followers: 215, following: 444, posts: 56 },
     users: USERS,
     posts: POSTS,
     stories: STORIES,

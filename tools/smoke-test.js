@@ -83,7 +83,7 @@ C.init();
 
 /* --- testler ----------------------------------------------------------- */
 const DEMO_GONDERI = 25;    // demo hesapların örnek gönderileri
-const PROFIL_ORNEK = 57;    // profil ızgarasındaki düğün temalı gönderiler (p83 kaldırıldı)
+const PROFIL_ORNEK = 56;    // profil ızgarasındaki düğün temalı gönderiler (p49, p83 kaldırıldı)
 const ETIKET_GONDERI = 3;   // başka hesapların, seni etiketlediği düğün gönderileri
 const TOPLAM_GONDERI = DEMO_GONDERI + PROFIL_ORNEK + ETIKET_GONDERI;
 
@@ -101,7 +101,7 @@ eq("kendi hikâyem yok", Store.storiesFor(Store.meId), null);
 console.log("\nProfil istatistikleri (istenen sayılar)");
 eq("takipçi 215", Store.followersCount(Store.me()), 215);
 eq("takip 444", Store.followingCount(Store.me()), 444);
-eq("gönderi sayısı (p83 kaldırıldı)", Store.postCount(Store.meId), 57);
+eq("gönderi sayısı (p49, p83 kaldırıldı)", Store.postCount(Store.meId), 56);
 
 console.log("\nDüğün temalı içerik");
 ok("düğün başlıklı gönderiler var", Store.postsOf(Store.meId).filter((p) => p.caption).length >= 20);
