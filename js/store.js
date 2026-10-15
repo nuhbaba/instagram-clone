@@ -6,7 +6,7 @@ window.IG = window.IG || {};
 (function (IG) {
   "use strict";
 
-  var KEY = "instaclone.tr.v2";
+  var KEY = "instaclone.tr.v3";
   var state = null;
   var listeners = [];
   var persistTimer = null;
@@ -23,7 +23,7 @@ window.IG = window.IG || {};
     var s = clone(IG.seed);
     var now = Date.now();
     return {
-      version: 2,
+      version: 3,
       createdAt: now,
       meId: s.meId,
       users: s.users,
@@ -48,6 +48,7 @@ window.IG = window.IG || {};
         return ch;
       }),
       follows: s.follows,
+      highlights: s.highlights || [],
       saved: s.saved,
       gallery: s.gallery,
       hashtags: s.hashtags,
@@ -200,6 +201,46 @@ window.IG = window.IG || {};
     var n = 0;
     (p.comments || []).forEach(function (c) { n += 1 + (c.replies ? c.replies.length : 0); });
     return n;
+  }
+
+  /* --- öne çıkanlar (highlights) --- */
+  function highlightsOf(userId) {
+    return (state.highlights || [])
+      .filter(function (h) { return h.userId === userId; })
+      .sort(function (a, b) { return (a.createdAt || 0) - (b.createdAt || 0); });
+  }
+
+  function addHighlight(userId, title, cover, postIds) {
+    if (!state.highlights) state.highlights = [];
+    var h = {
+      id: uid("h"), userId: userId, title: title || "Öne çıkan",
+      cover: cover || "", postIds: postIds || [], createdAt: Date.now()
+    };
+    state.highlights.push(h);
+    persist(); emit("highlight-add:" + h.id);
+    return h;
+  }
+
+  function updateHighlight(id, fields) {
+    var h = null;
+    (state.highlights || []).forEach(function (x) { if (x.id === id) h = x; });
+    if (!h) return null;
+    if (fields.title !== undefined) h.title = fields.title;
+    if (fields.cover !== undefined) h.cover = fields.cover;
+    if (fields.postIds !== undefined) h.postIds = fields.postIds;
+    persist(); emit("highlight-update:" + id);
+    return h;
+  }
+
+  function deleteHighlight(id) {
+    state.highlights = (state.highlights || []).filter(function (h) { return h.id !== id; });
+    persist(); emit("highlight-delete:" + id);
+  }
+
+  function highlightById(id) {
+    var found = null;
+    (state.highlights || []).forEach(function (h) { if (h.id === id) found = h; });
+    return found;
   }
 
   function storiesFor(userId) {
@@ -512,7 +553,8 @@ window.IG = window.IG || {};
   function importState(obj) {
     if (!obj || !obj.users || !obj.posts || !obj.follows || !obj.chats) return false;
     if (!obj.meId) return false;
-    obj.version = 2;
+    obj.version = 3;
+    obj.highlights = obj.highlights || [];
     state = obj;
     persist(true);
     emit("import");
@@ -551,6 +593,8 @@ window.IG = window.IG || {};
     explore: explore, savedPosts: savedPosts, taggedPosts: taggedPosts,
     likedCount: likedCount, commentsCount: commentsCount,
     storiesFor: storiesFor, storySeen: storySeen, unseenCount: unseenCount, storyBar: storyBar,
+    highlightsOf: highlightsOf, addHighlight: addHighlight, updateHighlight: updateHighlight,
+    deleteHighlight: deleteHighlight, highlightById: highlightById,
     notifications: notifications, unreadNotifications: unreadNotifications,
     chats: chats, lastMessage: lastMessage, lastMessageAt: lastMessageAt, unreadMessages: unreadMessages,
     friendsWhoLiked: friendsWhoLiked,

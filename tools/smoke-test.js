@@ -111,6 +111,21 @@ eq("beğeni sayısı", Store.likedCount(Store.post("p1")), 4820);
 eq("yorum sayısı (p1)", Store.commentsCount(Store.post("p1")), 4);
 eq("etiketlenen gönderiler (u5)", Store.taggedPosts("u5").length, 1);
 eq("etiketlendiğim gönderiler", Store.taggedPosts(Store.meId).length, 2);
+
+console.log("\nÖne çıkanlar");
+const ozel = Store.highlightsOf(Store.meId);
+eq("başlangıçta 1 öne çıkan", ozel.length, 1);
+eq("öne çıkan adı", ozel[0].title, "Anılar");
+eq("öne çıkan kapağı yerel fotoğraf", ozel[0].cover, "media/gunseli-01.jpg");
+eq("başkasının tanımlı öne çıkanı yok", Store.highlightsOf("u1").length, 0);
+const yeniHl = Store.addHighlight(Store.meId, "Seyahat", "media/gunseli-01.jpg", []);
+eq("öne çıkan eklendi", Store.highlightsOf(Store.meId).length, 2);
+Store.updateHighlight(yeniHl.id, { title: "Yolculuk" });
+eq("öne çıkan adı güncellendi", Store.highlightById(yeniHl.id).title, "Yolculuk");
+Store.updateHighlight(yeniHl.id, { cover: "https://example.com/kapak.jpg" });
+eq("öne çıkan kapağı güncellendi", Store.highlightById(yeniHl.id).cover, "https://example.com/kapak.jpg");
+Store.deleteHighlight(yeniHl.id);
+eq("öne çıkan silindi", Store.highlightsOf(Store.meId).length, 1);
 eq("hikâye sırası ilk eleman görülmemiş", Store.unseenCount(Store.storyBar()[0]) > 0, true);
 eq("boş hikâye görülmemiş sayısı", Store.unseenCount({ userId: "u0", items: [] }), 0);
 eq("sohbetler sabitlenmiş önce", Store.chats()[0].id, "d1");
@@ -161,7 +176,7 @@ const before = Store.likedCount(Store.post("p1"));
 Store.toggleLike("p1");
 eq("beğeni arttı", Store.likedCount(Store.post("p1")), before + 1);
 Store.persist(true); // debounce'u atla, gerçekten yazıldı mı diye bak
-ok("beğeni kalıcı (localStorage)", JSON.parse(storage.get("instaclone.tr.v2")).posts.find((p) => p.id === "p1").liked === true);
+ok("beğeni kalıcı (localStorage)", JSON.parse(storage.get("instaclone.tr.v3")).posts.find((p) => p.id === "p1").liked === true);
 Store.toggleLike("p1");
 eq("beğeni geri alındı", Store.likedCount(Store.post("p1")), before);
 
@@ -249,7 +264,7 @@ ok("geçerli yedek kabul edilir", Store.importState(yedek) === true);
 eq("geri yüklenen gönderi sayısı", Store.state.posts.length, 26);
 eq("geri yüklenen kullanıcı adı", Store.me().username, yedekKullanici);
 eq("geri yüklenen profil adı", Store.me().name, yedekProfilAdi);
-ok("yedek kalıcı yazıldı", JSON.parse(storage.get("instaclone.tr.v2")).posts.length === 26);
+ok("yedek kalıcı yazıldı", JSON.parse(storage.get("instaclone.tr.v3")).posts.length === 26);
 
 Store.reset();
 eq("sıfırlama sonrası gönderi sayısı", Store.state.posts.length, 25);

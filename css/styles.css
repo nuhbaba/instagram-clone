@@ -1145,6 +1145,20 @@ svg.ic--verified { display: inline-block; vertical-align: -1px; margin-left: 3px
   color: var(--text-2);
 }
 
+.highlight__img--empty {
+  display: grid;
+  place-items: center;
+  color: var(--text-3);
+  background: var(--elev);
+}
+
+/* Öne çıkan oluşturma / düzenleme formu */
+.hlform { padding: 16px 16px 18px; display: flex; flex-direction: column; }
+
+.hlform__cover { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 16px; }
+
+.hlform__cover .highlight__ring { width: 84px; height: 84px; }
+
 /* Kendi avatarında hikâye ekleme rozeti */
 .phead__avatar-wrap { position: relative; display: inline-block; cursor: pointer; }
 

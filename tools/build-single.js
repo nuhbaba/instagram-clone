@@ -24,6 +24,25 @@ const js = jsFiles
   .map((f) => "/* ===================== " + f + " ===================== */\n" + read(f))
   .join("\n\n");
 
+/* --- media/ altındaki yerel görselleri data URI'ye çevir; tek dosya
+       kendi kendine yetsin (ör. profil fotoğrafı) --- */
+const mediaStats = [];
+const jsInlined = (() => {
+  const dir = path.join(root, "media");
+  if (!fs.existsSync(dir)) return js;
+  let out = js;
+  for (const name of fs.readdirSync(dir)) {
+    const ref = "media/" + name;
+    if (!out.includes(ref)) continue;
+    const ext = path.extname(name).toLowerCase();
+    const mime = ext === ".png" ? "image/png" : ext === ".webp" ? "image/webp" : ext === ".svg" ? "image/svg+xml" : "image/jpeg";
+    const buf = fs.readFileSync(path.join(dir, name));
+    out = out.split(ref).join("data:" + mime + ";base64," + buf.toString("base64"));
+    mediaStats.push(name + " (" + (buf.length / 1024).toFixed(1) + " KB)");
+  }
+  return out;
+})();
+
 /* --- favicon'u data URI olarak göm (dosya bağımlılığı kalmasın) --- */
 const faviconB64 = fs.readFileSync(path.join(root, "icons/favicon-32.png")).toString("base64");
 const faviconUri = "data:image/png;base64," + faviconB64;
@@ -46,7 +65,7 @@ if (!scriptBlock.test(html)) {
   console.error("HATA: script bloğu index.html içinde bulunamadı.");
   process.exit(1);
 }
-const inlineJS = "/* Tek dosyalık sürüm: servis çalışanı gerekmez */\nwindow.IG_NO_SW = true;\n\n" + js + "\n";
+const inlineJS = "/* Tek dosyalık sürüm: servis çalışanı gerekmez */\nwindow.IG_NO_SW = true;\n\n" + jsInlined + "\n";
 put(scriptBlock, "<script>\n" + inlineJS + "</script>");
 
 /* --- tek dosyaya not ekle --- */
@@ -82,6 +101,7 @@ const kb = (n) => (n / 1024).toFixed(1) + " KB";
 console.log("Tek dosya üretildi:", path.relative(root, outFile), "→", kb(Buffer.byteLength(html)));
 console.log("  CSS:", kb(Buffer.byteLength(css)));
 console.log("  JS :", kb(Buffer.byteLength(js)), "(" + jsFiles.length + " dosya)");
+console.log("  Gömülen yerel görsel:", mediaStats.length ? mediaStats.join(", ") : "yok");
 
 // Yalnızca HTML kabuğunda kalan dış başvuruları ara (JS içindeki metinler hariç)
 const shell = html.split("<script>")[0];

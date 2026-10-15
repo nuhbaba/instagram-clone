@@ -20,9 +20,10 @@ window.IG = window.IG || {};
   /* ------------------------------------------------------------------ */
   var USERS = [
     {
-      /* Bu hesap senin profilin: fotoğraflarını uygulamadan ekleyerek doldurursun.
-         Avatar boş bırakıldı; uygulama baş harflerden (GB) yerel bir avatar üretir. */
-      id: "u0", username: "gunseli_beyhan", name: "Günseli Beyhan", avatar: "",
+      /* Bu hesap senin profilin: gönderilerini uygulamadan ekleyerek doldurursun.
+         Profil fotoğrafı proje içindeki media/ klasöründe saklanır (yerel dosya),
+         böylece yayındaki sitede de herkese görünür. */
+      id: "u0", username: "gunseli_beyhan", name: "Günseli Beyhan", avatar: "media/gunseli-01.jpg",
       bio: "", link: "", verified: false, private: false,
       followersBase: 0, followingBase: 0, category: ""
     },
@@ -470,6 +471,18 @@ window.IG = window.IG || {};
   ];
 
   /* ------------------------------------------------------------------ */
+  /* Öne çıkanlar (highlights)                                           */
+  /* Kapağı olan, adlandırılabilen daireler. Bir hesabın kendi öne       */
+  /* çıkanı yoksa uygulama gönderilerinden otomatik oluşturur.           */
+  /* ------------------------------------------------------------------ */
+  var HIGHLIGHTS = [
+    {
+      id: "h1", userId: "u0", title: "Anılar",
+      cover: "media/gunseli-01.jpg", postIds: [], createdAt: Date.now()
+    }
+  ];
+
+  /* ------------------------------------------------------------------ */
   /* Takip grafiği ve kaydedilenler                                      */
   /* ------------------------------------------------------------------ */
   var FOLLOWS = {
@@ -522,6 +535,7 @@ window.IG = window.IG || {};
     notifications: NOTIFICATIONS,
     chats: CHATS,
     follows: FOLLOWS,
+    highlights: HIGHLIGHTS,
     saved: ["p3", "p9"],
     gallery: GALLERY,
     hashtags: HASHTAGS,

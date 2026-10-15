@@ -95,7 +95,8 @@ içinde görünür.
   `gönderi / takipçi / takip` istatistikleri, ad, kategori, biyografi, bağlantı
 - Kendi profilinde tek geniş **Profili düzenle** düğmesi; başka profillerde
   takip et / takibi bırak (onay menüsüyle) ve mesaj gönder
-- Öne çıkanlar şeridi (kendi profilinde başta **+ Yeni** dairesi)
+- Öne çıkanlar şeridi: kapağı ve adı olan daireler; kendi profilinde başta **+ Yeni**
+  ile yeni öne çıkan oluşturma, dairesine dokunup kapağını/adını değiştirme veya silme
 - 3 sekme: **Gönderiler**, **Reels**, **Etiketlenenler** — Instagram'da olduğu gibi
   Kaydedilenler bir sekme değil, menüden açılan ayrı ekran
 - Hiç gönderi yoksa Instagram'ın "Gönderi paylaş" boş durumu görünür
@@ -141,6 +142,7 @@ instagram-clone/
 ├─ TELEFONA-YUKLE.md       # telefona kurma / yayınlama kılavuzu
 ├─ PROFILINI-DOLDUR.md     # profili kendi içeriğinle doldurma kılavuzu
 ├─ css/styles.css          # tasarım sistemi: tema değişkenleri, tüm bileşenler
+├─ media/                  # projeye gömülü yerel görseller (profil fotoğrafı, kapaklar)
 ├─ js/
 │  ├─ icons.js             # Instagram'a benzer SVG ikon seti (doğrulama rozeti dâhil)
 │  ├─ data.js              # Türkçe örnek içerik: 16 hesap, 25 gönderi, hikâyeler, DM'ler

@@ -27,6 +27,7 @@
     query: "",
     recent: [],
     create: { src: null, batch: [], kind: "post", caption: "", location: "", isNew: false },
+    hlCover: null,
     lastTap: { id: null, at: 0 },
     welcomeShown: false,
     refreshing: false
@@ -397,21 +398,41 @@
   /* Instagram'ın güncel profil düzeni: avatar + istatistikler, ad/biyografi,
      tek "Profili düzenle" düğmesi, öne çıkanlar (+ Yeni), 3 sekme ve ızgara. */
 
-  /** Öne çıkanlar şeridi. Kendi profilinde başa "+ Yeni" dairesi gelir. */
+  /** Tek bir öne çıkan dairesi (kapak görselli). */
+  function highlightItemHTML(h) {
+    var cover = h.cover || "";
+    if (!cover && h.postIds && h.postIds.length) {
+      var p = Store.post(h.postIds[0]);
+      if (p) cover = p.src;
+    }
+    var inner = cover
+      ? C.media(cover, h.title || "öne çıkan", 140, 140, "highlight__img")
+      : '<span class="highlight__img highlight__img--empty">' + Icons.icon("bookmarkTab", { size: 22 }) + "</span>";
+    return '<button class="highlight" data-act="highlight-open" data-highlight="' + h.id + '">' +
+      '<span class="highlight__ring">' + inner + "</span>" +
+      '<span class="highlight__label">' + C.esc(h.title || "Öne çıkan") + "</span></button>";
+  }
+
+  /** Öne çıkanlar şeridi. Kendi profilinde başa "+ Yeni" dairesi gelir.
+      Kullanıcının tanımlı öne çıkanı yoksa gönderilerinden otomatik oluşturulur. */
   function highlightsHTML(u, isMe) {
-    var picks = Store.postsOf(u.id).slice(0, 5);
-    if (!isMe && !picks.length) return "";
     var items = "";
     if (isMe) {
-      items += '<button class="highlight" data-act="create-story">' +
+      items += '<button class="highlight" data-act="highlight-create">' +
         '<span class="highlight__ring highlight__ring--new">' + Icons.icon("plus", { size: 24 }) + "</span>" +
         '<span class="highlight__label">Yeni</span></button>';
     }
-    items += picks.map(function (p, i) {
-      return '<button class="highlight" data-act="post-open" data-post="' + p.id + '">' +
-        '<span class="highlight__ring">' + C.media(p.src, "öne çıkan", 140, 140, "highlight__img") + "</span>" +
-        '<span class="highlight__label">' + HIGHLIGHT_LABELS[i % HIGHLIGHT_LABELS.length] + "</span></button>";
-    }).join("");
+    var own = Store.highlightsOf(u.id);
+    if (own.length) {
+      items += own.map(highlightItemHTML).join("");
+    } else {
+      items += Store.postsOf(u.id).slice(0, 5).map(function (p, i) {
+        return '<button class="highlight" data-act="post-open" data-post="' + p.id + '">' +
+          '<span class="highlight__ring">' + C.media(p.src, "öne çıkan", 140, 140, "highlight__img") + "</span>" +
+          '<span class="highlight__label">' + HIGHLIGHT_LABELS[i % HIGHLIGHT_LABELS.length] + "</span></button>";
+      }).join("");
+    }
+    if (!isMe && !items) return "";
     return '<div class="highlights">' + items + "</div>";
   }
 
@@ -1005,6 +1026,95 @@
       reader.onerror = function () { C.toast("Dosya okunamadı", { icon: "info" }); };
       reader.readAsText(fi.files[0]);
       fi.value = "";
+    });
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Öne çıkanlar: oluşturma, kapağı/adı değiştirme, silme               */
+  /* ------------------------------------------------------------------ */
+  function openHighlightCreate() {
+    var mine = Store.postsOf(Store.meId);
+    var defCover = mine.length ? mine[0].src : "media/gunseli-01.jpg";
+    UI.hlCover = defCover;
+    var body = '<div class="hlform">' +
+      '<div class="hlform__cover"><span class="highlight__ring">' +
+        '<img class="highlight__img" id="hlCoverImg" src="' + C.esc(defCover) + '" alt="kapak" ' +
+        'data-kind="photo" data-seed="kapak" onerror="IG.fallback(this)"></span>' +
+        '<button class="btn btn--ghost btn--sm" data-act="highlight-cover-pick">Kapak fotoğrafı seç</button></div>' +
+      '<label class="field"><span>Ad</span><input type="text" id="hlTitle" value="Anılar" maxlength="20"></label>' +
+      '<button class="btn btn--primary btn--block" data-act="highlight-save">Öne çıkanı ekle</button>' +
+      '<input type="file" id="hlCoverInput" accept="image/*" hidden>' +
+      '<p class="create-hint">Kapak olarak telefondan bir fotoğraf seçebilirsin. Öne çıkanlar profilinde daire olarak görünür.</p>' +
+    "</div>";
+    var el = C.sheet({ title: "Yeni öne çıkan", body: body, cls: "sheet--form" });
+    var input = el.querySelector("#hlCoverInput");
+    if (input) {
+      input.addEventListener("change", function () {
+        if (!input.files || !input.files[0]) return;
+        loadImageFile(input.files[0], function (dataUrl) {
+          UI.hlCover = dataUrl;
+          var img = el.querySelector("#hlCoverImg");
+          if (img) { img.onerror = null; img.src = dataUrl; }
+        });
+      });
+    }
+  }
+
+  function openHighlightRename(h) {
+    var body = '<div class="hlform">' +
+      '<label class="field"><span>Ad</span><input type="text" id="hlTitle" value="' + C.esc(h.title || "") + '" maxlength="20"></label>' +
+      '<button class="btn btn--primary btn--block" data-act="highlight-save" data-highlight="' + h.id + '">Kaydet</button>' +
+      '<button class="btn btn--ghost btn--block" data-act="sheet-close">Vazgeç</button>' +
+    "</div>";
+    C.sheet({ title: "Öne çıkanın adı", body: body, cls: "sheet--form" });
+  }
+
+  /** Kapak için telefondan fotoğraf seçtirir. */
+  function pickHighlightCover(h) {
+    var input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.style.display = "none";
+    input.addEventListener("change", function () {
+      if (!input.files || !input.files[0]) { if (input.parentNode) input.parentNode.removeChild(input); return; }
+      loadImageFile(input.files[0], function (dataUrl) {
+        Store.updateHighlight(h.id, { cover: dataUrl });
+        C.toast("Kapak güncellendi", { icon: "check" });
+        if (input.parentNode) input.parentNode.removeChild(input);
+        renderScreen();
+      });
+    });
+    document.body.appendChild(input);
+    input.click();
+  }
+
+  function openHighlight(h) {
+    if (!h) return;
+    var isMe = h.userId === Store.meId;
+    if (!isMe) {
+      if (h.postIds && h.postIds.length) { navigate("post/" + h.postIds[0]); return; }
+      C.toast("Bu öne çıkan şu an boş", { icon: "info" });
+      return;
+    }
+    var items = [];
+    if (h.postIds && h.postIds.length) items.push({ value: "view", label: "Gönderiyi aç", icon: "image" });
+    items.push({ value: "cover", label: "Kapağı değiştir", icon: "camera" });
+    items.push({ value: "rename", label: "Adını değiştir", icon: "text" });
+    items.push({ value: "delete", label: "Öne çıkanı sil", icon: "trash", danger: true });
+    C.actionSheet(h.title || "Öne çıkan", items).then(function (v) {
+      if (!v) return;
+      if (v === "view") navigate("post/" + h.postIds[0]);
+      else if (v === "cover") pickHighlightCover(h);
+      else if (v === "rename") openHighlightRename(h);
+      else if (v === "delete") {
+        C.confirmSheet({ title: "Öne çıkanı sil?", text: "“" + (h.title || "") + "” öne çıkanı profilinizden kaldırılacak.", confirmLabel: "Sil" })
+          .then(function (ok) {
+            if (!ok) return;
+            Store.deleteHighlight(h.id);
+            C.toast("Öne çıkan silindi", { icon: "trash" });
+            renderScreen();
+          });
+      }
     });
   }
 
@@ -1786,6 +1896,31 @@
         });
         break;
       case "create-story": C.toast("Hikâye oluşturma bu demoda yakında", { icon: "camera" }); break;
+
+      /* --- öne çıkanlar --- */
+      case "highlight-open": openHighlight(Store.highlightById(target.getAttribute("data-highlight"))); break;
+      case "highlight-create": openHighlightCreate(); break;
+      case "highlight-cover-pick": {
+        var hci = $("#hlCoverInput");
+        if (hci) hci.click();
+        break;
+      }
+      case "highlight-save": {
+        var hid = target.getAttribute("data-highlight");
+        var titleInput = $("#hlTitle");
+        var title = titleInput && titleInput.value.trim() ? titleInput.value.trim() : "Öne çıkan";
+        if (hid) {
+          Store.updateHighlight(hid, { title: title, cover: UI.hlCover || Store.highlightById(hid).cover });
+          C.toast("Öne çıkan güncellendi", { icon: "check" });
+        } else {
+          Store.addHighlight(Store.meId, title, UI.hlCover || "media/gunseli-01.jpg", []);
+          C.toast("“" + title + "” öne çıkanı eklendi", { icon: "check" });
+        }
+        UI.hlCover = null;
+        C.closeSheet();
+        renderScreen();
+        break;
+      }
       case "note-open": C.toast("Notlar yalnızca görüntülenebilir", { icon: "info" }); break;
 
       /* --- reels --- */

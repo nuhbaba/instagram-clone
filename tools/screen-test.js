@@ -224,6 +224,9 @@ ok("kendi profilimde ilk gönderi düğmesi", meProfile.includes("İlk gönderin
 ok("profilde tam 3 sekme (gönderi/reels/etiket)", (meProfile.match(/class="tab[ "]/g) || []).length === 3);
 ok("profilde sekmeler", meProfile.includes("tabs"));
 ok("kendi profilimde +Yeni dairesi", meProfile.includes("highlight__ring--new"));
+ok("kendi profilimde kapaklı öne çıkan", meProfile.includes('data-act="highlight-open"') && meProfile.includes("Anılar"));
+ok("öne çıkan kapağı yerel dosya", meProfile.includes("media/gunseli-01.jpg"));
+ok("öne çıkan oluşturma düğmesi", meProfile.includes('data-act="highlight-create"'));
 ok("profile düzenleme / biyografi ekle", meProfile.includes("edit-profile"));
 
 const otherProfile = render("/profile/elifkaman");

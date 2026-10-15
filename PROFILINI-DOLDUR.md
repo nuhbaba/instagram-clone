@@ -1,8 +1,28 @@
 # Profilini doldurma (gunseli_beyhan)
 
-Uygulama `gunseli_beyhan` hesabıyla **boş bir profille** açılır: Instagram'da hiç gönderi
-paylaşmamış bir hesap nasıl görünüyorsa öyle. İçeriği sen eklersin — hepsi bu cihazda
-saklanır, hiçbir şey sunucuya gönderilmez.
+Uygulama `gunseli_beyhan` hesabıyla açılır. **Profil fotoğrafı** ve **“Anılar”** öne çıkanı
+hazır gelir (gönderdiğin fotoğrafla, depoya gömülü olduğu için yayındaki sitede de
+görünür) — bunların dışındaki içeriği sen eklersin; hepsi bulunduğun cihazda saklanır,
+hiçbir şey sunucuya gönderilmez.
+
+---
+
+## 0) Hazır gelenler
+
+| Alan | Durum |
+|---|---|
+| Profil fotoğrafı | `media/gunseli-01.jpg` (projeye gömülü, herkese görünür) |
+| Öne çıkan | **Anılar** dairesi — kapağı aynı fotoğraf |
+| Ad / kullanıcı adı | Günseli Beyhan · `gunseli_beyhan` |
+| Biyografi, gönderiler | Boş — sen dolduracaksın |
+
+Profil fotoğrafını veya öne çıkanın kapağını **uygulama içinden** değiştirmek istersen:
+profil fotoğrafı için *Profili düzenle → Fotoğrafı değiştir*; öne çıkan için
+**Anılar** dairesine dokun → *Kapağı değiştir* / *Adını değiştir* / *Öne çıkanı sil*.
+Baştaki **+ Yeni** dairesiyle yeni bir öne çıkan oluşturabilirsin.
+
+> Uygulama içinden değiştirdiğin kapak yalnızca o cihazda geçerli olur. Depodaki kalıcı
+> kapağı değiştirmek istersen fotoğrafı bana ilet, `media/` klasörüne koyup yayına alayım.
 
 ---
 
