@@ -71,16 +71,20 @@ Bilgisayar ve telefon **aynı Wi-Fi'da** olmalı.
 
 ## Yol 3 — İnternetten erişilebilir hâle getir (her yerden çalışır, HTTPS)
 
-Böylece linke telefondan (hatta başka cihazlardan) girip gerçek PWA olarak
-kurabilirsin. Ücretsiz seçenekler:
+**Bu proje için hâlihazırda yapıldı.** GitHub Pages açık:
 
+### 👉 https://nuhbaba.github.io/instagram-clone/
+
+Telefonda bu adresi aç → tarayıcı menüsü → **"Uygulamayı yükle" / "Ana ekrana ekle"**.
+Artık ana ekranda kendi ikonuyla duran, tam ekran ve çevrimdışı açılan bir uygulama olur.
+
+Kendi alan adınla ya da başka bir barındırmayla yayınlamak istersen ücretsiz seçenekler:
+
+- **GitHub Pages** (bu projede kullanılan) → Depo → *Settings → Pages → Source: Deploy from
+  a branch → main / (root)*. `index.html` kök dizinde olduğu için doğrudan çalışır.
 - **Netlify Drop** → <https://app.netlify.com/drop> — `instagram-clone` klasörünü
   sayfaya sürükle-bırak, sana `https://xxxx.netlify.app` adresi verir.
-- **Cloudflare Pages** veya **GitHub Pages** → klasörü bir depoya at, yayınla.
-- **Vercel** → `npx vercel` (klasör içinde).
-
-Sonra telefonda o adresi aç → menü → **Uygulamayı yükle**. Artık ana ekranda
-kendi ikonuyla duran, tam ekran açılan bir uygulama olur.
+- **Cloudflare Pages** veya **Vercel** → `npx vercel` (klasör içinde).
 
 > Not: Yalnızca `file://` yerine `http(s)://` üzerinden açıldığında servis çalışanı
 > (çevrimdışı destek) ve PWA kurulumu devreye girer.
