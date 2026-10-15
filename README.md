@@ -94,8 +94,12 @@ içinde görünür.
 - Instagram'ın güncel profil düzeniyle birebir: avatar (+ hikâye ekleme rozeti),
   `gönderi / takipçi / takip` istatistikleri, ad, kategori, biyografi, bağlantı
 - **Hazır profil:** `gunseli_beyhan` · **58 gönderi · 215 takipçi · 444 takip** ·
-  58 öğelik dolu ızgara (örnek görseller — Ayarlar'dan veya gönderi menüsünden
-  tek tek temizlenebilir) · "Anılar" öne çıkanı · profil fotoğrafı
+  düğün temalı 58 gönderilik ızgara (başlıklarıyla) · **Anılar** ve **Düğün** öne
+  çıkanları · profil fotoğrafı
+- **Düğün içeriği:** 6 sohbette düğün yazışmaları (fotoğrafçı, gelinlik atölyesi,
+  organizasyon, pasta, kahve ikramı, drone), düğün temalı bildirimler ve seni
+  etiketleyen 3 düğün gönderisi — hepsi kurgusal demo metni, görseller üretilmiş
+  tasarımlardır (gerçek kişi fotoğrafı içermez)
 - Kendi profilinde tek geniş **Profili düzenle** düğmesi; başka profillerde
   takip et / takibi bırak (onay menüsüyle) ve mesaj gönder
 - Öne çıkanlar şeridi: kapağı ve adı olan daireler; kendi profilinde başta **+ Yeni**
@@ -107,6 +111,7 @@ içinde görünür.
 ### Mesajlar
 - Gelen kutusu: notlar (Notes), sabitlenmiş sohbetler, okunmamış rozetleri, çevrimiçi noktası
 - Sohbet ekranı: gün ayırıcıları, gelen/giden balonlar, "Görüldü" bilgisi, yazıyor animasyonu
+- Sohbetler düğün hazırlığı temalıdır (fotoğrafçı, atölye, organizasyon, pasta, ikram, drone)
 - Mesaj gönderin — karşı taraf **bağlama göre otomatik yanıt verir** (selamlaşma, teşekkür,
   buluşma, kahve, fotoğraf…)
 
@@ -145,7 +150,7 @@ instagram-clone/
 ├─ TELEFONA-YUKLE.md       # telefona kurma / yayınlama kılavuzu
 ├─ PROFILINI-DOLDUR.md     # profili kendi içeriğinle doldurma kılavuzu
 ├─ css/styles.css          # tasarım sistemi: tema değişkenleri, tüm bileşenler
-├─ media/                  # projeye gömülü yerel görseller (profil fotoğrafı, kapaklar)
+├─ media/                  # üretilmiş düğün görselleri (58) + profil fotoğrafı ve kapaklar
 ├─ js/
 │  ├─ icons.js             # Instagram'a benzer SVG ikon seti (doğrulama rozeti dâhil)
 │  ├─ data.js              # Türkçe örnek içerik: 16 hesap, 25 gönderi, hikâyeler, DM'ler
@@ -155,7 +160,8 @@ instagram-clone/
 ├─ icons/                  # uygulama ikonları (gradyan + kamera glifi)
 ├─ screenshots/            # doğrulama ekran görüntüleri
 └─ tools/
-   ├─ make_icons.py        # ikonları üretir (Pillow)
+   ├─ make_icons.py        # uygulama ikonlarını üretir (Pillow)
+   ├─ make-wedding-set.py  # 58 düğün temalı profil görselini üretir (Pillow)
    ├─ smoke-test.js        # veri katmanı testleri
    ├─ screen-test.js       # ekran/DOM entegrasyon testleri
    ├─ shot.html            # tam 414×880 ekran görüntüsü kabı
@@ -169,8 +175,8 @@ instagram-clone/
 Node.js dışında hiçbir bağımlılık gerekmez (tarayıcı bile gerekmez):
 
 ```bash
-node tools/smoke-test.js     # 108 doğrulama: seçiciler, eylemler, HTML üretimi, yedekleme, XSS kaçışı
-node tools/screen-test.js    # 91 doğrulama: 16 rota çizimi, sohbet regresyonu, tema, katmanlar
+node tools/smoke-test.js     # 134 doğrulama: istatistikler, düğün içeriği, eylemler, yedekleme, XSS kaçışı
+node tools/screen-test.js    # 99 doğrulama: 17 rota çizimi, sohbet regresyonu, tema, katmanlar
 ```
 
 `screen-test.js`, sahte bir DOM üzerinde `app.js`'i gerçekten çalıştırır ve **her rotayı
@@ -205,8 +211,12 @@ python tools/make_icons.py
   tarayıcında saklanır; GitHub Pages'teki yayında yalnızca depoya gömülü görseller
   (profil fotoğrafı, öne çıkan kapağı) görünür. Herkesin görmesi için fotoğrafların
   başlangıç içeriğine gömülmesi gerekir ([PROFILINI-DOLDUR.md](PROFILINI-DOLDUR.md)).
-- **Izgaradaki 58 görsel örnektir:** profilin dolu görünmesi için yerleştirilmiş stok
-  fotoğraflardır, gerçek kişilerin gönderileri değildir; akışta ve keşfette görünmezler.
+- **Izgaradaki 58 görsel örnektir:** profilin dolu görünmesi için
+  `tools/make-wedding-set.py` ile üretilmiş tasarımlardır (yüzük, kalp, çiçek, davetiye
+  motifleri). İçlerinde gerçek kişi fotoğrafı yoktur; akışta ve keşfette görünmezler.
+- **Düğün metinleri kurgusaldır:** gönderi başlıkları, sohbetler ve bildirimler
+  fotoğraftaki düğün temasına uygun yazılmış demo içeriktir; gerçek mekân, tarih veya
+  kişi adı içermez.
 - **Gerçek video yok:** Reels'ler fotoğraf + otomatik oynatma efektiyle temsil edilir.
 - **Hikâye ekleme** ve kamera ile canlı çekim bu sürümde yok (galeri/dosya yükleme ve
   toplu yükleme var).

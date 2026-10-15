@@ -168,7 +168,6 @@ window.IG = window.IG || {};
       userId: "u1", src: PIC("istanbul-sokak-01", 1080, 1350), mins: 38, likes: 4820,
       location: "Balat, İstanbul",
       caption: "Sabahın ilk ışığı Balat'ın sokaklarında dolaşırken yakaladığım o sessizlik. 🧡\n#sokakfotoğrafçılığı #istanbul #balat",
-      atUsers: ["u0"],
       comments: [
         C("u0", "Işık muhteşem, kadraj da öyle 👏", 30, 12),
         C("u7", "Bu sokağı çok seviyorum, tam köşede bir kahveci var ☕️", 22, 5, [["u1", "Kesinlikle orası! Bir gün birlikte gidelim 🙌", 18, 2]]),
@@ -214,7 +213,7 @@ window.IG = window.IG || {};
       userId: "u11", src: PIC("kedi-bahce-06", 1080, 1080), mins: 520, likes: 8940,
       location: "Pati Bahçesi",
       caption: "Bugün 6 yavru sahiplendirildi. 🐈 Vazgeçmeyin, hepsi bir yuva buluyor.\nKısırlaştırma destek kampanyası profil bağlantısında.\n#sahiplen #kedi #patibahcesi",
-      atUsers: ["u0", "u5", "u13"],
+      atUsers: ["u5", "u13"],
       comments: [
         C("u13", "Kalp kalp kalp 💚", 500, 11),
         C("u5", "Harika haber, tebrikler!", 480, 6)
@@ -357,28 +356,90 @@ window.IG = window.IG || {};
   ];
 
   /* ------------------------------------------------------------------ */
-  /* Profil ızgarası: 58 örnek (yer tutucu) gönderi                      */
+  /* Profil ızgarası: 58 düğün temalı gönderi                            */
+  /* Görseller tools/make-wedding-set.py ile üretildi (gerçek kişi       */
+  /* fotoğrafı içermez: yüzük, kalp, çiçek, davetiye, konfeti motifleri).*/
   /* Profilin "58 gönderi" göstermesi ve ızgaranın dolu görünmesi için.  */
   /* Bunlar akışta ve keşfette görünmez; Ayarlar > "Örnek gönderileri    */
-  /* temizle" ile tek dokunuşta kaldırılabilir. Kendi fotoğraflarını     */
-  /* ekledikçe bunları silip yerine koyabilirsin.                        */
+  /* temizle" ile kaldırılabilir. Açıklamaları gönderi menüsünden        */
+  /* düzenleyebilir, kendi fotoğraflarınla değiştirebilirsin.            */
   /* ------------------------------------------------------------------ */
+  var DUGUN_BASLIKLARI = {
+    1: { c: "Hazırlıklar başladı 🤍 Mutluluğumuzu paylaşmak için sabırsızlanıyoruz.\n#düğün #hazırlık", l: "İstanbul", y: [["u5", "Heyecanınız buradan hissediliyor 🤍", 90, 14]] },
+    2: { c: "Gelinlik provası günü… Aynada kendimi görünce gözlerim doldu 🥹\n#gelinlik #prova", l: "Atölye", y: [["u3", "Duvak tam yerine oturdu, harika olacak ✨", 70, 9]] },
+    3: { c: "Kına gecemizden bir kare ❤️ Ellerinize sağlık, hepiniz harikaydınız.\n#kına #kınagecesi", l: "Kına Gecesi" },
+    4: { c: "Davetiyelerimiz hazır — kalbimize dokunan bir tasarım oldu ✨\n#davetiye #düğündavetiyesi", l: "İstanbul" },
+    5: { c: "Nikâh masasına doğru… 🤍\n#nikâh #mutluluk", l: "Nikâh Salonu" },
+    6: { c: "Çiçek seçimi: beyaz şakayık ve zeytin dalı 🌿\n#çiçek #düğünçiçeği", l: "Çiçekçi" },
+    7: { c: "İlk dans provası 😄 (Ayak parmaklarım hâlâ sağlam)\n#ilkdans #düğün", l: "Düğün Salonu" },
+    8: { c: "Balayı planı: iki bavul, bir harita, sonsuz kahkaha ✈️\n#balayı #geziyorum", l: "Havaalanı" },
+    9: { c: "Annemin gençlik fotoğrafıyla yan yana koyduk — aynı gelinlik, aynı heyecan 🤍\n#aile #geleneksel", l: "Ev" },
+    10: { c: "Davetiye zarfını ilk açan halam oldu 💌\n#aile #davetiye", l: "İzmir" },
+    11: { c: "Pasta tadımı: fıstıklı mı frambuazlı mı? Oylar yorumlara 😋\n#pasta #düğünpastası", l: "Pastane", y: [["u9", "İkisi de hazır, gelsin bakalım 🍰", 200, 11]] },
+    12: { c: "Kuaför randevusu alındı — saç modeli için fikirlerinizi bekliyorum 💇‍♀️\n#gelinsaçı #hazırlık", l: "Kuaför" },
+    13: { c: "Düğün mekânında son kontrol 🤍 Manzara bizi bekliyor.\n#düğünmekanı #boğaz", l: "Boğaz" },
+    14: { c: "Fotoğrafçımızla altın saat çekimi 🎞️\n#düğünfotoğrafı #altınsaat", l: "Galata", y: [["u1", "O ışık tam istediğim gibiydi 📷", 320, 18]] },
+    15: { c: "“Sonsuza dek” sözü… 🤍\n#sonsuzadek #düğün", l: "Düğün Salonu" },
+    16: { c: "Misafir defterine yazılan ilk not: “Aşkınız daim olsun.” 💐\n#düğünhatırası #anıdefteri", l: "Düğün Salonu" },
+    17: { c: "Nikâh şahitlerimizle son prova 😄\n#nikâh #aile", l: "Nikâh Salonu" },
+    18: { c: "Gelin arabası süslemesi tamam 🚗🤍\n#gelinarabası #düğün", l: "İstanbul" },
+    19: { c: "İkramlar için kahve istasyonu kuruluyor ☕️\n#düğünikramı #kahve", l: "Kokteyl Alanı", y: [["u14", "Baristalar hazır, merak etmeyin ☕️", 260, 7]] },
+    20: { c: "Fotoğraf köşemiz: polaroid ve altın çerçeveler 📸\n#düğünköşesi #hatıra", l: "Düğün Salonu" },
+    21: { c: "Kuzenlerimle son akşam yemeği 🍽️ Yarın büyük gün!\n#aile #düğün", l: "Kadıköy" },
+    22: { c: "Çiçek buketimizin ilk hâli 🌸\n#buket #gelinbuketi", l: "Çiçekçi" },
+    23: { c: "Işıklar, müzik, sahne… Her şey hazır 🎶\n#düğünmüziği #sahne", l: "Düğün Salonu" },
+    24: { c: "Balayı için ilk durak planlandı 🗺️\n#balayı #yolculuk", l: "Kapadokya" }
+  };
+
   (function () {
     var ornek = [];
     for (var i = 1; i <= 58; i++) {
       var no = (i < 10 ? "0" : "") + i;
+      var detay = DUGUN_BASLIKLARI[i] || {};
+      var yorumlar = (detay.y || []).map(function (r) { return C(r[0], r[1], r[2], r[3]); });
       ornek.push(P({
         userId: "u0",
-        src: PIC("gunseli-" + no, 1080, i % 3 === 0 ? 1350 : 1080),
+        src: "media/wedding-" + no + ".jpg",
         mins: 60 * 24 * (3 + i * 2),
         likes: 32 + ((i * 47) % 420),
-        caption: "",
-        alt: "profil " + no,
+        caption: detay.c || "",
+        location: detay.l || "",
+        comments: yorumlar,
+        alt: "düğün albümü " + no,
         placeholder: true
       }));
     }
     POSTS = POSTS.concat(ornek);
   })();
+
+  /* ------------------------------------------------------------------ */
+  /* Düğün temalı, başka hesaplardan gelen gönderiler                    */
+  /* Bu üçünde sen etiketlisin: "Etiketlenenler" sekmesi ve akış düğün   */
+  /* içeriğiyle dolu görünür. (p84 · p85 · p86)                          */
+  /* ------------------------------------------------------------------ */
+  POSTS = POSTS.concat([
+    P({
+      userId: "u1", src: "media/wedding-31.jpg", mins: 200, likes: 3120,
+      location: "Galata", atUsers: ["u0"],
+      caption: "Günseli için hazırladığım albümden bir kare 🤍 Işık tam istediğim gibiydi.\n#düğünfotoğrafı #albüm",
+      comments: [
+        C("u0", "Ellerine sağlık, hepsi çok güzel olmuş 🤍", 150, 12),
+        C("u3", "Kadraj harika 📷", 120, 6)
+      ]
+    }),
+    P({
+      userId: "u7", src: "media/wedding-03.jpg", mins: 620, likes: 2480,
+      location: "Kına Gecesi", atUsers: ["u0"],
+      caption: "Kına gecemizden bir kare 🎉 Bu geceyi hiç unutmayacağız.\n#kına #kınagecesi #aile",
+      comments: [C("u0", "Hepinize teşekkürler, harikaydı ❤️", 500, 22)]
+    }),
+    P({
+      userId: "u9", src: "media/wedding-11.jpg", mins: 1300, likes: 1870,
+      location: "Pastane", atUsers: ["u0"],
+      caption: "Düğün pastası denemesi: üç kat, üstü canlı şakayık 🌸\n#düğünpastası #tatlı",
+      comments: [C("u0", "Sabırsızlanıyorum 🍰", 1200, 9)]
+    })
+  ]);
 
   /* ------------------------------------------------------------------ */
   /* Hikâyeler                                                           */
@@ -426,73 +487,86 @@ window.IG = window.IG || {};
   ];
 
   /* ------------------------------------------------------------------ */
-  /* Bildirimler                                                         */
-  /* Henüz gönderi paylaşmadığın için bildirimler takip / etiketleme     */
-  /* türündedir. Kendi gönderini paylaştığında beğeni ve yorum           */
-  /* bildirimleri de akmaya başlar.                                      */
+  /* Bildirimler — düğün paylaşımlarına gelen tepkiler                   */
   /* ------------------------------------------------------------------ */
   var NOTIFICATIONS = [
-    { id: "n1", type: "follow", userId: "u1", mins: 12, text: "seni takip etmeye başladı" },
-    { id: "n2", type: "tag", userId: "u1", postId: "p1", mins: 35, thumb: PIC("istanbul-sokak-01", 200, 200), text: "bir gönderide seni etiketledi" },
-    { id: "n3", type: "follow", userId: "u9", mins: 70, text: "seni takip etmeye başladı" },
-    { id: "n4", type: "mention", userId: "u4", mins: 150, thumb: PIC("kod-ekran-04", 200, 200), text: "bir gönderide senden bahsetti" },
-    { id: "n5", type: "follow", userId: "u7", mins: 260, text: "seni takip etmeye başladı" },
-    { id: "n6", type: "tag", userId: "u11", postId: "p6", mins: 420, thumb: PIC("kedi-bahce-06", 200, 200), text: "bir gönderide seni etiketledi" },
-    { id: "n7", type: "follow", userId: "u14", mins: 700, text: "seni takip etmeye başladı" },
-    { id: "n8", type: "follow", userId: "u3", mins: 1500, text: "seni takip etmeye başladı" },
-    { id: "n9", type: "follow", userId: "u15", mins: 2600, text: "seni takip etmeye başladı" }
+    { id: "n1", type: "like", userId: "u1", postId: "p26", mins: 6, thumb: "media/wedding-01.jpg", text: "gönderini beğendi" },
+    { id: "n2", type: "comment", userId: "u3", postId: "p27", mins: 22, thumb: "media/wedding-02.jpg", text: "yorum yaptı: “Gelinlik muhteşem olmuş, bayıldım 😍”" },
+    { id: "n3", type: "follow", userId: "u9", mins: 45, text: "seni takip etmeye başladı" },
+    { id: "n4", type: "tag", userId: "u7", postId: "p85", mins: 90, thumb: "media/wedding-03.jpg", text: "bir gönderide seni etiketledi" },
+    { id: "n5", type: "like", userId: "u15", postId: "p32", mins: 150, thumb: "media/wedding-07.jpg", text: "ve 214 kişi daha gönderini beğendi" },
+    { id: "n6", type: "comment", userId: "u14", postId: "p35", mins: 260, thumb: "media/wedding-10.jpg", text: "yorum yaptı: “Davetiye tasarımı çok zarif olmuş ✨”" },
+    { id: "n7", type: "follow", userId: "u5", mins: 420, text: "seni takip etmeye başladı" },
+    { id: "n8", type: "comment", userId: "u4", postId: "p40", mins: 700, thumb: "media/wedding-15.jpg", text: "yorum yaptı: “Bu kareyi albüme koymalısınız 🤍”" },
+    { id: "n9", type: "like", userId: "u6", postId: "p44", mins: 1500, thumb: "media/wedding-19.jpg", text: "gönderini beğendi" }
   ];
 
   /* ------------------------------------------------------------------ */
   /* Sohbetler                                                           */
   /* ------------------------------------------------------------------ */
   var CHATS = [
+    /* ---------------- Düğün yazışmaları ---------------- */
     {
       id: "d1", userId: "u1", unread: 2, pinned: true,
       messages: [
-        { id: "m1", from: "u1", mins: 180, text: "Selam! Cumartesi fotoğraf yürüyüşüne var mısın?" },
-        { id: "m2", from: "u0", mins: 176, text: "Kesinlikle! Saat ve buluşma noktası?" },
-        { id: "m3", from: "u1", mins: 60, text: "10:00, Balat'taki kahvecinin önü." },
-        { id: "m4", from: "u1", mins: 58, text: "Tripodunu getir, uzun pozlama deneyeceğiz 📷" }
+        { id: "m1", from: "u1", mins: 55, text: "Günseli Hanım merhaba! Cumartesi çekimi için 15:00'te hazır olur musunuz?" },
+        { id: "m2", from: "u0", mins: 48, text: "Merhaba Elif Hanım, 15:00 uygun. Gelinlik provası 13:00'te bitiyor." },
+        { id: "m3", from: "u1", mins: 40, text: "Süper. Altın saat 17:30 civarı, o ışığı kaçırmayalım. Gelinciklerin olduğu ara sokaktan başlayalım mı?" },
+        { id: "m4", from: "u0", mins: 32, text: "Çok iyi olur, o sokağı ben de çok seviyorum 🤍" },
+        { id: "m5", from: "u1", mins: 12, text: "Albüm için 40 kare ayırdım, akşam linki atacağım." },
+        { id: "m6", from: "u1", mins: 10, text: "Aile fotoğraflarını da ayrı bir klasöre koydum 📷" }
       ]
     },
     {
       id: "d2", userId: "u7", unread: 0,
       messages: [
-        { id: "m5", from: "u7", mins: 1440, text: "Yeni rota haritasını hazırladım, göz atmak ister misin?" },
-        { id: "m6", from: "u0", mins: 1430, text: "Tabii ki, özellikle Likya kısmı ilgimi çekti." },
-        { id: "m7", from: "u7", mins: 1420, text: "O bölümü 4 güne yaydım, kamp alanları da işaretli 🥾" },
-        { id: "m8", from: "u0", mins: 1400, text: "Harika, teşekkürler! Planı uygulamaya kaydettim." }
+        { id: "m7", from: "u7", mins: 300, text: "Kına için salonu ayarladım, cuma 19:00 🎉" },
+        { id: "m8", from: "u0", mins: 290, text: "Süpersin! Kaç kişilik oldu?" },
+        { id: "m9", from: "u7", mins: 280, text: "120 kişilik. Menü tadımı çarşamba, beraber gidelim." },
+        { id: "m10", from: "u0", mins: 265, text: "Kesin gelirim. Çalma listesini de kuralım mı?" },
+        { id: "m11", from: "u7", mins: 240, text: "Liste hazır 😄 İlk şarkı sizin girişiniz." },
+        { id: "m12", from: "u0", mins: 230, text: "Ay çok heyecanlıyım 🥹" }
       ]
     },
     {
-      id: "d3", userId: "u4", unread: 1,
+      id: "d3", userId: "u3", unread: 1,
       messages: [
-        { id: "m9", from: "u4", mins: 300, text: "Açık kaynak projeye PR attım, gözden geçirir misin?" },
-        { id: "m10", from: "u0", mins: 290, text: "Bakıyorum şimdi. Testler geçiyor mu?" },
-        { id: "m11", from: "u4", mins: 40, text: "Hepsi yeşil ✅ Sadece kod yorumları kaldı." }
+        { id: "m13", from: "u3", mins: 160, text: "Günseli, duvak için dantel örnekleri geldi 🤍" },
+        { id: "m14", from: "u0", mins: 150, text: "Bayıldım! Provada görebilir miyim?" },
+        { id: "m15", from: "u3", mins: 140, text: "Tabii, perşembe 11:00 uygun mu? Bel kısmını da 2 cm daraltıyorum." },
+        { id: "m16", from: "u0", mins: 130, text: "Perşembe 11:00 tamam. Ayakkabıyı da getireyim mi?" },
+        { id: "m17", from: "u3", mins: 25, text: "Getir, boy ayarını ona göre yapalım 💐" }
       ]
     },
     {
       id: "d4", userId: "u9", unread: 0,
       messages: [
-        { id: "m12", from: "u0", mins: 2600, text: "Tarif için teşekkürler, akşam yaptım 👏" },
-        { id: "m13", from: "u9", mins: 2580, text: "Ellerine sağlık! Bir sonraki tarifi de beğeneceğini düşünüyorum 🍽️" }
+        { id: "m18", from: "u9", mins: 700, text: "Pasta tadımı için cumartesi 12:00 diyebiliriz 🤍" },
+        { id: "m19", from: "u0", mins: 690, text: "Olur! Fıstıklı ve frambuazlı denemek istiyorum." },
+        { id: "m20", from: "u9", mins: 680, text: "İkisini de hazırlarım. Kaç kişilik olacak?" },
+        { id: "m21", from: "u0", mins: 670, text: "180 kişi civarı." },
+        { id: "m22", from: "u9", mins: 660, text: "Üç katlı yaparız. Üstü canlı çiçek olsun mu?" },
+        { id: "m23", from: "u0", mins: 650, text: "Kesinlikle — şakayık olursa harika olur 🌸" }
       ]
     },
     {
       id: "d5", userId: "u14", unread: 0,
       messages: [
-        { id: "m14", from: "u14", mins: 4200, text: "Cumartesi tadım için yer ayırdım, 2 kişilik ☕️" },
-        { id: "m15", from: "u0", mins: 4180, text: "Süper, kardeşimi de getiriyorum." },
-        { id: "m16", from: "u14", mins: 4160, text: "Ne güzel, görüşürüz o zaman!" }
+        { id: "m24", from: "u0", mins: 1500, text: "Hakan Bey, nikâh sonrası kokteyl için kahve istasyonu kuruyor musunuz?" },
+        { id: "m25", from: "u14", mins: 1480, text: "Merhaba! Evet: üç barista, filtre ve Türk kahvesi. 150 kişilik hesap yaptım ☕️" },
+        { id: "m26", from: "u0", mins: 1460, text: "Harika. Tatlılarla uyumlu bir çekirdek önerir misiniz?" },
+        { id: "m27", from: "u14", mins: 1440, text: "Etiyopya doğal işlem öneririm; meyveli tatlılarla çok iyi gider." },
+        { id: "m28", from: "u0", mins: 1430, text: "Tamam, onu seçiyoruz." }
       ]
     },
     {
-      id: "d6", userId: "u3", unread: 0,
+      id: "d6", userId: "u15", unread: 0,
       messages: [
-        { id: "m17", from: "u3", mins: 7000, text: "Atölyeye bekliyorum, kumaş örneklerini gösteririm." },
-        { id: "m18", from: "u0", mins: 6900, text: "Haftaya uğrarım mutlaka 🙌" }
+        { id: "m29", from: "u15", mins: 2900, text: "Merhaba, düğün alanı için drone izin başvurusu onaylandı 🚁" },
+        { id: "m30", from: "u0", mins: 2880, text: "Muhteşem! Saat kaçta gelebilirsiniz?" },
+        { id: "m31", from: "u15", mins: 2860, text: "Tören 16:00'da başlıyorsa 15:30'da konumda olurum." },
+        { id: "m32", from: "u0", mins: 2840, text: "Tamam, girişte karşılarız. Havadan giriş çekimi de olsun mu?" },
+        { id: "m33", from: "u15", mins: 2820, text: "Olur, o planı da not aldım 👍" }
       ]
     }
   ];
@@ -506,6 +580,10 @@ window.IG = window.IG || {};
     {
       id: "h1", userId: "u0", title: "Anılar",
       cover: "media/gunseli-01.jpg", postIds: [], createdAt: Date.now()
+    },
+    {
+      id: "h2", userId: "u0", title: "Düğün",
+      cover: "media/wedding-01.jpg", postIds: [], createdAt: Date.now() + 1
     }
   ];
 

@@ -12,11 +12,33 @@ hiçbir şey sunucuya gönderilmez.
 | Alan | Durum |
 |---|---|
 | Profil fotoğrafı | `media/gunseli-01.jpg` (projeye gömülü, herkese görünür) |
-| Öne çıkan | **Anılar** dairesi — kapağı aynı fotoğraf |
+| Öne çıkanlar | **Anılar** (gerçek fotoğraf) ve **Düğün** (düğün temalı kapak) |
 | Ad / kullanıcı adı | Günseli Beyhan · `gunseli_beyhan` |
 | İstatistikler | **58 gönderi · 215 takipçi · 444 takip** |
-| Gönderi ızgarası | 58 **örnek (yer tutucu)** görselle dolu görünüyor |
-| Biyografi | Boş — sen dolduracaksın |
+| Gönderi ızgarası | 58 **düğün temalı** görsel (yüzük, kalp, çiçek, davetiye, konfeti…) |
+| Gönderi başlıkları | 24 gönderide düğün hazırlığı temalı açıklama (gelinlik provası, kına, davetiye, pasta tadımı…) |
+| Mesajlar | 6 sohbet **düğün yazışması**: fotoğrafçı, gelinlik atölyesi, organizasyon, pasta, kahve ikramı, drone çekimi |
+| Bildirimler | Düğün gönderilerine gelen beğeni/yorum/etiketleme bildirimleri |
+| Etiketlenenler | Başka hesapların seni etiketlediği 3 düğün gönderisi |
+| Akış | Bu düğün gönderileri akışta da görünür |
+
+**Bu içerikler senaryo/yer tutucudur.** Fotoğrafındaki düğün temasına uygun olarak
+yazılmış kurgusal metinlerdir (gerçek mekân, tarih veya kişi adı içermez) ve düğün
+görselleri **tamamen üretilmiş** tasarımlardır — içlerinde gerçek kişi fotoğrafı yoktur.
+Kendi gerçek içeriğini koymak istersen:
+
+- **Gönderi açıklaması:** gönderiyi aç → **⋯ → Açıklamayı düzenle**
+- **Kendi fotoğrafın:** **＋ → Toplu seç** ile yükle, örnek görselleri
+  *Örnek gönderiyi kaldır* ile sil
+- **Metinleri topluca değiştirmemi** istersen (ör. gerçek mekân/tarih yazmak) söyle,
+  depodaki içeriği güncelleyip yayına alayım
+
+**Fotoğrafı yeniden üretmek** (görselleri değiştirmek) için:
+
+```bash
+python tools/make-wedding-set.py     # 58 düğün temalı görsel üretir
+node tools/build-single.js           # tek dosyalık sürümü tazeler
+```
 
 **Örnek gönderiler ne demek?** Profilin "58 gönderi" göstermesi ve ızgaranın dolu
 görünmesi için 58 stok fotoğraf yerleştirildi. Bunlar akışta ve keşfette **görünmez**,

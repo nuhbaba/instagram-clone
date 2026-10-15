@@ -260,6 +260,16 @@ ok("sohbet ekranı boş kalmıyor", q("#chatMessages").innerHTML.length > 100);
 const chatScreen = render("/direct/d2");
 ok("sohbet başlığı kullanıcı adı", chatScreen.includes("selin.arslan") && !chatScreen.includes("elifkaman</b>"));
 ok("sohbet giriş alanı", chatScreen.includes("chat__input") && chatScreen.includes("Mesaj yaz"));
+const chatHTML = q("#chatMessages").innerHTML;
+ok("sohbetlerde düğün konuşması", /düğün|çekim|gelinlik|kına|albüm/i.test(chatHTML),
+  "kutu içeriği: " + chatHTML.slice(0, 90).replace(/\s+/g, " "));
+
+const weddingInbox = render("/direct");
+ok("notlar düğün temalı", weddingInbox.includes("Pasta tadımı") || weddingInbox.includes("Kına için"));
+
+const weddingActivity = render("/activity");
+ok("bildirimler düğün görselli", weddingActivity.includes("media/wedding-"));
+ok("bildirimlerde etiket satırı", weddingActivity.includes("bir gönderide seni etiketledi"));
 
 const settings = render("/settings");
 ok("ayarlarda tema anahtarı", settings.includes("theme-toggle"));

@@ -129,6 +129,16 @@ window.IG = window.IG || {};
 
   C.fallbackSVG = gradientSVG;
 
+  /** Tek dosyalık sürümde yerel görseller (media/*) data URI haritasına çevrilir;
+      bu fonksiyon hem sabit hem dinamik yolları çözer. */
+  function resolveMedia(src) {
+    if (!src) return src;
+    var map = window.IG_MEDIA_INLINE;
+    if (map && map[src]) return map[src];
+    return src;
+  }
+  C.resolveMedia = resolveMedia;
+
   /** <img onerror> yakalayıcı: bozuk/erişilemeyen görseli yerel SVG ile değiştirir. */
   function fallback(img) {
     img.onerror = null;
@@ -153,7 +163,7 @@ window.IG = window.IG || {};
     opts = opts || {};
     if (!user) user = { name: "?", username: "?", avatar: "" };
     var cls = "avatar" + (opts.cls ? " " + opts.cls : "");
-    var src = user.avatar || initialsAvatar(user.name, size);
+    var src = resolveMedia(user.avatar) || initialsAvatar(user.name, size);
     return '<img class="' + cls + '" src="' + C.esc(src) + '" width="' + size + '" height="' + size +
       '" alt="' + C.esc(user.username) + ' profil fotoğrafı" loading="lazy" decoding="async"' +
       ' data-kind="avatar" data-name="' + C.esc(user.name) + '" data-seed="' + C.esc(user.username) +
@@ -161,7 +171,7 @@ window.IG = window.IG || {};
   };
 
   C.media = function (src, alt, w, h, cls, eager) {
-    return '<img class="' + (cls || "media") + '" src="' + C.esc(src) + '" alt="' + C.esc(alt) +
+    return '<img class="' + (cls || "media") + '" src="' + C.esc(resolveMedia(src)) + '" alt="' + C.esc(alt) +
       '" width="' + w + '" height="' + h + '" ' + (eager ? 'loading="eager"' : 'loading="lazy"') +
       ' decoding="async" data-kind="photo"' +
       ' data-seed="' + C.esc(alt || src) + '" onerror="IG.fallback(this)">';

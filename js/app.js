@@ -34,11 +34,12 @@
   };
 
   var HIGHLIGHT_LABELS = ["Favoriler", "Seyahat", "Anlar", "Kahve", "Yeni", "Sokak"];
+  /* Gelen kutusundaki "Notlar" — düğün hazırlığı temalı */
   var NOTES = [
-    { userId: "u1", text: "Sabah 6'da ışık muhteşemdi ✨" },
-    { userId: "u4", text: "Bugün deploy günü 🚀" },
-    { userId: "u9", text: "Tarif oylaması başladı 🍳" },
-    { userId: "u7", text: "Yeni rota: Likya 🥾" }
+    { userId: "u1", text: "Altın saat 17:30 ✨" },
+    { userId: "u9", text: "Pasta tadımı cumartesi 12:00 🍰" },
+    { userId: "u7", text: "Kına için salon hazır 🎉" },
+    { userId: "u3", text: "Duvak provası perşembe 🤍" }
   ];
 
   /* ------------------------------------------------------------------ */

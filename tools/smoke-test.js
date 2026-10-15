@@ -83,13 +83,14 @@ C.init();
 
 /* --- testler ----------------------------------------------------------- */
 const DEMO_GONDERI = 25;    // demo hesapların örnek gönderileri
-const PROFIL_ORNEK = 58;    // profil ızgarasındaki yer tutucu gönderiler
-const TOPLAM_GONDERI = DEMO_GONDERI + PROFIL_ORNEK;
+const PROFIL_ORNEK = 58;    // profil ızgarasındaki düğün temalı gönderiler
+const ETIKET_GONDERI = 3;   // başka hesapların, seni etiketlediği düğün gönderileri
+const TOPLAM_GONDERI = DEMO_GONDERI + PROFIL_ORNEK + ETIKET_GONDERI;
 
 console.log("\nVeri katmanı");
 eq("kullanıcı sayısı", Store.state.users.length, 16);
-eq("gönderi sayısı (demo + profil örnekleri)", Store.state.posts.length, TOPLAM_GONDERI);
-eq("profildeki örnek gönderi", Store.placeholderCount(), PROFIL_ORNEK);
+eq("gönderi sayısı (demo + düğün + etiket)", Store.state.posts.length, TOPLAM_GONDERI);
+eq("profildeki düğün gönderisi", Store.placeholderCount(), PROFIL_ORNEK);
 eq("hikâye sayısı", Store.state.stories.length, 8);
 eq("sohbet sayısı", Store.state.chats.length, 6);
 eq("bildirim sayısı", Store.state.notifications.length, 9);
@@ -102,16 +103,25 @@ eq("takipçi 215", Store.followersCount(Store.me()), 215);
 eq("takip 444", Store.followingCount(Store.me()), 444);
 eq("gönderi 58", Store.postCount(Store.meId), 58);
 
+console.log("\nDüğün temalı içerik");
+ok("düğün başlıklı gönderiler var", Store.postsOf(Store.meId).filter((p) => p.caption).length >= 20);
+ok("düğün görselleri media/ altında", Store.postsOf(Store.meId).every((p) => p.src.indexOf("media/wedding-") === 0));
+ok("yazışmalarda düğün konusu geçiyor", ["düğün", "nikâh", "kına", "gelinlik", "pasta", "albüm", "drone", "çekim", "tadım"]
+  .some((k) => Store.state.chats.some((c) => c.messages.some((m) => m.text.toLowerCase().indexOf(k) !== -1))));
+eq("etiketlendiğim düğün gönderisi", Store.taggedPosts(Store.meId).length, ETIKET_GONDERI);
+ok("öne çıkanlarda Düğün var", Store.highlightsOf(Store.meId).some((h) => h.title === "Düğün"));
+
 console.log("\nSeçiciler");
 const feed = Store.feed();
 ok("akış yeterli uzunlukta (" + feed.length + ")", feed.length >= 10);
+ok("akışta düğün içeriği var", feed.some((p) => p.caption && p.caption.indexOf("Kına") !== -1));
 ok("akışta profil örnekleri görünmez", feed.every((p) => !p.placeholder));
 ok("keşfette profil örnekleri görünmez", Store.explore().every((p) => !p.placeholder));
 ok("akışta reels yok", feed.every((p) => p.kind !== "reel"));
 ok("akış yalnızca takip edilenler + ben", feed.every((p) => p.userId === Store.meId || Store.isFollowing(p.userId)));
 ok("akış yeniden-eskiye sıralı", feed.every((p, i) => i === 0 || feed[i - 1].at >= p.at));
 eq("reels sayısı", Store.reels().length, 9);
-eq("keşfet demo gönderileri", Store.explore().length, DEMO_GONDERI);
+eq("keşfet demo + etiket gönderileri", Store.explore().length, DEMO_GONDERI + ETIKET_GONDERI);
 ok("keşfet popülerliğe göre sıralı", Store.explore()[0].likesBase >= Store.explore()[1].likesBase);
 eq("kaydedilenler", Store.savedPosts().length, 2);
 const takipciSayisi = (id) => Store.state.users.filter((x) => (Store.state.follows[x.id] || []).indexOf(id) !== -1).length;
@@ -121,22 +131,24 @@ ok("kendi takipçim graf sayesinde sıfırdan büyük", Store.followersCount(Sto
 eq("beğeni sayısı", Store.likedCount(Store.post("p1")), 4820);
 eq("yorum sayısı (p1)", Store.commentsCount(Store.post("p1")), 4);
 eq("etiketlenen gönderiler (u5)", Store.taggedPosts("u5").length, 1);
-eq("etiketlendiğim gönderiler", Store.taggedPosts(Store.meId).length, 2);
+eq("etiketlendiğim gönderiler", Store.taggedPosts(Store.meId).length, 3);
 
 console.log("\nÖne çıkanlar");
 const ozel = Store.highlightsOf(Store.meId);
-eq("başlangıçta 1 öne çıkan", ozel.length, 1);
-eq("öne çıkan adı", ozel[0].title, "Anılar");
+eq("başlangıçta 2 öne çıkan", ozel.length, 2);
+eq("ilk öne çıkan adı", ozel[0].title, "Anılar");
 eq("öne çıkan kapağı yerel fotoğraf", ozel[0].cover, "media/gunseli-01.jpg");
+eq("ikinci öne çıkan adı", ozel[1].title, "Düğün");
+eq("düğün öne çıkan kapağı", ozel[1].cover, "media/wedding-01.jpg");
 eq("başkasının tanımlı öne çıkanı yok", Store.highlightsOf("u1").length, 0);
 const yeniHl = Store.addHighlight(Store.meId, "Seyahat", "media/gunseli-01.jpg", []);
-eq("öne çıkan eklendi", Store.highlightsOf(Store.meId).length, 2);
+eq("öne çıkan eklendi", Store.highlightsOf(Store.meId).length, 3);
 Store.updateHighlight(yeniHl.id, { title: "Yolculuk" });
 eq("öne çıkan adı güncellendi", Store.highlightById(yeniHl.id).title, "Yolculuk");
 Store.updateHighlight(yeniHl.id, { cover: "https://example.com/kapak.jpg" });
 eq("öne çıkan kapağı güncellendi", Store.highlightById(yeniHl.id).cover, "https://example.com/kapak.jpg");
 Store.deleteHighlight(yeniHl.id);
-eq("öne çıkan silindi", Store.highlightsOf(Store.meId).length, 1);
+eq("öne çıkan silindi", Store.highlightsOf(Store.meId).length, 2);
 eq("hikâye sırası ilk eleman görülmemiş", Store.unseenCount(Store.storyBar()[0]) > 0, true);
 eq("boş hikâye görülmemiş sayısı", Store.unseenCount({ userId: "u0", items: [] }), 0);
 eq("sohbetler sabitlenmiş önce", Store.chats()[0].id, "d1");
@@ -238,7 +250,7 @@ Store.sendMessage("d3", "selam");
 eq("mesaj gönderildi", Store.chat("d3").messages.length, msgCount + 1);
 Store.receiveMessage("d3", "merhaba!");
 eq("yanıt geldi", Store.chat("d3").messages.length, msgCount + 2);
-eq("son mesaj karşıdan", Store.lastMessage(Store.chat("d3")).from, "u4");
+eq("son mesaj karşıdan", Store.lastMessage(Store.chat("d3")).from, Store.chat("d3").userId);
 Store.markChatRead("d3");
 eq("okunmamış sıfır", Store.chat("d3").unread, 0);
 
