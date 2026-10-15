@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+<title>Instagram — Benzeri Uygulama</title>
+<meta name="description" content="Instagram benzeri, tamamen yerel çalışan mobil sosyal medya uygulaması prototipi." />
+<meta name="theme-color" content="#000000" />
+<meta name="color-scheme" content="dark light" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Instagram" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" href="icons/favicon-32.png" sizes="32x32" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<!-- Masaüstünde telefon çerçevesi, telefonda tam ekran -->
+<div class="stage">
+  <aside class="stage-note" aria-hidden="true">
+    <h1><span class="stage-note__mark"></span> Instagram benzeri uygulama</h1>
+    <p>Mobil web uygulaması (PWA) · tüm veriler cihazda saklanır</p>
+    <ul>
+      <li><b>Keşfet:</b> akış, hikâyeler, reels, arama</li>
+      <li><b>Etkileşim:</b> çift dokunuşla beğeni, yorum, kaydet, takip</li>
+      <li><b>Mesajlar:</b> DM listesi ve sohbet ekranı</li>
+      <li><b>Oluştur:</b> galeriden veya dosyadan yeni gönderi</li>
+    </ul>
+    <p class="stage-note__hint">İpucu: Tarayıcıda <b>F12 → cihaz araç çubuğu</b> ile mobil görünüme geçebilir ya da bu pencereyi daraltabilirsin.</p>
+  </aside>
+
+  <div class="device">
+    <div class="phone" id="phone">
+      <div class="notch" aria-hidden="true"></div>
+
+      <div class="status-bar" aria-hidden="true">
+        <div class="status-left"><span id="clock">09:41</span></div>
+        <div class="status-right">
+          <svg viewBox="0 0 18 12" width="18" height="12" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1" fill="currentColor"/><rect x="4.5" y="5" width="3" height="7" rx="1" fill="currentColor"/><rect x="9" y="2.5" width="3" height="9.5" rx="1" fill="currentColor"/><rect x="13.5" y="0" width="3" height="12" rx="1" fill="currentColor" opacity=".4"/></svg>
+          <svg viewBox="0 0 16 12" width="16" height="12" aria-hidden="true"><path d="M8 10.5 1 4.2A9.6 9.6 0 0 1 15 4.2Z" fill="currentColor"/></svg>
+          <span class="battery"><i style="width:78%"></i></span>
+        </div>
+      </div>
+
+      <header class="appbar" id="appbar"></header>
+      <main class="screen" id="screen" tabindex="-1"></main>
+      <nav class="tabbar" id="tabbar" aria-label="Ana gezinme"></nav>
+
+      <div class="overlay-root" id="overlays" aria-live="polite"></div>
+      <div class="toasts" id="toasts" aria-live="polite"></div>
+      <div class="home-indicator" aria-hidden="true"></div>
+    </div>
+  </div>
+</div>
+
+<script src="js/icons.js"></script>
+<script src="js/data.js"></script>
+<script src="js/store.js"></script>
+<script src="js/components.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

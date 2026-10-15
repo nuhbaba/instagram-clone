@@ -1,0 +1,7 @@
+# Satır sonlarını tek biçime indir (Windows/macOS/Linux uyumu)
+* text=auto eol=lf
+
+# İkili dosyalar
+*.png binary
+*.ico binary
+*.jpg binary

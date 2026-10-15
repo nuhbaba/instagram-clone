@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>Ekran görüntüsü kabı</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #0b0b0f; display: grid; place-items: center; overflow: hidden; }
+  iframe { width: 414px; height: 880px; border: 0; border-radius: 34px; background: #000; box-shadow: 0 20px 60px rgba(0,0,0,.6); }
+</style>
+</head>
+<body>
+<!--
+  Başsız Chrome penceresi 500px'in altına inemediği için uygulamayı tam 414x880
+  CSS px'lik bir iframe içinde çalıştırıp o genişlikte ekran görüntüsü alıyoruz.
+  Kullanım: shot.html?r=/feed&theme=dark
+-->
+<iframe id="f" src="../index.html#/feed"></iframe>
+<script>
+  var p = new URLSearchParams(location.search);
+  var route = p.get("r") || "/feed";
+  var theme = p.get("theme");
+  var f = document.getElementById("f");
+  f.src = "../index.html?nosw=1#" + route;
+  if (theme) {
+    f.addEventListener("load", function () {
+      try { f.contentWindow.IG.Store.setTheme(theme); } catch (e) {}
+    });
+  }
+</script>
+</body>
+</html>

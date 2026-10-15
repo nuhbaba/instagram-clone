@@ -1,0 +1,22 @@
+# Geçici / teşhis dosyaları
+.shots/
+_diag*.html
+_diag*.png
+_inline-test.js
+_chrome.log
+_console.txt
+_single-check.png
+
+# Node
+node_modules/
+npm-debug.log*
+
+# İşletim sistemi
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Editör
+.vscode/
+.idea/
+*.swp

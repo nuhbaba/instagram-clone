@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>Görsel ön ısıtma</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #000; color: #0f0;
+    font: 14px/1.5 Consolas, monospace; padding: 12px; }
+  img { width: 40px; height: 40px; object-fit: cover; margin: 2px; }
+</style>
+</head>
+<body>
+<h1 id="h">hazırlanıyor…</h1>
+<div id="g"></div>
+
+<script src="../js/icons.js"></script>
+<script src="../js/data.js"></script>
+<script>
+  // Uygulamanın kullanacağı tüm uzak görselleri önceden çekip
+  // servis çalışanı / HTTP önbelleğini ısıtır. Böylece ekran görüntüsü
+  // alırken görsellerin yüklenmesini beklemek gerekmez.
+  var urls = [];
+  var s = window.IG.seed;
+  s.users.forEach(function (u) { urls.push(u.avatar); });
+  s.posts.forEach(function (p) { urls.push(p.src); });
+  s.stories.forEach(function (st) { st.items.forEach(function (it) { urls.push(it.src); }); });
+  s.gallery.forEach(function (g) { urls.push(g); });
+  s.notifications.forEach(function (n) { if (n.thumb) urls.push(n.thumb); });
+  s.hashtags.forEach(function (h) { urls.push("https://picsum.photos/seed/" + h.seed + "/300/300"); });
+
+  urls = urls.filter(function (u, i) { return u && urls.indexOf(u) === i; });
+
+  var g = document.getElementById("g");
+  var h = document.getElementById("h");
+  var done = 0, failed = 0;
+
+  urls.forEach(function (u) {
+    var img = new Image();
+    var finish = function (ok) {
+      done++;
+      if (!ok) failed++;
+      h.textContent = "yüklendi " + done + "/" + urls.length + " · hata " + failed;
+      img.style.opacity = ok ? "1" : ".25";
+    };
+    img.onload = function () { finish(true); };
+    img.onerror = function () { finish(false); };
+    g.appendChild(img);
+    img.src = u;
+  });
+  h.textContent = "yüklendi 0/" + urls.length;
+</script>
+</body>
+</html>
