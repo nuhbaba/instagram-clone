@@ -365,15 +365,15 @@ window.IG = window.IG || {};
   /* düzenleyebilir, kendi fotoğraflarınla değiştirebilirsin.            */
   /* ------------------------------------------------------------------ */
   var DUGUN_BASLIKLARI = {
-    1: { c: "Hazırlıklar başladı 🤍\n#düğün #hazırlık", l: "İstanbul", y: [["u5", "Heyecanınız buradan hissediliyor 🤍", 90, 14]] },
-    2: { c: "Bu detaylara bayıldım 🤍\n#düğün", l: "", y: [["u1", "Işık çok güzel düşmüş 📷", 70, 9]] },
-    3: { c: "Işıklar, çiçekler, sevdiklerimiz 🌸\n#düğün", l: "Düğün Salonu" },
-    4: { c: "Bu günü hiç unutmayacağız ✨\n#nikâh", l: "Nikâh Salonu" },
-    5: { c: "En sevdiğim karelerden biri 🤍\n#düğün", l: "" },
-    6: { c: "Çiçekler konuşsun 🌿\n#düğünçiçeği", l: "" },
-    7: { c: "Küçük detaylar, büyük mutluluk ✨\n#düğün", l: "" },
-    8: { c: "Sonsuza dek… 🤍\n#sonsuzadek", l: "" },
-    9: { c: "Ailemizin en mutlu günü 💐\n#aile", l: "İstanbul" },
+    1: { c: "İşte o an… 🤍\n#düğün #nikâh", l: "", y: [["u1", "Bu kare muhteşem olmuş 🤍", 40, 24], ["u7", "Bayıldım! 😍", 30, 12]] },
+    2: { c: "Düğün günümüzden 🤍\n#düğün", l: "", y: [["u3", "Işık harika, çok şık olmuşsunuz ✨", 60, 18]] },
+    3: { c: "Bir ömür boyu 🤍\n#mutluluk", l: "", y: [["u9", "Mutluluğunuz daim olsun 🤍", 80, 26]] },
+    4: { c: "Kahkahamız hiç bitmesin 😄\n#düğün", l: "", y: [["u5", "Bu kareye bayıldım 😄", 100, 15]] },
+    5: { c: "Bu bakış her şeye değer 🥰\n#aşk", l: "", y: [["u7", "Bu bakış her şeyi anlatıyor 🥰", 140, 9]] },
+    6: { c: "Nikâh yolunda, el ele 🤍\n#nikâh", l: "" },
+    7: { c: "Gelin 🤍\n#gelin #düğün", l: "" },
+    8: { c: "İlk adımımızı birlikte attık ✨\n#düğün", l: "" },
+    9: { c: "Yolun sonunda birlikteyiz 🌅\n#balayı", l: "" },
     10: { c: "Davetiyelerden bir hatıra 💌\n#davetiye", l: "" },
     11: { c: "Tatlı bir telaş 🍰\n#düğünpastası", l: "Pastane", y: [["u9", "İkisi de hazır, gelsin bakalım 🍰", 200, 11]] },
     12: { c: "Hazırlık heyecanı 💇‍♀️\n#hazırlık", l: "" },
@@ -398,7 +398,17 @@ window.IG = window.IG || {};
   /* dolar; ızgaradaki yer tutucuların yerini senin fotoğrafların alır.   */
   /* (Ayrıntı: PROFILINI-DOLDUR.md)                                       */
   /* ------------------------------------------------------------------ */
-  var KENDI_FOTOGRAFLARIM = [];
+  var KENDI_FOTOGRAFLARIM = [
+    "media/photo-01.jpg",
+    "media/photo-02.jpg",
+    "media/photo-03.jpg",
+    "media/photo-04.jpg",
+    "media/photo-05.jpg",
+    "media/photo-06.jpg",
+    "media/photo-07.jpg",
+    "media/photo-08.jpg",
+    "media/photo-09.jpg"
+  ];
 
   (function () {
     var ornek = [];
@@ -428,7 +438,7 @@ window.IG = window.IG || {};
   /* ------------------------------------------------------------------ */
   POSTS = POSTS.concat([
     P({
-      userId: "u1", src: "media/wedding-31.jpg", mins: 200, likes: 3120,
+      userId: "u1", src: "media/photo-09.jpg", mins: 200, likes: 3120,
       location: "Galata", atUsers: ["u0"],
       caption: "Günseli için hazırladığım albümden bir kare 🤍 Işık tam istediğim gibiydi.\n#düğünfotoğrafı #albüm",
       comments: [
@@ -592,7 +602,7 @@ window.IG = window.IG || {};
     },
     {
       id: "h2", userId: "u0", title: "Düğün",
-      cover: "media/wedding-01.jpg", postIds: [], createdAt: Date.now() + 1
+      cover: "media/photo-01.jpg", postIds: [], createdAt: Date.now() + 1
     }
   ];
 

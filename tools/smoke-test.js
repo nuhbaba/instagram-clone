@@ -105,7 +105,10 @@ eq("gönderi 58", Store.postCount(Store.meId), 58);
 
 console.log("\nDüğün temalı içerik");
 ok("düğün başlıklı gönderiler var", Store.postsOf(Store.meId).filter((p) => p.caption).length >= 20);
-ok("düğün görselleri media/ altında", Store.postsOf(Store.meId).every((p) => p.src.indexOf("media/wedding-") === 0));
+ok("düğün görselleri media/ altında", Store.postsOf(Store.meId).every((p) => p.src.indexOf("media/") === 0));
+ok("ilk 9 gönderi kendi fotoğraflarım", Store.postsOf(Store.meId).slice(0, 9).every((p) => p.src.indexOf("media/photo-") === 0));
+eq("kendi fotoğraf sayısı", Store.postsOf(Store.meId).filter((p) => p.src.indexOf("media/photo-") === 0).length, 9);
+ok("ilk 9 gönderinin başlığı var", Store.postsOf(Store.meId).slice(0, 9).every((p) => p.caption && p.caption.length > 3));
 ok("yazışmalarda düğün konusu geçiyor", ["düğün", "nikâh", "kına", "gelinlik", "pasta", "albüm", "drone", "çekim", "tadım"]
   .some((k) => Store.state.chats.some((c) => c.messages.some((m) => m.text.toLowerCase().indexOf(k) !== -1))));
 eq("etiketlendiğim düğün gönderisi", Store.taggedPosts(Store.meId).length, ETIKET_GONDERI);
@@ -139,7 +142,7 @@ eq("başlangıçta 2 öne çıkan", ozel.length, 2);
 eq("ilk öne çıkan adı", ozel[0].title, "Anılar");
 eq("öne çıkan kapağı yerel fotoğraf", ozel[0].cover, "media/gunseli-01.jpg");
 eq("ikinci öne çıkan adı", ozel[1].title, "Düğün");
-eq("düğün öne çıkan kapağı", ozel[1].cover, "media/wedding-01.jpg");
+eq("düğün öne çıkan kapağı", ozel[1].cover, "media/photo-01.jpg");
 eq("başkasının tanımlı öne çıkanı yok", Store.highlightsOf("u1").length, 0);
 const yeniHl = Store.addHighlight(Store.meId, "Seyahat", "media/gunseli-01.jpg", []);
 eq("öne çıkan eklendi", Store.highlightsOf(Store.meId).length, 3);

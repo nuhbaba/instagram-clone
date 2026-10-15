@@ -162,12 +162,17 @@ instagram-clone/
 ├─ icons/                  # uygulama ikonları (gradyan + kamera glifi)
 ├─ screenshots/            # doğrulama ekran görüntüleri
 └─ tools/
-   ├─ make_icons.py        # uygulama ikonlarını üretir (Pillow)
-   ├─ make-wedding-set.py  # 58 düğün temalı profil görselini üretir (Pillow)
-   ├─ smoke-test.js        # veri katmanı testleri
-   ├─ screen-test.js       # ekran/DOM entegrasyon testleri
-   ├─ shot.html            # tam 414×880 ekran görüntüsü kabı
-   └─ warm.html            # görsel önbelleği ısıtma (çekim öncesi)
+   ├─ make_icons.py          # uygulama ikonlarını üretir (Pillow)
+   ├─ import-photos.py       # KENDİ fotoğraflarını profile aktarır (720x720, EXIF temiz)
+   ├─ split-collage.py       # kolaj (3x3) fotoğrafı ayrı karelere böler
+   ├─ fetch-wedding-photos.py # özgür lisanslı düğün fotoğrafı indirir
+   ├─ build-wedding-pool.py  # seçim için aday havuzu indirir
+   ├─ select-wedding-photos.py # havuzdan seçilenleri profile yerleştirir
+   ├─ make-wedding-set.py    # (yedek) tasarım kartı üretir
+   ├─ smoke-test.js          # veri katmanı testleri
+   ├─ screen-test.js         # ekran/DOM entegrasyon testleri
+   ├─ shot.html              # tam 414×880 ekran görüntüsü kabı
+   └─ warm.html              # görsel önbelleği ısıtma (çekim öncesi)
 ```
 
 ---
@@ -177,7 +182,7 @@ instagram-clone/
 Node.js dışında hiçbir bağımlılık gerekmez (tarayıcı bile gerekmez):
 
 ```bash
-node tools/smoke-test.js     # 134 doğrulama: istatistikler, düğün içeriği, eylemler, yedekleme, XSS kaçışı
+node tools/smoke-test.js     # 137 doğrulama: istatistikler, kendi fotoğraflarım, düğün içeriği, yedekleme, XSS kaçışı
 node tools/screen-test.js    # 99 doğrulama: 17 rota çizimi, sohbet regresyonu, tema, katmanlar
 ```
 
