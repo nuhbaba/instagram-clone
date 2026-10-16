@@ -88,13 +88,13 @@ const ETIKET_GONDERI = 3;   // başka hesapların, seni etiketlediği düğün g
 const TOPLAM_GONDERI = DEMO_GONDERI + PROFIL_ORNEK + ETIKET_GONDERI;
 
 console.log("\nVeri katmanı");
-eq("kullanıcı sayısı", Store.state.users.length, 16);
+eq("kullanıcı sayısı", Store.state.users.length, 17);
 eq("gönderi sayısı (demo + düğün + etiket)", Store.state.posts.length, TOPLAM_GONDERI);
 eq("profildeki düğün gönderisi", Store.placeholderCount(), PROFIL_ORNEK);
 eq("hikâye sayısı", Store.state.stories.length, 8);
-eq("sohbet sayısı", Store.state.chats.length, 6);
+eq("sohbet sayısı", Store.state.chats.length, 7);
 eq("bildirim sayısı", Store.state.notifications.length, 9);
-ok("me kullanıcısı bulundu", Store.me() && Store.me().username === "gunseli_beyhan");
+ok("me kullanıcısı bulundu", Store.me() && Store.me().username === "beyhan_günseli");
 eq("profildeki gönderi sayısı", Store.postCount(Store.meId), PROFIL_ORNEK);
 eq("kendi hikâyem yok", Store.storiesFor(Store.meId), null);
 
@@ -114,6 +114,27 @@ ok("yazışmalarda düğün konusu geçiyor", ["düğün", "nikâh", "kına", "g
 eq("etiketlendiğim düğün gönderisi", Store.taggedPosts(Store.meId).length, ETIKET_GONDERI);
 ok("öne çıkanlarda Düğün var", Store.highlightsOf(Store.meId).some((h) => h.title === "Düğün"));
 
+console.log("\nBerhan ile 4 aylık yazışma (nişan → düğün → evlilik)");
+const berhan = Store.chat("d7");
+ok("Berhan sohbeti var", !!berhan && berhan.userId === "u16");
+eq("Berhan mesaj sayısı", berhan.messages.length, 87);
+ok("sohbet sabitlenmiş", berhan.pinned === true);
+ok("okunmamış mesaj var", berhan.unread > 0);
+ok("kimlikler benzersiz", new Set(berhan.messages.map((m) => m.id)).size === berhan.messages.length);
+ok("zaman sırası eskiden yeniye", berhan.messages.every((m, i) => i === 0 || berhan.messages[i - 1].at <= m.at));
+const gunFark = Math.abs(berhan.messages[berhan.messages.length - 1].at - berhan.messages[0].at) / 86400000;
+ok("yaklaşık 4 aya yayılıyor (" + Math.round(gunFark) + " gün)", gunFark > 100 && gunFark < 130);
+ok("ara ara konuşulmuş (en az 12 ayrı gün)", new Set(berhan.messages.map((m) => new Date(m.at).toDateString())).size >= 12);
+ok("karşılıklı yazışma", berhan.messages.some((m) => m.from === "u16") && berhan.messages.some((m) => m.from === "u0"));
+const sevgi = berhan.messages.filter((m) => /seviyorum|istiyorum/i.test(m.text)).length;
+ok("sevgi mesajları yeterli (" + sevgi + ")", sevgi >= 10);
+const tumMetin = berhan.messages.map((m) => m.text).join(" ");
+ok("nişan dönemi geçiyor", /nişan/i.test(tumMetin));
+ok("düğün/evlilik geçiyor", /düğün|nikâh|karım|kocam/i.test(tumMetin));
+ok("Berhan profil fotoğrafı yerel dosya", Store.user("u16").avatar === "media/berhan-01.jpg");
+ok("karşılıklı takip", Store.isFollowing("u16") && Store.state.follows.u16.indexOf("u0") !== -1);
+ok("sabitli sohbetler arasında", Store.state.chats.filter((c) => c.pinned).some((c) => c.userId === "u16"));
+ok("en son mesaj Berhan'dan", Store.lastMessage(Store.chat("d7")).from === "u16");
 console.log("\nSeçiciler");
 const feed = Store.feed();
 ok("akış yeterli uzunlukta (" + feed.length + ")", feed.length >= 10);
@@ -229,9 +250,9 @@ const u6Before = Store.followersCount(Store.user("u6"));
 Store.toggleFollow("u6");
 ok("u6 takip ediliyor", Store.isFollowing("u6") === true);
 eq("u6 takipçi +1", Store.followersCount(Store.user("u6")), u6Before + 1);
-eq("benim takip sayım +1", (Store.state.follows.u0 || []).length, 9);
+eq("benim takip sayım +1", (Store.state.follows.u0 || []).length, 10);
 Store.toggleFollow("u6");
-eq("takip geri alındı", (Store.state.follows.u0 || []).length, 8);
+eq("takip geri alındı", (Store.state.follows.u0 || []).length, 9);
 eq("takipçi sayısı geri döndü", Store.followersCount(Store.user("u6")), u6Before);
 
 const postCountBefore = Store.state.posts.length;
@@ -317,7 +338,7 @@ eq("örnek gönderi kalmadı", Store.placeholderCount(), 0);
 
 Store.reset();
 eq("sıfırlama sonrası gönderi sayısı", Store.state.posts.length, TOPLAM_GONDERI);
-eq("sıfırlama sonrası profil", Store.me().username, "gunseli_beyhan");
+eq("sıfırlama sonrası profil", Store.me().username, "beyhan_günseli");
 eq("sıfırlama sonrası gönderi 58", Store.postCount(Store.meId), PROFIL_ORNEK);
 eq("sıfırlama sonrası takipçi 215", Store.followersCount(Store.me()), 215);
 

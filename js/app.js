@@ -36,6 +36,7 @@
   var HIGHLIGHT_LABELS = ["Favoriler", "Seyahat", "Anlar", "Kahve", "Yeni", "Sokak"];
   /* Gelen kutusundaki "Notlar" — düğün hazırlığı temalı */
   var NOTES = [
+    { userId: "u16", text: "Seni seviyorum 🤍" },
     { userId: "u1", text: "Altın saat 17:30 ✨" },
     { userId: "u9", text: "Pasta tadımı cumartesi 12:00 🍰" },
     { userId: "u7", text: "Kına için salon hazır 🎉" },
@@ -47,7 +48,9 @@
   /* ------------------------------------------------------------------ */
   function parseHash() {
     var h = location.hash.replace(/^#\/?/, "");
-    var parts = h.split("/").filter(Boolean).map(decodeURIComponent);
+    var parts = h.split("/").filter(Boolean).map(function (s) {
+      try { return decodeURIComponent(s); } catch (e) { return s; }
+    });
     if (!parts.length) return { name: "feed", params: {} };
     var name = parts[0], params = {};
     switch (name) {

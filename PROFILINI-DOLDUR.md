@@ -1,6 +1,6 @@
-# Profilini doldurma (gunseli_beyhan)
+# Profilini doldurma (beyhan_günseli)
 
-Uygulama `gunseli_beyhan` hesabıyla açılır. **Profil fotoğrafı** ve **“Anılar”** öne çıkanı
+Uygulama `beyhan_günseli` hesabıyla açılır. **Profil fotoğrafı** ve **“Anılar”** öne çıkanı
 hazır gelir (gönderdiğin fotoğrafla, depoya gömülü olduğu için yayındaki sitede de
 görünür) — bunların dışındaki içeriği sen eklersin; hepsi bulunduğun cihazda saklanır,
 hiçbir şey sunucuya gönderilmez.
@@ -13,7 +13,7 @@ hiçbir şey sunucuya gönderilmez.
 |---|---|
 | Profil fotoğrafı | `media/gunseli-01.jpg` (projeye gömülü, herkese görünür) |
 | Öne çıkanlar | **Anılar** (gerçek fotoğraf) ve **Düğün** (düğün temalı kapak) |
-| Ad / kullanıcı adı | Günseli Beyhan · `gunseli_beyhan` |
+| Ad / kullanıcı adı | Günseli Beyhan · `beyhan_günseli` |
 | İstatistikler | **58 gönderi · 215 takipçi · 444 takip** |
 | Gönderi ızgarası | 58 **düğün temalı** görsel (yüzük, kalp, çiçek, davetiye, konfeti…) |
 | Gönderi başlıkları | 24 gönderide düğün hazırlığı temalı açıklama (gelinlik provası, kına, davetiye, pasta tadımı…) |
@@ -95,7 +95,7 @@ Baştaki **+ Yeni** dairesiyle yeni bir öne çıkan oluşturabilirsin.
 **Profil** sekmesi → **Profili düzenle** (veya sağ üstteki **☰ → profil satırı**):
 
 - **Ad:** `Günseli Beyhan` (hazır gelir, değiştirebilirsin)
-- **Kullanıcı adı:** `gunseli_beyhan` (hazır gelir)
+- **Kullanıcı adı:** `beyhan_günseli` (hazır gelir)
 - **Biyografi:** boş bırakıldı — yazdığın anda profil sayfasında görünür
 - **Bağlantı:** istersen web siten
 - **Profil fotoğrafı:** *Fotoğrafı değiştir* → telefondan bir görsel seç

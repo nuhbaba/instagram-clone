@@ -23,7 +23,7 @@ window.IG = window.IG || {};
       /* Bu hesap senin profilin: gönderilerini uygulamadan ekleyerek doldurursun.
          Profil fotoğrafı proje içindeki media/ klasöründe saklanır (yerel dosya),
          böylece yayındaki sitede de herkese görünür. */
-      id: "u0", username: "gunseli_beyhan", name: "Günseli Beyhan", avatar: "media/gunseli-01.jpg",
+      id: "u0", username: "beyhan_günseli", name: "Günseli Beyhan", avatar: "media/gunseli-01.jpg",
       bio: "", link: "", verified: false, private: false,
       followersBase: 0, followingBase: 0, category: ""
     },
@@ -116,7 +116,16 @@ window.IG = window.IG || {};
       bio: "Foto + drone 🚁 Havadan Anadolu.",
       link: "tolgabay.aero", verified: false, private: false,
       followersBase: 34100, followingBase: 118, category: "İçerik üreticisi"
+    },
+    {
+      /* Günseli'nin eşi: nişanlılıktan evliliğe uzanan yazışma d7 sohbetinde. */
+      id: "u16", username: "berhan", name: "Berhan",
+      avatar: "media/berhan-01.jpg",
+      bio: "Günseli'nin eşi 🤍 Kahve, yol ve deniz.",
+      link: "", verified: false, private: false,
+      followersBase: 640, followingBase: 412, category: ""
     }
+
   ];
 
   /* ------------------------------------------------------------------ */
@@ -327,7 +336,7 @@ window.IG = window.IG || {};
     }),
     /* ---------------- ÖRNEK İÇERİK (senin profilin başlangıçta boştur) ----
        Bu üç gönderi demo hesaplara aittir; böylece akış canlı kalır.
-       Kendi profilin (u0 · gunseli_beyhan) 0 gönderiyle başlar. */
+       Kendi profilin (u0 · beyhan_günseli) 0 gönderiyle başlar. */
     P({
       userId: "u4", src: PIC("deniz-proje-23", 1080, 1080), mins: 7, likes: 214,
       location: "İstanbul",
@@ -487,7 +496,7 @@ window.IG = window.IG || {};
   }
 
   var STORIES = [
-    /* u0 (gunseli_beyhan) için başlangıçta hikâye yok: "Hikâyen" girişinden
+    /* u0 (beyhan_günseli) için başlangıçta hikâye yok: "Hikâyen" girişinden
        kendi hikâyeni ekleyebilirsin. */
     story("u1", [
       [PIC("story-elif-1", 1080, 1920), 45, "Yeni seri hazırlanıyor 📷", "Orijinal ses"],
@@ -554,7 +563,7 @@ window.IG = window.IG || {};
         { id: "m9", from: "u7", mins: 280, text: "120 kişilik. Menü tadımı çarşamba, beraber gidelim." },
         { id: "m10", from: "u0", mins: 265, text: "Kesin gelirim. Çalma listesini de kuralım mı?" },
         { id: "m11", from: "u7", mins: 240, text: "Liste hazır 😄 İlk şarkı sizin girişiniz." },
-        { id: "m12", from: "u0", mins: 230, text: "Ay çok heyecanlıyım 🥹" }
+        { id: "m12", from: "u0", mins: 230, text: "Ay çok heyecanlıyım 🥰" }
       ]
     },
     {
@@ -597,6 +606,98 @@ window.IG = window.IG || {};
         { id: "m32", from: "u0", mins: 2840, text: "Tamam, girişte karşılarız. Havadan giriş çekimi de olsun mu?" },
         { id: "m33", from: "u15", mins: 2820, text: "Olur, o planı da not aldım 👍" }
       ]
+    },
+    {
+      id: "d7", userId: "u16", unread: 1, pinned: true,
+      messages: [
+        { id: "m34", from: "u16", mins: 171360, text: "Günseli, bugün annemle konuştum. Artık resmî olarak istemeye gelmek istiyoruz 🤍" },
+        { id: "m35", from: "u0", mins: 171345, text: "Berhan… şu an kalbim çok hızlı atıyor 😊" },
+        { id: "m36", from: "u16", mins: 171338, text: "Ben de heyecanlıyım. Seni istiyorum Günseli, çok istiyorum." },
+        { id: "m37", from: "u0", mins: 171330, text: "Ben de seni çok istiyorum 🤍" },
+        { id: "m38", from: "u16", mins: 171322, text: "Cumartesi konuşalım, hazırlıkları anlatayım. Uygun musun?" },
+        { id: "m39", from: "u0", mins: 171315, text: "Uygunum. İyi geceler aşkım 🤍" },
+        { id: "m40", from: "u16", mins: 171310, text: "İyi geceler nişanlım… şimdiden söylüyorum 🥰" },
+        { id: "m41", from: "u16", mins: 161280, text: "Günaydın 🤍 Cumartesi 14:00'te geleceğiz: babam, annem ve ablam." },
+        { id: "m42", from: "u0", mins: 161268, text: "Ben de annemle tatlı yapıyorum 😄" },
+        { id: "m43", from: "u16", mins: 161256, text: "Çok güzel. Şu an ellerim titriyor, söylemem gereken bir şey var." },
+        { id: "m44", from: "u0", mins: 161250, text: "Ne söyleyeceksin?" },
+        { id: "m45", from: "u16", mins: 161244, text: "Seni seviyorum. Onların karşısında da söyleyeceğim 🤍" },
+        { id: "m46", from: "u0", mins: 161238, text: "Ben de seni seviyorum 🥰" },
+        { id: "m47", from: "u16", mins: 151200, text: "Bugün hayatımın en güzel günüydü." },
+        { id: "m48", from: "u0", mins: 151190, text: "Benim de 🥰 Nişanlım oldun 🤍" },
+        { id: "m49", from: "u16", mins: 151182, text: "Yüzüğü takarken ellerim titriyordu, fark ettin mi?" },
+        { id: "m50", from: "u0", mins: 151174, text: "Ettim 😊 Çok tatlıydın." },
+        { id: "m51", from: "u16", mins: 151166, text: "Seni seviyorum nişanlım. Çok şükür." },
+        { id: "m52", from: "u0", mins: 151158, text: "Ben de seni çok seviyorum 🤍" },
+        { id: "m53", from: "u16", mins: 141120, text: "Günaydın 🤍 Bugün seni düşünerek uyandım." },
+        { id: "m54", from: "u0", mins: 141110, text: "Günaydın aşkım, nasıl uyudun?" },
+        { id: "m55", from: "u16", mins: 141100, text: "Seni rüyamda gördüm, çok güzeldi." },
+        { id: "m56", from: "u0", mins: 141092, text: "Ne gördün?" },
+        { id: "m57", from: "u16", mins: 141084, text: "Bizi. Kendi evimizde kahve içiyorduk. Seni çok istiyorum Günseli." },
+        { id: "m58", from: "u0", mins: 141075, text: "Ben de o evi düşünüyorum 🤍" },
+        { id: "m59", from: "u16", mins: 126720, text: "Salon 18 Ekim için müsait. Tarihi netleştirelim mi?" },
+        { id: "m60", from: "u0", mins: 126710, text: "Ailelere de soralım ama bana uygun 🤍" },
+        { id: "m61", from: "u16", mins: 126700, text: "Tamam, ben konuşurum. Nişanlımla evleniyorum 😄" },
+        { id: "m62", from: "u0", mins: 126690, text: "Çok heyecanlıyım 🥰" },
+        { id: "m63", from: "u16", mins: 112320, text: "Bugün sesimi biraz yükselttim, kusura bakma. Özür dilerim." },
+        { id: "m64", from: "u0", mins: 112310, text: "Biraz üzüldüm ama önemli değil." },
+        { id: "m65", from: "u16", mins: 112300, text: "Seni üzmek istemem, bir daha olmayacak. Söz." },
+        { id: "m66", from: "u0", mins: 112290, text: "Tamam aşkım, seni seviyorum 🤍" },
+        { id: "m67", from: "u16", mins: 112280, text: "Ben de seni çok seviyorum. Akşam konuşalım mı?" },
+        { id: "m68", from: "u0", mins: 112270, text: "Konuşalım 🤍" },
+        { id: "m69", from: "u16", mins: 97920, text: "Takım elbise provası yarın 16:00. Sen de gelir misin?" },
+        { id: "m70", from: "u0", mins: 97910, text: "Gelirim tabii, en çok ben beğenmeliyim 😄" },
+        { id: "m71", from: "u16", mins: 97900, text: "Karar senin 🤍 Sana yakışanı seçerim." },
+        { id: "m72", from: "u0", mins: 97890, text: "Önce sen bak, ben onaylarım 😊" },
+        { id: "m73", from: "u16", mins: 83520, text: "Bugün iş çıkışı sana uğrasam olur mu?" },
+        { id: "m74", from: "u0", mins: 83512, text: "Tabii, çay koyarım ☕️" },
+        { id: "m75", from: "u16", mins: 83504, text: "Sadece yüzünü görmek istedim. Seni çok özledim." },
+        { id: "m76", from: "u0", mins: 83496, text: "Ben de seni çok özledim 🤍" },
+        { id: "m77", from: "u16", mins: 69120, text: "Davetiyeleri bugün kargoya veriyorum. Heyecanlıyım." },
+        { id: "m78", from: "u0", mins: 69110, text: "Ben de 🥰 Kaç gün kaldı?" },
+        { id: "m79", from: "u16", mins: 69095, text: "48 gün. Sabırsızım Günseli, seni karım olarak görmek istiyorum." },
+        { id: "m80", from: "u0", mins: 69085, text: "Az kaldı aşkım 🤍" },
+        { id: "m81", from: "u16", mins: 54720, text: "Balayı için iki yer var, bakalım mı?" },
+        { id: "m82", from: "u0", mins: 54710, text: "Bakalım 😍" },
+        { id: "m83", from: "u16", mins: 54700, text: "Deniz manzaralı olanı çok beğendim. Sana da sürprizim var." },
+        { id: "m84", from: "u0", mins: 54690, text: "Sürprizi şimdi söyle 😄" },
+        { id: "m85", from: "u16", mins: 54680, text: "Olmaz, sabret 🤍" },
+        { id: "m86", from: "u16", mins: 40320, text: "Nikâh şahidim hazır, evraklar tamam 🤍" },
+        { id: "m87", from: "u0", mins: 40310, text: "Bende de her şey tamam. Çok az kaldı!" },
+        { id: "m88", from: "u16", mins: 40300, text: "Söz veriyorum: ömrüm boyunca seni mutlu edeceğim." },
+        { id: "m89", from: "u0", mins: 40290, text: "Seni seviyorum Berhan 🤍" },
+        { id: "m90", from: "u16", mins: 34560, text: "Provada gelinliğini gördüm, nefesim kesildi." },
+        { id: "m91", from: "u0", mins: 34550, text: "Gerçekten mi 🥰" },
+        { id: "m92", from: "u16", mins: 34540, text: "Çok güzelsin. Seni seviyorum." },
+        { id: "m93", from: "u0", mins: 34530, text: "Sen de çok yakışıklısın 😊" },
+        { id: "m94", from: "u16", mins: 28900, text: "Günaydın aşkım. Bugün hayatımızın ilk günü olacak 🤍" },
+        { id: "m95", from: "u0", mins: 28890, text: "Günaydın 🥰 Ellerim titriyor, kuafördeyim." },
+        { id: "m96", from: "u16", mins: 28880, text: "Ben de hazırlanıyorum. Seni ilk gördüğüm an için sabırsızım." },
+        { id: "m97", from: "u0", mins: 28870, text: "Ben de 🥰" },
+        { id: "m98", from: "u16", mins: 28860, text: "Bugün evet diyeceksin, değil mi? 😄" },
+        { id: "m99", from: "u0", mins: 28850, text: "Bin kere evet 🤍" },
+        { id: "m100", from: "u16", mins: 28400, text: "Karım 🤍" },
+        { id: "m101", from: "u0", mins: 28390, text: "Kocam 🤍" },
+        { id: "m102", from: "u16", mins: 28380, text: "Bugün hayatımın en güzel günüydü. Seni seviyorum Günseli." },
+        { id: "m103", from: "u0", mins: 28370, text: "Ben de seni seviyorum. Artık resmî olarak seninim 🤍" },
+        { id: "m104", from: "u16", mins: 28360, text: "İyi ki varsın. İyi geceler karıcığım." },
+        { id: "m105", from: "u16", mins: 17280, text: "Deniz çok sakin. Kahvaltıya gelir misin?" },
+        { id: "m106", from: "u0", mins: 17270, text: "Geliyorum ☀️ Buradan hiç dönmek istemiyorum." },
+        { id: "m107", from: "u16", mins: 17260, text: "Ben de. Ama döndüğümüzde kendi evimiz var 🏡" },
+        { id: "m108", from: "u0", mins: 17250, text: "O yüzden dönelim 🤍" },
+        { id: "m109", from: "u16", mins: 17240, text: "Seni seviyorum." },
+        { id: "m110", from: "u16", mins: 7200, text: "Eve vardık, valizleri bıraktım. Ortalık çok sessiz." },
+        { id: "m111", from: "u0", mins: 7190, text: "Akşam yemeği için alışveriş yapayım mı?" },
+        { id: "m112", from: "u16", mins: 7180, text: "Ben yaparım. Sen dinlen, karım 🤍" },
+        { id: "m113", from: "u0", mins: 7170, text: "Kocam çok tatlısın 😊" },
+        { id: "m114", from: "u16", mins: 2880, text: "Bugün erken çıkıyorum, seni almaya geleyim mi?" },
+        { id: "m115", from: "u0", mins: 2870, text: "Olur, 18:00'de çıkıyorum 🤍" },
+        { id: "m116", from: "u16", mins: 2860, text: "Kapıda olacağım. Seni seviyorum." },
+        { id: "m117", from: "u16", mins: 180, text: "Günaydın güzelim 🤍 Dün akşam sana bakarken düşündüm: iyi ki seninle evlenmişim." },
+        { id: "m118", from: "u0", mins: 160, text: "Günaydın aşkım 🥰 Ben de iyi ki seninle evlenmişim." },
+        { id: "m119", from: "u16", mins: 60, text: "Seni seviyorum. Çok seviyorum. Her gün daha çok istiyorum seni 🤍" },
+        { id: "m120", from: "u16", mins: 18, text: "Akşam için planım var, hazır ol 😉🤍" }
+      ]
     }
   ];
 
@@ -620,7 +721,7 @@ window.IG = window.IG || {};
   /* Takip grafiği ve kaydedilenler                                      */
   /* ------------------------------------------------------------------ */
   var FOLLOWS = {
-    u0: ["u1", "u3", "u4", "u7", "u9", "u11", "u13", "u14"],
+    u0: ["u16", "u1", "u3", "u4", "u7", "u9", "u11", "u13", "u14"],
     u1: ["u0", "u3", "u7", "u15"],
     u2: ["u0", "u8", "u10"],
     u3: ["u0", "u1", "u7", "u15"],
@@ -635,7 +736,8 @@ window.IG = window.IG || {};
     u12: ["u0", "u4", "u6"],
     u13: ["u0", "u11", "u4"],
     u14: ["u0", "u9"],
-    u15: ["u0", "u1", "u3", "u7"]
+    u15: ["u0", "u1", "u3", "u7"],
+    u16: ["u0"]
   };
 
   /* Oluştur ekranındaki "galeri" ve kamera modu için hazır görseller */
@@ -665,7 +767,7 @@ window.IG = window.IG || {};
     meId: "u0",
     /* İÇERİK SÜRÜMÜ: tohum içeriği her değiştiğinde bu değeri güncelle.
        Tarayıcıda eski kayıt varsa uygulama kendini otomatik yeniler. */
-    rev: "2026-10-16-p49-p83-kaldirildi",
+    rev: "2026-10-16-berhan-yazismasi",
     /* Profilde gösterilecek istatistikler. Takipçi/takip sayıları birebir bu
        değerler olacak şekilde normalleştirilir (demo grafiği hesaba katılır). */
     stats: { followers: 215, following: 444, posts: 56 },

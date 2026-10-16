@@ -10,7 +10,7 @@ dosyasını açtığınız anda çalışır. Tüm veriler yalnızca **sizin ciha
 Telefondan canlı demo adresini açıp tarayıcı menüsünden **"Uygulamayı yükle"** derseniz
 ana ekrana eklenen tam ekran bir uygulama olur ([ayrıntılar](TELEFONA-YUKLE.md)).
 
-> **Profil:** Uygulama `gunseli_beyhan` hesabıyla **boş bir profille** açılır —
+> **Profil:** Uygulama `beyhan_günseli` hesabıyla **boş bir profille** açılır —
 > Instagram'da hiç gönderi paylaşmamış bir hesabın profil sayfası nasıl görünüyorsa
 > birebir öyle. Kendi fotoğraflarını ekleyerek doldurursun:
 > **[PROFILINI-DOLDUR.md](PROFILINI-DOLDUR.md)** (tek/çoklu yükleme, profil düzenleme,
@@ -93,7 +93,7 @@ içinde görünür.
 ### Profil
 - Instagram'ın güncel profil düzeniyle birebir: avatar (+ hikâye ekleme rozeti),
   `gönderi / takipçi / takip` istatistikleri, ad, kategori, biyografi, bağlantı
-- **Hazır profil:** `gunseli_beyhan` · **58 gönderi · 215 takipçi · 444 takip** ·
+- **Hazır profil:** `beyhan_günseli` · **58 gönderi · 215 takipçi · 444 takip** ·
   düğün temalı 58 gönderilik ızgara (başlıklarıyla) · **Anılar** ve **Düğün** öne
   çıkanları · profil fotoğrafı
 - **Düğün içeriği:** 6 sohbette düğün yazışmaları (fotoğrafçı, gelinlik atölyesi,

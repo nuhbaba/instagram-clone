@@ -168,7 +168,8 @@ const routes = [
   ["/explore", "keşfet"],
   ["/reels", "reels"],
   ["/activity", "bildirimler"],
-  ["/profile/gunseli_beyhan", "profil (ben)"],
+  ["/profile/beyhan_günseli", "profil (ben)"],
+    ["/profile/beyhan_g%C3%BCnseli", "profil (ben) - kodlanmis adres"],
   ["/profile/elifkaman", "profil (başkası)"],
   ["/saved", "kaydedilenler"],
   ["/direct", "mesajlar"],
@@ -216,7 +217,7 @@ const activity = render("/activity");
 ok("bildirimler listesi", activity.includes("notif__text"));
 ok("bildirimlerde takip düğmesi", activity.includes('data-act="follow"'));
 
-const meProfile = render("/profile/gunseli_beyhan");
+const meProfile = render("/profile/beyhan_günseli");
 ok("profilde istatistikler", meProfile.includes("pstat") && meProfile.includes("gönderi"));
 ok("profilde kendi düğmeleri", meProfile.includes("Profili düzenle"));
 ok("kendi profilimde 56 gönderilik ızgara", (meProfile.match(/class="cell"/g) || []).length === 56);
@@ -270,6 +271,8 @@ ok("notlar düğün temalı", weddingInbox.includes("Pasta tadımı") || wedding
 const weddingActivity = render("/activity");
 ok("bildirimler düğün görselli", weddingActivity.includes("media/wedding-"));
 ok("bildirimlerde etiket satırı", weddingActivity.includes("bir gönderide seni etiketledi"));
+ok("gelen kutusunda Berhan var", weddingInbox.includes("berhan"));
+ok("notlar arasında Berhan notu", weddingInbox.includes("Seni seviyorum"));
 
 const settings = render("/settings");
 ok("ayarlarda tema anahtarı", settings.includes("theme-toggle"));
