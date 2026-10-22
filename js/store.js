@@ -508,9 +508,29 @@ window.IG = window.IG || {};
     return m;
   }
 
+  /* ------------------- Otomatik günlük yazışma (motor) ------------------- */
+  /** Otomatik konuşma durumu (sıradaki mesajlar ve zamanı) — cihazda saklanır. */
+  function autoChat() {
+    if (!state.autoChat) state.autoChat = { chatId: "d7", queue: [], nextAt: 0 };
+    if (!state.autoChat.queue) state.autoChat.queue = [];
+    return state.autoChat;
+  }
+
+  /** Otomatik mesajı sohbete ekler. from: "u16" (karşı taraf) veya meId (ben). */
+  function pushAutoMessage(chatId, from, text) {
+    var ch = chat(chatId);
+    if (!ch || !text) return null;
+    var benim = from === state.meId;
+    var m = { id: uid("m"), from: from, text: text, at: Date.now(), seen: benim };
+    ch.messages.push(m);
+    if (!benim && !isChatOpen(chatId)) ch.unread = (ch.unread || 0) + 1;
+    persist();
+    emit("message:" + chatId);
+    return m;
+  }
+
   var openChatId = null;
-  function setOpenChat(id) { openChatId = id; }
-  function isChatOpen(id) { return openChatId === id; }
+  function setOpenChat(id) { openChatId = id; }  function isChatOpen(id) { return openChatId === id; }
 
   /** Karşı tarafın gecikmeli yanıtını planlar (uygulama 1-5 dk sonra teslim eder). */
   function setPendingReply(chatId, text, delayMs) {
@@ -680,6 +700,7 @@ window.IG = window.IG || {};
     sendMessage: sendMessage, receiveMessage: receiveMessage,
     setOpenChat: setOpenChat, isChatOpen: isChatOpen, markChatRead: markChatRead,
     setPendingReply: setPendingReply, pendingReply: pendingReply, deliverDueReplies: deliverDueReplies,
+    autoChat: autoChat, pushAutoMessage: pushAutoMessage,
     markNotificationsRead: markNotificationsRead, clearNotifications: clearNotifications,
     updateProfile: updateProfile, setTheme: setTheme, toggleTheme: toggleTheme, setSetting: setSetting,
     searchUsers: searchUsers, searchHashtags: searchHashtags,

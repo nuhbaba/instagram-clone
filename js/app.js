@@ -1721,6 +1721,72 @@
     }, 7200);
   }
 
+
+  /* =================================================================== */
+  /* Otomatik günlük yazışma: Beyhan ile sohbet kendi kendine ilerler.   */
+  /* Mesajlar 1-5 dakika aralıklarla gelir; iki taraftan da yazılır.      */
+  /* =================================================================== */
+  var AUTO_DIYALOGLAR = [
+    [["u16", "Günaydın aşkım ☀️"], ["u0", "Günaydın canım 🤍"], ["u16", "Nasılsın, iyi uyudun mu?"], ["u0", "İyiyim tatlım, sen nasılsın?"], ["u16", "Ben de iyiyim. İşlerin nasıl gidiyor?"], ["u0", "Yoğunum biraz ama iyiyim"], ["u16", "Akşam konuşalım mı?"], ["u0", "Olur aşkım 🤍"]],
+    [["u16", "Merhaba güzelim, nasılsın?"], ["u0", "Merhaba canım, iyiyim sen nasılsın?"], ["u16", "İyi sayılırım, bugün biraz yoruldum"], ["u0", "Canım benim, kendine dikkat et"], ["u16", "Senin işler nasıl gidiyor?"], ["u0", "Gayet iyi, çok şükür"], ["u16", "Seni seviyorum 🤍"], ["u0", "Ben de seni çok seviyorum"]],
+    [["u0", "Günaydın aşkım, kahvaltı yaptın mı?"], ["u16", "Günaydın tatlım, yapıyorum şimdi"], ["u0", "Afiyet olsun 🤍 ben de çay içiyorum"], ["u16", "Seni düşünüyorum ☕️"], ["u0", "Ben de seni"], ["u16", "Akşam için planın var mı?"], ["u0", "Hayır, sen ne düşündün?"], ["u16", "Yürüyüşe çıkalım mı?"], ["u0", "Olur 🤍"]],
+    [["u16", "Bugün erken çıktım, seni almaya geleyim mi?"], ["u0", "Çok isterim, 18:00'de çıkıyorum"], ["u16", "Tamam, kapıda olurum"], ["u0", "Sabırsızım 😊"], ["u16", "Seni özledim"], ["u0", "Ben de seni çok özledim 🤍"]],
+    [["u16", "Akşam ne yiyoruz?"], ["u0", "Ne istersen yaparım"], ["u16", "Senin makarnan olsun 😄"], ["u0", "Tamam aşkım, ben de salata yaparım"], ["u16", "Ellerine sağlık 🤍"]],
+    [["u0", "Annemler hafta sonu gelin diyor"], ["u16", "Olur, ben de gelmek isterim"], ["u0", "Annem senin böreğini sordu 😄"], ["u16", "Hemen yaparım 😄"], ["u0", "Çok sevinecek 🤍"]],
+    [["u16", "Bugün toplantı çok uzundu"], ["u0", "Yazık canım, biraz dinlen"], ["u16", "Sen nasılsın? İşlerin nasıl?"], ["u0", "Benim de yoğundu ama iyiyim"], ["u16", "Akşam erken yatalım 🤍"], ["u0", "Olur aşkım"]],
+    [["u16", "Uyuyor musun?"], ["u0", "Hayır, seni düşünüyordum 😊"], ["u16", "Ben de seni 🤍"], ["u0", "İyi geceler tatlım"], ["u16", "İyi geceler aşkım, rüyamda görüşürüz 😘"]],
+    [["u0", "Bugün hava çok güzel ☀️"], ["u16", "Akşam yürüyüşe çıkalım mı?"], ["u0", "Olur 🤍 çok isterim"], ["u16", "Sana bir sürprizim var"], ["u0", "Ne sürprizi 😍"], ["u16", "Akşam söylerim"], ["u0", "Sabırsızlanıyorum 😄"]],
+    [["u16", "Seni seviyorum Günseli"], ["u0", "Ben de seni çok seviyorum Beyhan 🤍"], ["u16", "Her gün daha çok"], ["u0", "Aynen öyle 🥰"]],
+    [["u0", "Bugün çok yoruldum, ayaklarım ağrıyor"], ["u16", "Yazık canım, sıcak bir duş al"], ["u0", "Alacağım, sen de dinlen"], ["u16", "Ben de yemek yapıyorum"], ["u0", "Ne güzel, kokusu buraya geliyor 😄"]],
+    [["u16", "Yarın için planın var mı?"], ["u0", "Yok, sen?"], ["u16", "Beraber bir yerlere gidelim mi?"], ["u0", "Çok isterim, nereye?"], ["u16", "Sen seç 🤍"], ["u0", "Göl kenarı olsun 🌿"], ["u16", "Harika olur"]],
+    [["u0", "Kardeşim arıyor, bir şey mi oldu acaba?"], ["u16", "Yoktur canım, merak etme"], ["u0", "Tamam, birazdan ararım"], ["u16", "Bir şey olursa haber ver 🤍"], ["u0", "Tabii aşkım"]],
+    [["u16", "Kahve molası verdim, seni düşündüm ☕️"], ["u0", "Ben de tam çay alacaktım"], ["u16", "Aynı anda 😄"], ["u0", "Seni seviyorum 🤍"], ["u16", "Ben de seni"]],
+    [["u0", "Bugün ne kadar güzel bir gün geçirdik"], ["u16", "Ben de aynısını düşündüm"], ["u0", "Seninle her gün güzel 🤍"], ["u16", "Sen olmasan olmaz"], ["u0", "İyi geceler aşkım"], ["u16", "İyi geceler tatlım 😘"]],
+    [["u16", "Günaydın 🤍 nasılsın?"], ["u0", "Günaydın canım, iyiyim sen nasılsın?"], ["u16", "Ben de iyiyim. Bugün çok güzel bir gün"], ["u0", "Katılıyorum ☀️"], ["u16", "Ne yapacaksın bugün?"], ["u0", "Biraz ev işi, sonra dinlenirim"], ["u16", "Ben de akşam gelirim 🤍"]],
+    [["u0", "Yemek yedin mi?"], ["u16", "Yedim tatlım, sen?"], ["u0", "Ben de yedim. Canım tatlı çekti 😄"], ["u16", "Gel beraber yapalım 🍰"], ["u0", "Harika olur 🤍"]],
+    [["u16", "Seninle evlenmek hayatımın en doğru kararı"], ["u0", "Benim de aşkım 🤍"], ["u16", "Seni çok seviyorum"], ["u0", "Ben de seni çok seviyorum"]],
+    [["u0", "Bugün işte bir şey oldu, anlatayım mı?"], ["u16", "Tabii hayatım, dinliyorum"], ["u0", "Yeni bir proje verdiler, çok heyecanlıyım"], ["u16", "Aferin sana 👏"], ["u0", "Destek olur musun?"], ["u16", "Her zaman 🤍"]],
+    [["u16", "Akşam yemeğe çıkalım mı?"], ["u0", "Olur, nereye gidelim?"], ["u16", "Senin sevdiğin o kafe"], ["u0", "Çok isterim 🥰"], ["u16", "19:00'da alırım seni"]],
+    [["u0", "İyi geceler aşkım"], ["u16", "İyi geceler güzelim, tatlı rüyalar 🤍"], ["u0", "Seni seviyorum"], ["u16", "Ben de seni, her gün daha çok"]],
+  ];
+
+  var otoSonDiyalog = -1;
+
+  function otoRastgeleDk() {
+    return 60000 + Math.floor(Math.random() * 240000);   /* 1-5 dakika */
+  }
+
+  function otoDiyalogSec() {
+    var n = AUTO_DIYALOGLAR.length;
+    var i = Math.floor(Math.random() * n);
+    if (i === otoSonDiyalog && n > 1) i = (i + 1) % n;
+    otoSonDiyalog = i;
+    return AUTO_DIYALOGLAR[i].slice();
+  }
+
+  function otoTick() {
+    var st = Store.autoChat();
+    var now = Date.now();
+    if (!st.nextAt) {
+      st.queue = otoDiyalogSec();
+      st.nextAt = now + otoRastgeleDk();
+      Store.persist();
+      return;
+    }
+    if (now < st.nextAt) return;
+    if (!st.queue.length) st.queue = otoDiyalogSec();
+    var satir = st.queue.shift();
+    if (!satir) return;
+    Store.pushAutoMessage(st.chatId, satir[0], satir[1]);
+    /* Sonraki mesaj: 1-5 dk; diyalog bitince biraz daha uzun ara */
+    st.nextAt = now + (st.queue.length ? otoRastgeleDk() : 6 * 60000 + Math.floor(Math.random() * 600000));
+    Store.persist();
+    if (UI.route.name === "direct" && UI.route.params.chatId === st.chatId) {
+      renderChatMessages();
+      updateBadges();
+    }
+  }
+
   function autoReply(chatId, text) {
     var t = (text || "").toLowerCase();
     var replies = {
@@ -2403,6 +2469,9 @@
     }
     sohbetZamanlayici();
     setInterval(sohbetZamanlayici, 1000);
+
+    otoTick();
+    setInterval(otoTick, 1000);
 
     // İlk karşılama bildirimi
     setTimeout(function () {

@@ -369,6 +369,21 @@ eq("cevap metni doğru", sonCevap.text, "İyiyim canım, sen nasılsın? 🤍");
 eq("cevap karşı taraftan", sonCevap.from, Store.chat("d5").userId);
 ok("plan temizlendi", Store.pendingReply("d5") === null);
 
+console.log("\nOtomatik günlük yazışma motoru");
+Store.setOpenChat("d7");
+const otoOnce = Store.chat("d7").messages.length;
+const otoUnreadOnce = Store.chat("d7").unread || 0;
+Store.pushAutoMessage("d7", "u16", "Günaydın aşkım ☀️");
+eq("otomatik mesaj eklendi", Store.chat("d7").messages.length, otoOnce + 1);
+eq("karşı taraftan geldi", Store.chat("d7").messages[Store.chat("d7").messages.length - 1].from, "u16");
+Store.pushAutoMessage("d7", Store.meId, "Günaydın canım 🤍");
+const sonOto = Store.chat("d7").messages[Store.chat("d7").messages.length - 1];
+eq("benim cevabım da otomatik eklendi", sonOto.from, Store.meId);
+eq("okunmamış artmadı (sohbet açık)", Store.chat("d7").unread || 0, otoUnreadOnce);
+const otoDurum = Store.autoChat();
+ok("otomatik durum nesnesi var", !!otoDurum && Array.isArray(otoDurum.queue));
+Store.setOpenChat(null);
+
 console.log("\nÖrnek gönderileri temizleme");
 const temizlenen = Store.clearPlaceholders();
 eq("örnek gönderiler kaldırıldı", temizlenen, PROFIL_ORNEK);
