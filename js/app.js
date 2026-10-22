@@ -26,6 +26,8 @@
     commentPost: null,
     query: "",
     recent: [],
+    /* Akış kapsamı: "sizin-icin" (varsayılan) veya "takip" */
+    feedScope: "sizin-icin",
     create: { src: null, batch: [], kind: "post", caption: "", location: "", isNew: false },
     hlCover: null,
     lastTap: { id: null, at: 0 },
@@ -121,11 +123,16 @@
     var html = "";
 
     if (r.name === "feed") {
-      html = '<div class="appbar__left">' + Icons.wordmark() + "</div>" +
-        '<div class="appbar__right">' +
-        iconButton("create-open", "plusSquare", "Yeni gönderi") +
-        iconButton("activity-open", "heart", "Bildirimler", b.notif) +
-        iconButton("direct-open", "messenger", "Mesajlar", b.dm) +
+      /* Gerçek Instagram'daki gibi: solda "+", ortada "Senin için ⌄", sağda kalp */
+      html = '<div class="appbar__left">' +
+          iconButton("create-open", "plus", "Yeni gönderi") +
+        "</div>" +
+        '<button class="appbar__feedtitle" data-act="feed-scope" aria-label="Akış seç">' +
+          C.esc(UI.feedScope === "takip" ? "Takip ettiklerin" : "Senin için") +
+          Icons.icon("chevronDown", { size: 15 }) +
+        "</button>" +
+        '<div class="appbar__right appbar__right--feed">' +
+          iconButton("activity-open", "heart", "Bildirimler", b.notif) +
         "</div>";
     } else if (r.name === "explore") {
       html = '<div class="appbar__search">' + Icons.icon("search", { size: 18 }) +
@@ -140,7 +147,7 @@
     } else if (r.name === "activity") {
       html = '<div class="appbar__back"><button class="icon-btn" data-act="back" aria-label="Geri">' + Icons.icon("arrowLeft") + "</button></div>" +
         '<div class="appbar__title">Bildirimler</div>' +
-        '<div class="appbar__right">' + iconButton("notifications-clear", "check", "Tümünü okundu işaretle") + "</div>";
+        '<div class="appbar__right">' + iconButton("direct-open", "messenger", "Mesajlar", b.dm) + iconButton("notifications-clear", "check", "Tümünü okundu işaretle") + "</div>";
     } else if (r.name === "profile") {
       var u = r.params.username ? Store.userByUsername(r.params.username) : Store.me();
       var isMe = u && u.id === Store.meId;
@@ -227,6 +234,10 @@
     var others = Store.storyBar().filter(function (s) { return s.userId !== me.id; }).map(C.storyThumb).join("");
     var bar = C.storyThumb(myStory || { userId: me.id, items: [] }) + others;
     var posts = Store.feed();
+    /* "Takip ettiklerin" kapsamında yalnızca takip edilen hesapların gönderileri */
+    if (UI.feedScope === "takip") {
+      posts = posts.filter(function (p) { return p.userId !== Store.meId; });
+    }
     var postsHTML = posts.length
       ? posts.map(function (p, i) { return C.postCard(p, { eager: i === 0 }); }).join("")
       : C.emptyState("home", "Akışın boş", "Birilerini takip etmeye başla, gönderileri burada görünsün.",
@@ -2105,6 +2116,18 @@
           navigate("feed");
           render();
           C.toast("Veriler sıfırlandı", { icon: "refresh" });
+        });
+        break;
+      case "feed-scope":
+        C.actionSheet("Akış", [
+          { label: "Senin için", value: "sizin-icin", icon: "home" },
+          { label: "Takip ettiklerin", value: "takip", icon: "people" }
+        ]).then(function (v) {
+          if (!v) return;
+          UI.feedScope = v;
+          renderAppBar();
+          renderScreen();
+          C.toast(v === "takip" ? "Yalnızca takip ettiklerin" : "Senin için öneriler", { icon: "check" });
         });
         break;
       case "install-pwa": promptInstall(); break;

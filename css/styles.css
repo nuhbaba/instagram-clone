@@ -311,6 +311,21 @@ svg.ic--verified { display: inline-block; vertical-align: -1px; margin-left: 3px
 
 .appbar__title--tight { font-size: 16.5px; display: flex; align-items: center; gap: 5px; }
 
+/* Akış başlığı: ortada "Senin için ⌄" (gerçek Instagram gibi) */
+.appbar__feedtitle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -.2px;
+  color: var(--text);
+  background: none;
+  padding: 4px 2px;
+}
+
+.appbar__right--feed { flex: 1; justify-content: flex-end; }
+
 .appbar__back { display: flex; align-items: center; }
 
 .appbar__search {

@@ -269,6 +269,13 @@ const chatHTML = q("#chatMessages").innerHTML;
 ok("sohbetlerde düğün konuşması", /düğün|çekim|gelinlik|kına|albüm/i.test(chatHTML),
   "kutu içeriği: " + chatHTML.slice(0, 90).replace(/\s+/g, " "));
 
+render("/feed");
+const akisBari = q("#appbar").innerHTML;
+ok("akış barında Instagram yazısı yok", !akisBari.includes("wordmark") && !akisBari.includes(">Instagram<"));
+ok("akış başlığı: Senin için", akisBari.includes("appbar__feedtitle") && akisBari.includes("Senin için"));
+ok("akış barında + (yeni gönderi)", akisBari.includes("create-open"));
+ok("akış barında bildirim kalbi", akisBari.includes("activity-open"));
+
 const weddingInbox = render("/direct");
 ok("notlar düğün temalı", weddingInbox.includes("Pasta tadımı") || weddingInbox.includes("Kına için"));
 
