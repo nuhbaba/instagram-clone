@@ -220,7 +220,7 @@ ok("bildirimlerde takip düğmesi", activity.includes('data-act="follow"'));
 const meProfile = render("/profile/beyhan_günseli");
 ok("profilde istatistikler", meProfile.includes("pstat") && meProfile.includes("gönderi"));
 ok("profilde kendi düğmeleri", meProfile.includes("Profili düzenle"));
-ok("kendi profilimde 56 gönderilik ızgara", (meProfile.match(/class="cell"/g) || []).length === 56);
+ok("kendi profilimde 35 gönderilik ızgara", (meProfile.match(/class="cell"/g) || []).length === 35);
 ok("profilde boş durum görünmüyor", !meProfile.includes("pempty"));
 ok("profilde tam 3 sekme (gönderi/reels/etiket)", (meProfile.match(/class="tab[ "]/g) || []).length === 3);
 ok("profilde sekmeler", meProfile.includes("tabs"));
@@ -271,8 +271,8 @@ ok("notlar düğün temalı", weddingInbox.includes("Pasta tadımı") || wedding
 const weddingActivity = render("/activity");
 ok("bildirimler düğün görselli", weddingActivity.includes("media/wedding-"));
 ok("bildirimlerde etiket satırı", weddingActivity.includes("bir gönderide seni etiketledi"));
-ok("gelen kutusunda Berhan var", weddingInbox.includes("berhan"));
-ok("notlar arasında Berhan notu", weddingInbox.includes("Seni seviyorum"));
+ok("gelen kutusunda Beyhan var", weddingInbox.includes("beyhan"));
+ok("notlar arasında Beyhan notu", weddingInbox.includes("Seni seviyorum"));
 
 const settings = render("/settings");
 ok("ayarlarda tema anahtarı", settings.includes("theme-toggle"));

@@ -11,6 +11,9 @@ _single-check.png
 fotograflar/*
 !fotograflar/OKU-BENI.txt
 
+# Gönderilen fotoğrafların geçici işleme klasörü
+tools/_giris/
+
 # Aday görsel havuzu (yalnızca seçilenler media/ altına kopyalanır)
 screenshots/_*
 media/_aday/

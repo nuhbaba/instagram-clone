@@ -119,8 +119,8 @@ window.IG = window.IG || {};
     },
     {
       /* Günseli'nin eşi: nişanlılıktan evliliğe uzanan yazışma d7 sohbetinde. */
-      id: "u16", username: "berhan", name: "Berhan",
-      avatar: "media/berhan-01.jpg",
+      id: "u16", username: "beyhan", name: "Beyhan",
+      avatar: "media/beyhan-01.jpg",
       bio: "Günseli'nin eşi 🤍 Kahve, yol ve deniz.",
       link: "", verified: false, private: false,
       followersBase: 640, followingBase: 412, category: ""
@@ -403,7 +403,7 @@ window.IG = window.IG || {};
     27: { c: "Nişan yüzüğüm 💎", l: "" },
     28: { c: "Düğün yerimizi son kez gezdik 🌿", l: "" },
     29: { c: "Gelin buketi denemeleri 💐", l: "" },
-    30: { c: "Berhan'ın sürprizi 💍", l: "", y: [["u7", "Sürprizleri hiç bitmiyor 😄", 2400, 7]] },
+    30: { c: "Beyhan'ın sürprizi 💍", l: "", y: [["u7", "Sürprizleri hiç bitmiyor 😄", 2400, 7]] },
     31: { c: "Yüzük seçerken ailem de yanımdaydı 🤍\n#aile", l: "" },
     32: { c: "Çiçekçiyle son karar 🌿", l: "" },
     33: { c: "Pasta tadımı: aile oylaması 🍰", l: "Pastane", y: [["u9", "Oylama sonucunu merak ediyorum 🍰", 2200, 10]] },
@@ -454,7 +454,7 @@ window.IG = window.IG || {};
 
   /* Profilden kaldırılan gönderiler (kullanıcı isteğiyle).
      Listenin başına eklemek yeterli — diğer gönderilerin numaraları kaymaz. */
-  var KALDIRILAN_GONDERILER = ["p49", "p83"];
+  var KALDIRILAN_GONDERILER = ["p35", "p36", "p37", "p38", "p39", "p40", "p41", "p42", "p43", "p44", "p45", "p46", "p47", "p48", "p49", "p50", "p51", "p52", "p53", "p54", "p55", "p56", "p57", "p58", "p59", "p60", "p61", "p62", "p63", "p64", "p65", "p66", "p67", "p68", "p69", "p70", "p73", "p74", "p76", "p78", "p83"];
 
   (function () {
     var ornek = [];
@@ -515,6 +515,140 @@ window.IG = window.IG || {};
       location: "Pastane", atUsers: ["u0"],
       caption: "Düğün pastası denemesi: üç kat, üstü canlı şakayık 🌸\n#düğünpastası #tatlı",
       comments: [C("u0", "Sabırsızlanıyorum 🍰", 1200, 9)]
+    })
+  ]);
+
+  /* ------------------------------------------------------------------ */
+  /* Nişan, kına, düğün ve günlük kareler (gönderilen fotoğraflardan)    */
+  /* ------------------------------------------------------------------ */
+  POSTS = POSTS.concat([
+    P({
+      id: "p90",
+      userId: "u0", src: "media/dugun-01.jpg",
+      mins: 43920, likes: 180,
+      caption: "Gelin 🤍\n#düğün #gelin",
+      comments: [C("u3", "Maşallah, çok güzel bir gelin oldun 🤍", 30, 22), C("u7", "Gelinliğin muhteşem! 😍", 25, 18), C("u16", "Karım çok güzel 🤍", 20, 34)]
+    }),
+    P({
+      id: "p91",
+      userId: "u0", src: "media/dugun-12.jpg",
+      mins: 45792, likes: 217,
+      caption: "Havai fişeklerle çıkış ✨\n#düğün",
+      comments: [C("u11", "Havai fişekli çıkış efsane ✨", 40, 12), C("u1", "Bu kare çok romantik 📷", 35, 15)]
+    }),
+    P({
+      id: "p92",
+      userId: "u0", src: "media/dugun-02.jpg",
+      mins: 46368, likes: 254,
+      caption: "Damat çok yakışıklı 😍\n#düğün #damat",
+      comments: [C("u5", "Damat çok şık olmuş 👏", 60, 14), C("u9", "Beyhan bey çok yakışmış, Günseli şanslı 😄", 55, 20)]
+    }),
+    P({
+      id: "p93",
+      userId: "u0", src: "media/dugun-03.jpg",
+      mins: 47520, likes: 291,
+      caption: "Evet dediğimiz an 🤍\n#düğün #nikâh",
+      comments: [C("u1", "Bu kare albüme kapak olmalı 📷", 70, 26), C("u13", "Ömür boyu mutlu olun 🤍", 65, 19), C("u16", "Hayatımın en güzel anı", 60, 41)]
+    }),
+    P({
+      id: "p94",
+      userId: "u0", src: "media/dugun-10.jpg",
+      mins: 48960, likes: 328,
+      caption: "İyi ki sen 🤍",
+      comments: [C("u3", "Birbirinize bakışınız çok güzel 🤍", 50, 23), C("u13", "Aşkınız daim olsun", 45, 11), C("u16", "İyi ki sen 🤍", 40, 38)]
+    }),
+    P({
+      id: "p95",
+      userId: "u0", src: "media/dugun-04.jpg",
+      mins: 50112, likes: 365,
+      caption: "Sevdiklerimizle dolu bir salon 🥰\n#düğün",
+      comments: [C("u11", "Salon çok kalabalıktı, harikaydı 🎉", 80, 16), C("u3", "Herkes çok eğlendi", 75, 9)]
+    }),
+    P({
+      id: "p96",
+      userId: "u0", src: "media/dugun-05.jpg",
+      mins: 51120, likes: 402,
+      caption: "Bir yüzük, bir ömür 💍",
+      comments: [C("u9", "Yüzükler tam oturmuş 💍", 90, 13), C("u7", "Elleriniz hiç ayrılmasın 🤍", 85, 21)]
+    }),
+    P({
+      id: "p97",
+      userId: "u0", src: "media/dugun-06.jpg",
+      mins: 52416, likes: 439,
+      caption: "Buketi ben tuttum 😄\n#düğün",
+      comments: [C("u5", "Buketi tutan şanslı gelin 😄", 55, 17), C("u13", "Ben de o anı bekliyordum 🙈", 50, 8)]
+    }),
+    P({
+      id: "p98",
+      userId: "u0", src: "media/dugun-07.jpg",
+      mins: 53856, likes: 476,
+      caption: "Karı koca ilk dans öncesi 🤍",
+      comments: [C("u11", "İlk dans öncesi heyecan 😍", 65, 14), C("u16", "O an sana bakınca her şeyi unuttum", 60, 29)]
+    }),
+    P({
+      id: "p99",
+      userId: "u0", src: "media/dugun-08.jpg",
+      mins: 55584, likes: 513,
+      caption: "Hazırlanırken… 🖤\n#düğün",
+      comments: [C("u3", "Detaylar çok şık 👌", 70, 11), C("u9", "Damat hazırlanırken bile yakışıklı 😄", 65, 15)]
+    }),
+    P({
+      id: "p100",
+      userId: "u0", src: "media/dugun-09.jpg",
+      mins: 57024, likes: 550,
+      caption: "O gece herkes oynadı 🎶\n#düğün",
+      comments: [C("u7", "O gece dans pisti hiç boş kalmadı 💃", 80, 12), C("u1", "Müzikler harikaydı 🎶", 75, 10)]
+    }),
+    P({
+      id: "p101",
+      userId: "u0", src: "media/dugun-11.jpg",
+      mins: 58752, likes: 587,
+      caption: "Düğün pastamız 🎂\n#düğünpastası",
+      comments: [C("u9", "Pasta harika görünüyor 🎂", 90, 18), C("u5", "Tadına bayıldım!", 85, 9)]
+    }),
+    P({
+      id: "p102",
+      userId: "u0", src: "media/kina-01.jpg",
+      mins: 64800, likes: 624,
+      location: "Kına Salonu",
+      caption: "Kına gecem ❤️\n#kına #kınagecesi",
+      comments: [C("u7", "Kına gecen çok güzeldi ❤️", 120, 24), C("u5", "O elbise muhteşem!", 115, 17), C("u3", "Kına gecesi unutulmaz olur 🌙", 110, 13), C("u13", "Çok güzel bir geceydi 🌙", 100, 8)]
+    }),
+    P({
+      id: "p103",
+      userId: "u0", src: "media/nisan-02.jpg",
+      mins: 82800, likes: 661,
+      caption: "Kurdele kesme anı 🎀\n#nişan",
+      comments: [C("u11", "Çok heyecanlıydınız 😄", 200, 14), C("u7", "Maşallah size 🤍", 190, 18)]
+    }),
+    P({
+      id: "p104",
+      userId: "u0", src: "media/nisan-01.jpg",
+      mins: 83520, likes: 698,
+      caption: "Nişanımız 🤍\n#nişan",
+      comments: [C("u9", "Nişanınız hayırlı olsun 🤍", 210, 21), C("u1", "Kurdele kesme anı çok tatlı 🎀", 200, 12)]
+    }),
+    P({
+      id: "p105",
+      userId: "u0", src: "media/nisan-03.jpg",
+      mins: 89280, likes: 735,
+      location: "Nişan",
+      caption: "GÜNSELLİ ♥ BEYHAN 🤍\n#nişan #aile",
+      comments: [C("u3", "Pasta çok güzel, adınız da çok yakışmış 🤍", 320, 28), C("u9", "Bu pastayı ben de istiyorum 😄", 300, 15), C("u5", "Maşallah, ne güzel bir gün 🤍", 290, 19), C("u16", "İyi ki evet dedin 🤍", 280, 33)]
+    }),
+    P({
+      id: "p106",
+      userId: "u0", src: "media/gunluk-01.jpg",
+      mins: 169920, likes: 772,
+      caption: "Kızlar gecesi 🌸",
+      comments: [C("u5", "Çok tatlı olmuşsun 🌸", 500, 16), C("u7", "Saçların harika olmuş 💫", 480, 11), C("u13", "Ne güzel bir kare!", 460, 7)]
+    }),
+    P({
+      id: "p107",
+      userId: "u0", src: "media/gunluk-02.jpg",
+      mins: 295200, likes: 809,
+      caption: "Deniz, kum, gün batımı 🌅",
+      comments: [C("u13", "Deniz sana çok yakışıyor 🌅", 800, 13), C("u11", "Ne güzel bir gün batımı", 780, 9)]
     })
   ]);
 
@@ -650,7 +784,7 @@ window.IG = window.IG || {};
       id: "d7", userId: "u16", unread: 1, pinned: true,
       messages: [
         { id: "m34", from: "u16", mins: 171360, text: "Günseli, bugün annemle konuştum. Artık resmî olarak istemeye gelmek istiyoruz 🤍" },
-        { id: "m35", from: "u0", mins: 171345, text: "Berhan… şu an kalbim çok hızlı atıyor 😊" },
+        { id: "m35", from: "u0", mins: 171345, text: "Beyhan… şu an kalbim çok hızlı atıyor 😊" },
         { id: "m36", from: "u16", mins: 171338, text: "Ben de heyecanlıyım. Seni istiyorum Günseli, çok istiyorum." },
         { id: "m37", from: "u0", mins: 171330, text: "Ben de seni çok istiyorum 🤍" },
         { id: "m38", from: "u16", mins: 171322, text: "Cumartesi konuşalım, hazırlıkları anlatayım. Uygun musun?" },
@@ -704,7 +838,7 @@ window.IG = window.IG || {};
         { id: "m86", from: "u16", mins: 40320, text: "Nikâh şahidim hazır, evraklar tamam 🤍" },
         { id: "m87", from: "u0", mins: 40310, text: "Bende de her şey tamam. Çok az kaldı!" },
         { id: "m88", from: "u16", mins: 40300, text: "Söz veriyorum: ömrüm boyunca seni mutlu edeceğim." },
-        { id: "m89", from: "u0", mins: 40290, text: "Seni seviyorum Berhan 🤍" },
+        { id: "m89", from: "u0", mins: 40290, text: "Seni seviyorum Beyhan 🤍" },
         { id: "m90", from: "u16", mins: 34560, text: "Provada gelinliğini gördüm, nefesim kesildi." },
         { id: "m91", from: "u0", mins: 34550, text: "Gerçekten mi 🥰" },
         { id: "m92", from: "u16", mins: 34540, text: "Çok güzelsin. Seni seviyorum." },
@@ -806,7 +940,7 @@ window.IG = window.IG || {};
     meId: "u0",
     /* İÇERİK SÜRÜMÜ: tohum içeriği her değiştiğinde bu değeri güncelle.
        Tarayıcıda eski kayıt varsa uygulama kendini otomatik yeniler. */
-    rev: "2026-10-16-8-aylik-paylasimlar",
+    rev: "2026-10-16-gercek-fotograflar-beyhan",
     /* Profilde gösterilecek istatistikler. Takipçi/takip sayıları birebir bu
        değerler olacak şekilde normalleştirilir (demo grafiği hesaba katılır). */
     stats: { followers: 215, following: 444, posts: 56 },

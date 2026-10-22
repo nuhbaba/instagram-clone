@@ -83,9 +83,10 @@ C.init();
 
 /* --- testler ----------------------------------------------------------- */
 const DEMO_GONDERI = 25;    // demo hesapların örnek gönderileri
-const PROFIL_ORNEK = 56;    // profil ızgarasındaki düğün temalı gönderiler (p49, p83 kaldırıldı)
+const PROFIL_ORNEK = 17;    // profil ızgarasındaki yer tutucular (9 kendi fotoğrafım + 8 aile karesi)
+const YENI_GONDERI = 18;    // nişan / kına / düğün / günlük gerçek fotoğraf gönderileri
 const ETIKET_GONDERI = 3;   // başka hesapların, seni etiketlediği düğün gönderileri
-const TOPLAM_GONDERI = DEMO_GONDERI + PROFIL_ORNEK + ETIKET_GONDERI;
+const TOPLAM_GONDERI = DEMO_GONDERI + PROFIL_ORNEK + ETIKET_GONDERI + YENI_GONDERI;
 
 console.log("\nVeri katmanı");
 eq("kullanıcı sayısı", Store.state.users.length, 17);
@@ -95,57 +96,59 @@ eq("hikâye sayısı", Store.state.stories.length, 8);
 eq("sohbet sayısı", Store.state.chats.length, 7);
 eq("bildirim sayısı", Store.state.notifications.length, 9);
 ok("me kullanıcısı bulundu", Store.me() && Store.me().username === "beyhan_günseli");
-eq("profildeki gönderi sayısı", Store.postCount(Store.meId), PROFIL_ORNEK);
+eq("profildeki gönderi sayısı", Store.postCount(Store.meId), PROFIL_ORNEK + YENI_GONDERI);
 eq("kendi hikâyem yok", Store.storiesFor(Store.meId), null);
 
 console.log("\nProfil istatistikleri (istenen sayılar)");
 eq("takipçi 215", Store.followersCount(Store.me()), 215);
 eq("takip 444", Store.followingCount(Store.me()), 444);
-eq("gönderi sayısı (p49, p83 kaldırıldı)", Store.postCount(Store.meId), 56);
+eq("profil gönderi sayısı (yer tutucu + gerçek)", Store.postCount(Store.meId), PROFIL_ORNEK + YENI_GONDERI);
 
 console.log("\nDüğün temalı içerik");
 ok("düğün başlıklı gönderiler var", Store.postsOf(Store.meId).filter((p) => p.caption).length >= 20);
 ok("düğün görselleri media/ altında", Store.postsOf(Store.meId).every((p) => p.src.indexOf("media/") === 0));
-ok("ilk 9 gönderi kendi fotoğraflarım", Store.postsOf(Store.meId).slice(0, 9).every((p) => p.src.indexOf("media/photo-") === 0));
-eq("kendi fotoğraf sayısı", Store.postsOf(Store.meId).filter((p) => p.src.indexOf("media/photo-") === 0).length, 9);
+const GERCEK = /^media\/(photo|dugun|nisan|kina|gunluk)-/;
+ok("en yeni gönderiler gerçek fotoğraflar", Store.postsOf(Store.meId).slice(0, 9).every((p) => GERCEK.test(p.src)));
+eq("kendi fotoğraf sayısı", Store.postsOf(Store.meId).filter((p) => GERCEK.test(p.src)).length, 9 + YENI_GONDERI);
 ok("ilk 9 gönderinin başlığı var", Store.postsOf(Store.meId).slice(0, 9).every((p) => p.caption && p.caption.length > 3));
 ok("yazışmalarda düğün konusu geçiyor", ["düğün", "nikâh", "kına", "gelinlik", "pasta", "albüm", "drone", "çekim", "tadım"]
   .some((k) => Store.state.chats.some((c) => c.messages.some((m) => m.text.toLowerCase().indexOf(k) !== -1))));
 eq("etiketlendiğim düğün gönderisi", Store.taggedPosts(Store.meId).length, ETIKET_GONDERI);
 ok("öne çıkanlarda Düğün var", Store.highlightsOf(Store.meId).some((h) => h.title === "Düğün"));
 
-console.log("\nBerhan ile 4 aylık yazışma (nişan → düğün → evlilik)");
-const berhan = Store.chat("d7");
-ok("Berhan sohbeti var", !!berhan && berhan.userId === "u16");
-eq("Berhan mesaj sayısı", berhan.messages.length, 87);
-ok("sohbet sabitlenmiş", berhan.pinned === true);
-ok("okunmamış mesaj var", berhan.unread > 0);
-ok("kimlikler benzersiz", new Set(berhan.messages.map((m) => m.id)).size === berhan.messages.length);
-ok("zaman sırası eskiden yeniye", berhan.messages.every((m, i) => i === 0 || berhan.messages[i - 1].at <= m.at));
-const gunFark = Math.abs(berhan.messages[berhan.messages.length - 1].at - berhan.messages[0].at) / 86400000;
+console.log("\nBeyhan ile 4 aylık yazışma (nişan → düğün → evlilik)");
+const beyhanSohbet = Store.chat("d7");
+ok("Beyhan sohbeti var", !!beyhanSohbet && beyhanSohbet.userId === "u16");
+eq("Beyhan mesaj sayısı", beyhanSohbet.messages.length, 87);
+ok("sohbet sabitlenmiş", beyhanSohbet.pinned === true);
+ok("okunmamış mesaj var", beyhanSohbet.unread > 0);
+ok("kimlikler benzersiz", new Set(beyhanSohbet.messages.map((m) => m.id)).size === beyhanSohbet.messages.length);
+ok("zaman sırası eskiden yeniye", beyhanSohbet.messages.every((m, i) => i === 0 || beyhanSohbet.messages[i - 1].at <= m.at));
+const gunFark = Math.abs(beyhanSohbet.messages[beyhanSohbet.messages.length - 1].at - beyhanSohbet.messages[0].at) / 86400000;
 ok("yaklaşık 4 aya yayılıyor (" + Math.round(gunFark) + " gün)", gunFark > 100 && gunFark < 130);
-ok("ara ara konuşulmuş (en az 12 ayrı gün)", new Set(berhan.messages.map((m) => new Date(m.at).toDateString())).size >= 12);
-ok("karşılıklı yazışma", berhan.messages.some((m) => m.from === "u16") && berhan.messages.some((m) => m.from === "u0"));
-const sevgi = berhan.messages.filter((m) => /seviyorum|istiyorum/i.test(m.text)).length;
+ok("ara ara konuşulmuş (en az 12 ayrı gün)", new Set(beyhanSohbet.messages.map((m) => new Date(m.at).toDateString())).size >= 12);
+ok("karşılıklı yazışma", beyhanSohbet.messages.some((m) => m.from === "u16") && beyhanSohbet.messages.some((m) => m.from === "u0"));
+const sevgi = beyhanSohbet.messages.filter((m) => /seviyorum|istiyorum/i.test(m.text)).length;
 ok("sevgi mesajları yeterli (" + sevgi + ")", sevgi >= 10);
-const tumMetin = berhan.messages.map((m) => m.text).join(" ");
+const tumMetin = beyhanSohbet.messages.map((m) => m.text).join(" ");
 ok("nişan dönemi geçiyor", /nişan/i.test(tumMetin));
 ok("düğün/evlilik geçiyor", /düğün|nikâh|karım|kocam/i.test(tumMetin));
-ok("Berhan profil fotoğrafı yerel dosya", Store.user("u16").avatar === "media/berhan-01.jpg");
+ok("Beyhan profil fotoğrafı yerel dosya", Store.user("u16").avatar === "media/beyhan-01.jpg");
+eq("Beyhan kullanıcı adı", Store.user("u16").username, "beyhan");
 ok("karşılıklı takip", Store.isFollowing("u16") && Store.state.follows.u16.indexOf("u0") !== -1);
 ok("sabitli sohbetler arasında", Store.state.chats.filter((c) => c.pinned).some((c) => c.userId === "u16"));
-ok("en son mesaj Berhan'dan", Store.lastMessage(Store.chat("d7")).from === "u16");
+ok("en son mesaj Beyhan'dan", Store.lastMessage(Store.chat("d7")).from === "u16");
 console.log("\n8 aylık paylaşım geçmişi");
 const profilGonderileri = Store.postsOf(Store.meId);
 const gunOnce = (p) => Math.round((Date.now() - p.at) / 86400000);
 ok("en yeni gönderi ~1 ay önce (" + gunOnce(profilGonderileri[0]) + " gün)", Math.abs(gunOnce(profilGonderileri[0]) - 30) <= 3);
 ok("en eski gönderi ~8 ay önce (" + gunOnce(profilGonderileri[profilGonderileri.length - 1]) + " gün)", gunOnce(profilGonderileri[profilGonderileri.length - 1]) >= 225);
 ok("tüm gönderilerde başlık var", profilGonderileri.every((p) => p.caption && p.caption.length > 3));
-ok("aile temalı başlıklar var (" + profilGonderileri.filter((p) => /aile|anne|baba|abla|hala|kuzen/i.test(p.caption)).length + ")", profilGonderileri.filter((p) => /aile|anne|baba|abla|hala|kuzen/i.test(p.caption)).length >= 15);
+ok("aile temalı başlıklar var (" + profilGonderileri.filter((p) => /aile|anne|baba|abla|hala|kuzen/i.test(p.caption)).length + ")", profilGonderileri.filter((p) => /aile|anne|baba|abla|hala|kuzen/i.test(p.caption)).length >= 6);
 ok("nişan dönemi geçiyor", profilGonderileri.some((p) => /nişan/i.test(p.caption)));
-ok("evlilik kareleri en üstte", profilGonderileri.slice(0, 9).every((p) => p.src.indexOf("media/photo-") === 0));
+ok("evlilik kareleri en üstte", profilGonderileri.slice(0, 9).every((p) => GERCEK.test(p.src)));
 ok("zaman sırası yeniden eskiye", profilGonderileri.every((p, i) => i === 0 || profilGonderileri[i - 1].at >= p.at));
-ok("aylara yayılmış (en az 7 farklı ay)", new Set(profilGonderileri.map((p) => new Date(p.at).getMonth())).size >= 7);
+ok("aylara yayılmış (en az 5 farklı ay)", new Set(profilGonderileri.map((p) => new Date(p.at).getMonth())).size >= 5);
 console.log("\nSeçiciler");
 const feed = Store.feed();
 ok("akış yeterli uzunlukta (" + feed.length + ")", feed.length >= 10);
@@ -156,7 +159,7 @@ ok("akışta reels yok", feed.every((p) => p.kind !== "reel"));
 ok("akış yalnızca takip edilenler + ben", feed.every((p) => p.userId === Store.meId || Store.isFollowing(p.userId)));
 ok("akış yeniden-eskiye sıralı", feed.every((p, i) => i === 0 || feed[i - 1].at >= p.at));
 eq("reels sayısı", Store.reels().length, 9);
-eq("keşfet demo + etiket gönderileri", Store.explore().length, DEMO_GONDERI + ETIKET_GONDERI);
+eq("keşfet demo + etiket + gerçek gönderiler", Store.explore().length, DEMO_GONDERI + ETIKET_GONDERI + YENI_GONDERI);
 ok("keşfet popülerliğe göre sıralı", Store.explore()[0].likesBase >= Store.explore()[1].likesBase);
 eq("kaydedilenler", Store.savedPosts().length, 2);
 const takipciSayisi = (id) => Store.state.users.filter((x) => (Store.state.follows[x.id] || []).indexOf(id) !== -1).length;
@@ -340,17 +343,17 @@ storage.set("instaclone.tr.v5", JSON.stringify(eskiKayit));
 Store.init();
 eq("eski içerik sürümü atıldı", Store.state.seedRev, IG.seed.rev);
 eq("yeni tohumdaki gönderi sayısı", Store.state.posts.length, TOPLAM_GONDERI);
-ok("kendi fotoğraflarım geri geldi", Store.postsOf(Store.meId).slice(0, 9).every((p) => p.src.indexOf("media/photo-") === 0));
+ok("kendi fotoğraflarım geri geldi", Store.postsOf(Store.meId).slice(0, 9).every((p) => GERCEK.test(p.src)));
 
 console.log("\nÖrnek gönderileri temizleme");
 const temizlenen = Store.clearPlaceholders();
-eq("58 örnek gönderi kaldırıldı", temizlenen, PROFIL_ORNEK);
+eq("örnek gönderiler kaldırıldı", temizlenen, PROFIL_ORNEK);
 eq("örnek gönderi kalmadı", Store.placeholderCount(), 0);
 
 Store.reset();
 eq("sıfırlama sonrası gönderi sayısı", Store.state.posts.length, TOPLAM_GONDERI);
 eq("sıfırlama sonrası profil", Store.me().username, "beyhan_günseli");
-eq("sıfırlama sonrası gönderi 58", Store.postCount(Store.meId), PROFIL_ORNEK);
+eq("sıfırlama sonrası profil gönderisi", Store.postCount(Store.meId), PROFIL_ORNEK + YENI_GONDERI);
 eq("sıfırlama sonrası takipçi 215", Store.followersCount(Store.me()), 215);
 
 /* --- özet -------------------------------------------------------------- */
