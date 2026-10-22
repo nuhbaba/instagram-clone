@@ -2105,6 +2105,24 @@ img.is-fallback { filter: saturate(1.05); }
   .home-indicator { display: none; }
 }
 
+/* --------------------------------------------- Kurulu uygulama (ana ekran simgesi)
+   Telefonda uygulama gibi açıldığında (standalone) tarayıcı adres çubuğu yoktur ve
+   sistemin kendi durum çubuğu görünür; o yüzden taklit durum çubuğunu gizliyoruz. */
+@media (display-mode: standalone), (display-mode: fullscreen), (display-mode: minimal-ui) {
+  .status-bar { display: none; }
+  .notch { display: none; }
+  .home-indicator { display: none; }
+  .appbar { padding-top: env(safe-area-inset-top); height: calc(50px + env(safe-area-inset-top)); }
+  .screen { padding-top: 0; }
+}
+
+html[data-standalone="1"] .status-bar { display: none; }
+html[data-standalone="1"] .notch { display: none; }
+html[data-standalone="1"] .appbar {
+  padding-top: env(safe-area-inset-top);
+  height: calc(50px + env(safe-area-inset-top));
+}
+
 @media (max-width: 380px) {
   .stage-note { display: none; }
 }

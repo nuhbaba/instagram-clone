@@ -2128,6 +2128,24 @@ img.is-fallback { filter: saturate(1.05); }
   .home-indicator { display: none; }
 }
 
+/* --------------------------------------------- Kurulu uygulama (ana ekran simgesi)
+   Telefonda uygulama gibi açıldığında (standalone) tarayıcı adres çubuğu yoktur ve
+   sistemin kendi durum çubuğu görünür; o yüzden taklit durum çubuğunu gizliyoruz. */
+@media (display-mode: standalone), (display-mode: fullscreen), (display-mode: minimal-ui) {
+  .status-bar { display: none; }
+  .notch { display: none; }
+  .home-indicator { display: none; }
+  .appbar { padding-top: env(safe-area-inset-top); height: calc(50px + env(safe-area-inset-top)); }
+  .screen { padding-top: 0; }
+}
+
+html[data-standalone="1"] .status-bar { display: none; }
+html[data-standalone="1"] .notch { display: none; }
+html[data-standalone="1"] .appbar {
+  padding-top: env(safe-area-inset-top);
+  height: calc(50px + env(safe-area-inset-top));
+}
+
 @media (max-width: 380px) {
   .stage-note { display: none; }
 }
@@ -7467,6 +7485,30 @@ window.IG = window.IG || {};
       UI.welcomeShown = true;
       C.toast("Hoş geldin! Her şey bu cihazda saklanıyor.", { icon: "info", duration: 3200 });
     }, 700);
+
+    /* Ana ekran simgesinden (standalone) açıldıysa: adres çubuğu yoktur, sistemin
+       durum çubuğu vardır — sahte durum çubuğunu gizle (uygulama gibi görünsün). */
+    var standaloneMi = false;
+    try {
+      standaloneMi = !!(window.matchMedia && (
+        window.matchMedia("(display-mode: standalone)").matches ||
+        window.matchMedia("(display-mode: fullscreen)").matches
+      )) || window.navigator.standalone === true;
+    } catch (e) { standaloneMi = false; }
+
+    if (standaloneMi) {
+      document.documentElement.setAttribute("data-standalone", "1");
+    } else if (/Android|iPhone|iPad|iPod/i.test(window.navigator.userAgent || "")) {
+      /* Telefonda tarayıcı sekmesinde açıldıysa kurulum ipucu (bir kez) */
+      var ipucuGosterildi = false;
+      try { ipucuGosterildi = localStorage.getItem("instaclone.kurulum-ipucu") === "1"; } catch (e) {}
+      if (!ipucuGosterildi) {
+        setTimeout(function () {
+          C.toast("Adres çubuğu olmadan açmak için: menüden “Ana ekrana ekle”.", { icon: "plusSquare", duration: 6500 });
+          try { localStorage.setItem("instaclone.kurulum-ipucu", "1"); } catch (e) {}
+        }, 2600);
+      }
+    }
 
     registerSW();
     document.addEventListener("visibilitychange", function () {

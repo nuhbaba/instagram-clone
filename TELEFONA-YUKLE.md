@@ -78,6 +78,28 @@ Bilgisayar ve telefon **aynı Wi-Fi'da** olmalı.
 Telefonda bu adresi aç → tarayıcı menüsü → **"Uygulamayı yükle" / "Ana ekrana ekle"**.
 Artık ana ekranda kendi ikonuyla duran, tam ekran ve çevrimdışı açılan bir uygulama olur.
 
+### 📱 Adres çubuğu görünmesin (uygulama gibi açılsın)
+
+Adres çubuğunun gizlenmesi uygulamanın değil **kurulumun** yaptığı bir şeydir:
+
+| Durum | Nasıl açılır | Adres çubuğu |
+|---|---|---|
+| Ana ekrana **kurulmuş** uygulama | Ana ekrandaki **ikona** dokun | **Yok** ✅ tam ekran |
+| Tarayıcı sekmesi | Adresi tarayıcıya yaz / yer imi | Var |
+| WhatsApp / Instagram **içi tarayıcı** | Sohbetteki linke dokun | Var (kurulum desteklenmez) ❌ |
+
+Yani: linki önce **Chrome / Safari**'de aç, sonra kur:
+
+- **Android Chrome:** sağ üst **⋮** → **"Uygulamayı yükle"** (bazı sürümlerde "Ana ekrana ekle").
+  Kurulum çıkmıyorsa sayfayı bir kez yenile (servis çalışanı yüklenince çıkar).
+- **iPhone Safari:** alt **Paylaş** → **"Ana Ekrana Ekle"**. (Chrome iOS'ta PWA kurulumu yok.)
+- Kurduktan sonra ikonu **ana ekrandan** aç → adres çubuğu yok, sistem durum çubuğu dışında
+  hiçbir tarayıcı arayüzü görünmez.
+
+Kurulu modda uygulama, sahte durum çubuğunu gizler ve içeriği telefonun çentiğine/durum
+çubuğuna göre hizalar (safe-area). Ayarlar → **"Uygulamayı yükle (PWA)"** düğmesi de aynı
+kurulumu başlatır.
+
 Kendi alan adınla ya da başka bir barındırmayla yayınlamak istersen ücretsiz seçenekler:
 
 - **GitHub Pages** (bu projede kullanılan) → Depo → *Settings → Pages → Source: Deploy from

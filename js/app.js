@@ -2411,6 +2411,30 @@
       C.toast("Hoş geldin! Her şey bu cihazda saklanıyor.", { icon: "info", duration: 3200 });
     }, 700);
 
+    /* Ana ekran simgesinden (standalone) açıldıysa: adres çubuğu yoktur, sistemin
+       durum çubuğu vardır — sahte durum çubuğunu gizle (uygulama gibi görünsün). */
+    var standaloneMi = false;
+    try {
+      standaloneMi = !!(window.matchMedia && (
+        window.matchMedia("(display-mode: standalone)").matches ||
+        window.matchMedia("(display-mode: fullscreen)").matches
+      )) || window.navigator.standalone === true;
+    } catch (e) { standaloneMi = false; }
+
+    if (standaloneMi) {
+      document.documentElement.setAttribute("data-standalone", "1");
+    } else if (/Android|iPhone|iPad|iPod/i.test(window.navigator.userAgent || "")) {
+      /* Telefonda tarayıcı sekmesinde açıldıysa kurulum ipucu (bir kez) */
+      var ipucuGosterildi = false;
+      try { ipucuGosterildi = localStorage.getItem("instaclone.kurulum-ipucu") === "1"; } catch (e) {}
+      if (!ipucuGosterildi) {
+        setTimeout(function () {
+          C.toast("Adres çubuğu olmadan açmak için: menüden “Ana ekrana ekle”.", { icon: "plusSquare", duration: 6500 });
+          try { localStorage.setItem("instaclone.kurulum-ipucu", "1"); } catch (e) {}
+        }, 2600);
+      }
+    }
+
     registerSW();
     document.addEventListener("visibilitychange", function () {
       if (document.hidden && UI.story) pauseStory();

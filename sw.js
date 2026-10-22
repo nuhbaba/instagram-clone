@@ -2,7 +2,7 @@
    sw.js — Uygulama kabuğu önbelleği + uzak görseller için çalışma zamanı
    önbelleği. Amaç: çevrimdışıyken de arayüzün açılması.
    ========================================================================== */
-const VERSION = "v1.4.0";
+const VERSION = "v1.5.0";
 const SHELL_CACHE = `ig-shell-${VERSION}`;
 const IMG_CACHE = `ig-img-${VERSION}`;
 
