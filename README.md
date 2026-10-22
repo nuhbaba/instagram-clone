@@ -1,6 +1,8 @@
 # Instagram — Benzeri Uygulama (mobil web / PWA)
 
-**🔗 Canlı demo:** <https://nuhbaba.github.io/instagram-clone/> · **Depo:** <https://github.com/nuhbaba/instagram-clone>
+**🔗 Profil adresi (ana giriş):** <https://nuhbaba.github.io/instagram-clone/#/profile>
+**🔗 Canlı demo:** <https://nuhbaba.github.io/instagram-clone/> (bu adres de doğrudan profili açar)
+**📦 Depo:** <https://github.com/nuhbaba/instagram-clone>
 
 Instagram'ın arayüz dili ve kullanım akışını örnek alan, **tek başına çalışan** bir mobil
 sosyal medya uygulaması prototipi. Kurulum, derleme veya sunucu gerekmez: `index.html`
