@@ -135,6 +135,17 @@ ok("Berhan profil fotoğrafı yerel dosya", Store.user("u16").avatar === "media/
 ok("karşılıklı takip", Store.isFollowing("u16") && Store.state.follows.u16.indexOf("u0") !== -1);
 ok("sabitli sohbetler arasında", Store.state.chats.filter((c) => c.pinned).some((c) => c.userId === "u16"));
 ok("en son mesaj Berhan'dan", Store.lastMessage(Store.chat("d7")).from === "u16");
+console.log("\n8 aylık paylaşım geçmişi");
+const profilGonderileri = Store.postsOf(Store.meId);
+const gunOnce = (p) => Math.round((Date.now() - p.at) / 86400000);
+ok("en yeni gönderi ~1 ay önce (" + gunOnce(profilGonderileri[0]) + " gün)", Math.abs(gunOnce(profilGonderileri[0]) - 30) <= 3);
+ok("en eski gönderi ~8 ay önce (" + gunOnce(profilGonderileri[profilGonderileri.length - 1]) + " gün)", gunOnce(profilGonderileri[profilGonderileri.length - 1]) >= 225);
+ok("tüm gönderilerde başlık var", profilGonderileri.every((p) => p.caption && p.caption.length > 3));
+ok("aile temalı başlıklar var (" + profilGonderileri.filter((p) => /aile|anne|baba|abla|hala|kuzen/i.test(p.caption)).length + ")", profilGonderileri.filter((p) => /aile|anne|baba|abla|hala|kuzen/i.test(p.caption)).length >= 15);
+ok("nişan dönemi geçiyor", profilGonderileri.some((p) => /nişan/i.test(p.caption)));
+ok("evlilik kareleri en üstte", profilGonderileri.slice(0, 9).every((p) => p.src.indexOf("media/photo-") === 0));
+ok("zaman sırası yeniden eskiye", profilGonderileri.every((p, i) => i === 0 || profilGonderileri[i - 1].at >= p.at));
+ok("aylara yayılmış (en az 7 farklı ay)", new Set(profilGonderileri.map((p) => new Date(p.at).getMonth())).size >= 7);
 console.log("\nSeçiciler");
 const feed = Store.feed();
 ok("akış yeterli uzunlukta (" + feed.length + ")", feed.length >= 10);

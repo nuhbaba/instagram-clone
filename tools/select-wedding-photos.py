@@ -21,6 +21,7 @@ ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)),
 HOVUZLAR = {
     "": (os.path.join(ROOT, "media", "_aday"), os.path.join(ROOT, "tools", "_pool.json")),
     "n": (os.path.join(ROOT, "media", "_aday2"), os.path.join(ROOT, "tools", "_aday2.json")),
+    "y": (os.path.join(ROOT, "media", "_aday3"), os.path.join(ROOT, "tools", "_aday3.json")),
 }
 MEDIA = os.path.join(ROOT, "media")
 
@@ -47,7 +48,8 @@ def main() -> None:
     for ham in args.sec.replace(" ", "").split(","):
         if not ham:
             continue
-        on_ek = "n" if ham[:1].lower() == "n" else ""
+        ilk = ham[:1].lower()
+        on_ek = ilk if ilk in ("n", "y") else ""
         try:
             i = int(ham[1:] if on_ek else ham)
         except ValueError:

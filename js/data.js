@@ -383,21 +383,54 @@ window.IG = window.IG || {};
     7: { c: "Gelin 🤍\n#gelin #düğün", l: "" },
     8: { c: "İlk adımımızı birlikte attık ✨\n#düğün", l: "" },
     9: { c: "Yolun sonunda birlikteyiz 🌅\n#balayı", l: "" },
-    10: { c: "Davetiyelerden bir hatıra 💌\n#davetiye", l: "" },
-    11: { c: "Tatlı bir telaş 🍰\n#düğünpastası", l: "Pastane", y: [["u9", "İkisi de hazır, gelsin bakalım 🍰", 200, 11]] },
-    12: { c: "Hazırlık heyecanı 💇‍♀️\n#hazırlık", l: "" },
-    13: { c: "Manzara bizi bekliyordu 🤍\n#düğünmekanı", l: "Boğaz" },
-    14: { c: "Altın saat çekimleri 🎞️\n#düğünfotoğrafı", l: "Galata", y: [["u1", "O ışık tam istediğim gibiydi 📷", 320, 18]] },
-    15: { c: "Bir söz, bir ömür 🤍\n#nikâh", l: "" },
-    16: { c: "Misafir defterinden notlar 💐\n#düğünhatırası", l: "" },
-    17: { c: "Yanımızda olan herkese teşekkürler ✨\n#aile", l: "" },
-    18: { c: "Gelin arabası süslemesi 🚗🤍\n#düğün", l: "" },
-    19: { c: "İkramlar hazır ☕️\n#düğünikramı", l: "Kokteyl Alanı", y: [["u14", "Baristalar hazır, merak etmeyin ☕️", 260, 7]] },
-    20: { c: "Hatıra köşemiz 📸\n#düğün", l: "" },
-    21: { c: "Sevdiklerimizle son akşam 🍽️\n#aile", l: "" },
-    22: { c: "Çiçeklerin dili 🌸\n#buket", l: "" },
-    23: { c: "Sahne hazır 🎶\n#düğünmüziği", l: "" },
-    24: { c: "Balayı planları 🗺️\n#balayı", l: "" }
+    10: { c: "Yüzükler takıldı 💍\n#nişan", l: "", y: [["u3", "Hayırlı olsun, çok yakışmış 💍", 4000, 21]] },
+    11: { c: "Nişan yüzüklerimiz 💍\n#nişan #aile", l: "İstanbul", y: [["u7", "Maşallah 🤍", 3800, 14]] },
+    12: { c: "Nikâh salonumuz hazır 🤍\n#düğün", l: "" },
+    13: { c: "Nişan çiçeklerimiz 🌸\n#nişan", l: "", y: [["u9", "Çiçekler çok taze 🌸", 3500, 8]] },
+    14: { c: "Yüzükleri seçerken 💍", l: "" },
+    15: { c: "Mekânı gezdik, ışıkları çok sevdim ✨", l: "" },
+    16: { c: "Ablamın getirdiği çiçekler 🌹\n#aile", l: "", y: [["u11", "Ablanın zevki güzel 🤍", 3200, 11]] },
+    17: { c: "Annemin elinden çiçekler 🤍\n#aile", l: "" },
+    18: { c: "Nikâhımız burada olacak ⛪️", l: "" },
+    19: { c: "Nişan pastamız 🎂\n#nişan", l: "Pastane", y: [["u9", "Pasta çok güzel, tadına bakmak lazım 🍰", 3000, 16]] },
+    20: { c: "Ailece hazırlık telaşı 🤍\n#aile", l: "", y: [["u5", "Ne güzel bir telaş 🤍", 2800, 9]] },
+    21: { c: "İçim çok huzurlu, burada evet diyeceğim 🤍", l: "" },
+    22: { c: "Annem ve babamın elleri 🤍\n#aile", l: "", y: [["u3", "Çok duygulandım 🤍", 2600, 13]] },
+    23: { c: "Annemin pastası her zaman en güzeli 🍫", l: "" },
+    24: { c: "Aile sofrası 🍽️", l: "" },
+    25: { c: "Kuzenimin düğününde 💐\n#aile", l: "" },
+    26: { c: "Tadımlık pasta 🍰", l: "" },
+    27: { c: "Nişan yüzüğüm 💎", l: "" },
+    28: { c: "Düğün yerimizi son kez gezdik 🌿", l: "" },
+    29: { c: "Gelin buketi denemeleri 💐", l: "" },
+    30: { c: "Berhan'ın sürprizi 💍", l: "", y: [["u7", "Sürprizleri hiç bitmiyor 😄", 2400, 7]] },
+    31: { c: "Yüzük seçerken ailem de yanımdaydı 🤍\n#aile", l: "" },
+    32: { c: "Çiçekçiyle son karar 🌿", l: "" },
+    33: { c: "Pasta tadımı: aile oylaması 🍰", l: "Pastane", y: [["u9", "Oylama sonucunu merak ediyorum 🍰", 2200, 10]] },
+    34: { c: "Yüzükler hazır 💍", l: "" },
+    35: { c: "Sofra süslerimiz 🕯️", l: "" },
+    36: { c: "Annemin bahçesinden 🤍\n#aile", l: "" },
+    37: { c: "Ablamın seçtiği buket 🦋\n#aile", l: "", y: [["u11", "Bunu ilk ben gördüm 😄", 2000, 6]] },
+    38: { c: "Misafir sofrası çiçekleri 🌸", l: "" },
+    39: { c: "Bir gül, bir ömür 🌹", l: "" },
+    40: { c: "Aile sofrası 🍽️\n#aile", l: "İstanbul", y: [["u5", "Sofranız çok güzel, afiyet olsun 🍽️", 1900, 12]] },
+    41: { c: "Kuzenimin doğum günü pastası 🎂", l: "" },
+    42: { c: "Yüzükleri birlikte taktık 🤍", l: "" },
+    43: { c: "Halamın getirdiği çiçekler 🌸\n#aile", l: "" },
+    44: { c: "Nişan gecesi pastası 🎂", l: "" },
+    45: { c: "Sade ve zarif, tam annemin seveceği gibi 🤍", l: "" },
+    46: { c: "Annem çayı demledi, misafirler gelecek ☕️\n#aile", l: "İstanbul" },
+    47: { c: "Pazar pikniği, ailecek 🌿\n#aile", l: "", y: [["u11", "Bu pikniğe ben de gelirim 😄", 1500, 8]] },
+    48: { c: "Süslemelerimiz hazır 🤍", l: "" },
+    49: { c: "Papatyalar, annemin en sevdiği 🌼", l: "" },
+    50: { c: "Ablamın kurabiyeleri, kahve yanına ☕️🍪\n#aile", l: "" },
+    51: { c: "Salonun son hâli ✨", l: "" },
+    52: { c: "Aile yemeği, herkes bir arada 🍽️\n#aile", l: "İstanbul", y: [["u15", "Ailece olmak çok güzel 🤍", 1300, 9]] },
+    53: { c: "Doğum günü sürprizi 🎂", l: "" },
+    54: { c: "Annemin doğum günü 🤍\n#aile", l: "", y: [["u3", "Nice mutlu senelere 🤍", 1200, 14]] },
+    55: { c: "İstanbul akşamı 🌆", l: "İstanbul" },
+    56: { c: "Hafta sonu gezintisi 🌿\n#aile", l: "" },
+    57: { c: "Küçük bir hediye, büyük bir teşekkür 🤍", l: "" }
   };
 
   /* ------------------------------------------------------------------ */
@@ -431,11 +464,17 @@ window.IG = window.IG || {};
       if (KALDIRILAN_GONDERILER.indexOf(pid) !== -1) continue;
       var detay = DUGUN_BASLIKLARI[i] || {};
       var yorumlar = (detay.y || []).map(function (r) { return C(r[0], r[1], r[2], r[3]); });
+      /* 8 aylık zaman çizelgesi:
+         - ilk 9 gönderi (kendi düğün fotoğrafların) ~1 ay önce
+         - kalanlar 46 → 240 gün öncesine yayılır (nişan, aile, hazırlık) */
+      var gunOnce = i <= 9
+        ? 30 + (i - 1) * 1.4
+        : 46 + (i - 10) * ((240 - 46) / (57 - 10));
       ornek.push(P({
         id: pid,
         userId: "u0",
         src: KENDI_FOTOGRAFLARIM[i - 1] || ("media/wedding-" + no + ".jpg"),
-        mins: 60 * 24 * (3 + i * 2),
+        mins: Math.round(60 * 24 * gunOnce),
         likes: 32 + ((i * 47) % 420),
         caption: detay.c || "",
         location: detay.l || "",
@@ -767,7 +806,7 @@ window.IG = window.IG || {};
     meId: "u0",
     /* İÇERİK SÜRÜMÜ: tohum içeriği her değiştiğinde bu değeri güncelle.
        Tarayıcıda eski kayıt varsa uygulama kendini otomatik yeniler. */
-    rev: "2026-10-16-berhan-yazismasi",
+    rev: "2026-10-16-8-aylik-paylasimlar",
     /* Profilde gösterilecek istatistikler. Takipçi/takip sayıları birebir bu
        değerler olacak şekilde normalleştirilir (demo grafiği hesaba katılır). */
     stats: { followers: 215, following: 444, posts: 56 },

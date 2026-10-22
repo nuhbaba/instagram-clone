@@ -15,9 +15,11 @@ fotograflar/*
 screenshots/_*
 media/_aday/
 media/_aday2/
+media/_aday3/
 tools/_pool.json
 tools/_aday.json
 tools/_aday2.json
+tools/_aday3.json
 
 # Node
 node_modules/
