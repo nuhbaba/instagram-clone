@@ -85,8 +85,10 @@ C.init();
 const DEMO_GONDERI = 25;    // demo hesapların örnek gönderileri
 const PROFIL_ORNEK = 17;    // profil ızgarasındaki yer tutucular (9 kendi fotoğrafım + 8 aile karesi)
 const YENI_GONDERI = 18;    // nişan / kına / düğün / günlük gerçek fotoğraf gönderileri
+const AILE_GONDERI = 23;    // aile / ev / günlük yaşam kareleri
+const GERCEK_TOPLAM = PROFIL_ORNEK + YENI_GONDERI + AILE_GONDERI;
 const ETIKET_GONDERI = 3;   // başka hesapların, seni etiketlediği düğün gönderileri
-const TOPLAM_GONDERI = DEMO_GONDERI + PROFIL_ORNEK + ETIKET_GONDERI + YENI_GONDERI;
+const TOPLAM_GONDERI = DEMO_GONDERI + PROFIL_ORNEK + ETIKET_GONDERI + YENI_GONDERI + AILE_GONDERI;
 
 console.log("\nVeri katmanı");
 eq("kullanıcı sayısı", Store.state.users.length, 17);
@@ -96,13 +98,13 @@ eq("hikâye sayısı", Store.state.stories.length, 8);
 eq("sohbet sayısı", Store.state.chats.length, 7);
 eq("bildirim sayısı", Store.state.notifications.length, 9);
 ok("me kullanıcısı bulundu", Store.me() && Store.me().username === "gunseli_beyhan");
-eq("profildeki gönderi sayısı", Store.postCount(Store.meId), PROFIL_ORNEK + YENI_GONDERI);
+eq("profildeki gönderi sayısı", Store.postCount(Store.meId), GERCEK_TOPLAM);
 eq("kendi hikâyem yok", Store.storiesFor(Store.meId), null);
 
 console.log("\nProfil istatistikleri (istenen sayılar)");
 eq("takipçi 214", Store.followersCount(Store.me()), 214);
 eq("takip 444", Store.followingCount(Store.me()), 444);
-eq("profil gönderi sayısı (yer tutucu + gerçek)", Store.postCount(Store.meId), PROFIL_ORNEK + YENI_GONDERI);
+eq("profil gönderi sayısı (yer tutucu + gerçek)", Store.postCount(Store.meId), GERCEK_TOPLAM);
 
 console.log("\nDüğün temalı içerik");
 ok("düğün başlıklı gönderiler var", Store.postsOf(Store.meId).filter((p) => p.caption).length >= 20);
@@ -110,6 +112,8 @@ ok("düğün görselleri media/ altında", Store.postsOf(Store.meId).every((p) =
 const GERCEK = /^media\/(photo|dugun|nisan|kina|gunluk)-/;
 ok("en yeni gönderiler gerçek fotoğraflar", Store.postsOf(Store.meId).slice(0, 9).every((p) => GERCEK.test(p.src)));
 eq("kendi fotoğraf sayısı", Store.postsOf(Store.meId).filter((p) => GERCEK.test(p.src)).length, 9 + YENI_GONDERI);
+eq("aile kareleri", Store.postsOf(Store.meId).filter((p) => /^media\/aile-/.test(p.src)).length, AILE_GONDERI);
+eq("profil 58 gönderi", Store.postCount(Store.meId), 58);
 ok("ilk 9 gönderinin başlığı var", Store.postsOf(Store.meId).slice(0, 9).every((p) => p.caption && p.caption.length > 3));
 ok("yazışmalarda düğün konusu geçiyor", ["düğün", "nikâh", "kına", "gelinlik", "pasta", "albüm", "drone", "çekim", "tadım"]
   .some((k) => Store.state.chats.some((c) => c.messages.some((m) => m.text.toLowerCase().indexOf(k) !== -1))));
@@ -159,7 +163,7 @@ ok("akışta reels yok", feed.every((p) => p.kind !== "reel"));
 ok("akış yalnızca takip edilenler + ben", feed.every((p) => p.userId === Store.meId || Store.isFollowing(p.userId)));
 ok("akış yeniden-eskiye sıralı", feed.every((p, i) => i === 0 || feed[i - 1].at >= p.at));
 eq("reels sayısı", Store.reels().length, 9);
-eq("keşfet demo + etiket + gerçek gönderiler", Store.explore().length, DEMO_GONDERI + ETIKET_GONDERI + YENI_GONDERI);
+eq("keşfet demo + etiket + gerçek gönderiler", Store.explore().length, DEMO_GONDERI + ETIKET_GONDERI + YENI_GONDERI + AILE_GONDERI);
 ok("keşfet popülerliğe göre sıralı", Store.explore()[0].likesBase >= Store.explore()[1].likesBase);
 eq("kaydedilenler", Store.savedPosts().length, 2);
 const takipciSayisi = (id) => Store.state.users.filter((x) => (Store.state.follows[x.id] || []).indexOf(id) !== -1).length;
@@ -353,7 +357,7 @@ eq("örnek gönderi kalmadı", Store.placeholderCount(), 0);
 Store.reset();
 eq("sıfırlama sonrası gönderi sayısı", Store.state.posts.length, TOPLAM_GONDERI);
 eq("sıfırlama sonrası profil", Store.me().username, "gunseli_beyhan");
-eq("sıfırlama sonrası profil gönderisi", Store.postCount(Store.meId), PROFIL_ORNEK + YENI_GONDERI);
+eq("sıfırlama sonrası profil gönderisi", Store.postCount(Store.meId), GERCEK_TOPLAM);
 eq("sıfırlama sonrası takipçi 214", Store.followersCount(Store.me()), 214);
 
 /* --- özet -------------------------------------------------------------- */

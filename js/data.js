@@ -24,7 +24,7 @@ window.IG = window.IG || {};
          Profil fotoğrafı proje içindeki media/ klasöründe saklanır (yerel dosya),
          böylece yayındaki sitede de herkese görünür. */
       id: "u0", username: "gunseli_beyhan", name: "günseli arabacıoğlu 🎓 гюнсели", avatar: "media/gunseli-01.jpg",
-      bio: "", link: "", verified: false, private: false,
+      bio: "🤍 beyhan\n🎓 гюнсели\n📍 istanbul\naile · kahve · deniz", link: "", verified: false, private: false,
       followersBase: 0, followingBase: 0, category: ""
     },
     {
@@ -381,7 +381,7 @@ window.IG = window.IG || {};
     5: { c: "Bu bakış her şeye değer 🥰\n#aşk", l: "", y: [["u7", "Bu bakış her şeyi anlatıyor 🥰", 140, 9]] },
     6: { c: "Nikâh yolunda, el ele 🤍\n#nikâh", l: "" },
     7: { c: "Gelin 🤍\n#gelin #düğün", l: "" },
-    8: { c: "İlk adımımızı birlikte attık ✨\n#düğün", l: "" },
+    8: { c: "Seninle her kare güzel 🤍\n#düğün #aşk", l: "" },
     9: { c: "Yolun sonunda birlikteyiz 🌅\n#balayı", l: "" },
     10: { c: "Yüzükler takıldı 💍\n#nişan", l: "", y: [["u3", "Hayırlı olsun, çok yakışmış 💍", 4000, 21]] },
     11: { c: "Nişan yüzüklerimiz 💍\n#nişan #aile", l: "İstanbul", y: [["u7", "Maşallah 🤍", 3800, 14]] },
@@ -649,6 +649,178 @@ window.IG = window.IG || {};
       mins: 295200, likes: 809,
       caption: "Deniz, kum, gün batımı 🌅",
       comments: [C("u13", "Deniz sana çok yakışıyor 🌅", 800, 13), C("u11", "Ne güzel bir gün batımı", 780, 9)]
+    })
+  ]);
+
+  /* ------------------------------------------------------------------ */
+  /* Aile, ev ve günlük yaşam kareleri (8 aylık geçmişi tamamlar)        */
+  /* ------------------------------------------------------------------ */
+  POSTS = POSTS.concat([
+    P({
+      id: "p110",
+      userId: "u0", src: "media/aile-01.jpg",
+      mins: 256320, likes: 140,
+      caption: "Kış akşamı çayı ☕️\n#aile",
+      comments: [C("u5", "Çayın yanına ne güzel gider 🤍", 300, 9)]
+    }),
+    P({
+      id: "p111",
+      userId: "u0", src: "media/aile-02.jpg",
+      mins: 250560, likes: 163,
+      caption: "Misafirler için çay hazır ☕️\n#aile",
+      comments: []
+    }),
+    P({
+      id: "p112",
+      userId: "u0", src: "media/aile-03.jpg",
+      mins: 241920, likes: 186,
+      caption: "Sabah kahvem, günümün en sevdiği an ☕️",
+      comments: []
+    }),
+    P({
+      id: "p113",
+      userId: "u0", src: "media/aile-04.jpg",
+      mins: 233280, likes: 209,
+      caption: "Küçük bir mola ☕️",
+      comments: []
+    }),
+    P({
+      id: "p114",
+      userId: "u0", src: "media/aile-05.jpg",
+      mins: 224640, likes: 232,
+      location: "İstanbul",
+      caption: "Pazar kahvaltısı, ailecek 🍳\n#aile",
+      comments: [C("u7", "Kahvaltınız çok güzel görünüyor 🍳", 260, 12), C("u16", "Seninle her sabah güzel 🤍", 250, 21)]
+    }),
+    P({
+      id: "p115",
+      userId: "u0", src: "media/aile-06.jpg",
+      mins: 216000, likes: 255,
+      location: "İstanbul",
+      caption: "Aile sofrası kuruldu 🍽️\n#aile",
+      comments: [C("u3", "Sofranız şen olsun 🍽️", 240, 14)]
+    }),
+    P({
+      id: "p116",
+      userId: "u0", src: "media/aile-07.jpg",
+      mins: 207360, likes: 278,
+      caption: "Mum ışığında akşam yemeği 🕯️\n#aile",
+      comments: [C("u9", "Mum ışığı çok romantik 🕯️", 220, 11), C("u16", "Akşam yemeğinde seninle olmak 🤍", 210, 18)]
+    }),
+    P({
+      id: "p117",
+      userId: "u0", src: "media/aile-08.jpg",
+      mins: 198720, likes: 301,
+      caption: "Sakin bir akşam 🕯️",
+      comments: []
+    }),
+    P({
+      id: "p118",
+      userId: "u0", src: "media/aile-09.jpg",
+      mins: 190080, likes: 324,
+      caption: "Doğum günü sürprizi 🎂\n#aile",
+      comments: [C("u5", "Doğum günün kutlu olsun 🤍", 200, 16)]
+    }),
+    P({
+      id: "p119",
+      userId: "u0", src: "media/aile-10.jpg",
+      mins: 181440, likes: 347,
+      caption: "Balkonumuz çiçek açtı 🌸",
+      comments: []
+    }),
+    P({
+      id: "p120",
+      userId: "u0", src: "media/aile-11.jpg",
+      mins: 172800, likes: 370,
+      caption: "Annemin saksıları 🌿\n#aile",
+      comments: []
+    }),
+    P({
+      id: "p121",
+      userId: "u0", src: "media/aile-12.jpg",
+      mins: 164160, likes: 393,
+      caption: "Evimizin yeşili 🌿",
+      comments: [C("u13", "Senin evin çok huzurlu 🌿", 180, 8)]
+    }),
+    P({
+      id: "p122",
+      userId: "u0", src: "media/aile-13.jpg",
+      mins: 155520, likes: 416,
+      caption: "Hafta sonu gezintisi 🌿\n#aile",
+      comments: []
+    }),
+    P({
+      id: "p123",
+      userId: "u0", src: "media/aile-14.jpg",
+      mins: 146880, likes: 439,
+      caption: "Gül bahçesi 🌹",
+      comments: []
+    }),
+    P({
+      id: "p124",
+      userId: "u0", src: "media/aile-15.jpg",
+      mins: 138240, likes: 462,
+      caption: "Gelincikler açmış 🌺",
+      comments: []
+    }),
+    P({
+      id: "p125",
+      userId: "u0", src: "media/aile-16.jpg",
+      mins: 129600, likes: 485,
+      caption: "Bir beyaz gül 🤍",
+      comments: []
+    }),
+    P({
+      id: "p126",
+      userId: "u0", src: "media/aile-17.jpg",
+      mins: 120960, likes: 508,
+      location: "İstanbul",
+      caption: "Sahilde akşam yürüyüşü 🌊",
+      comments: [C("u11", "İstanbul'da yürüyüş çok güzel 🌊", 160, 10)]
+    }),
+    P({
+      id: "p127",
+      userId: "u0", src: "media/aile-18.jpg",
+      mins: 112320, likes: 531,
+      location: "İstanbul",
+      caption: "Kar yağdı, İstanbul bambaşka ❄️",
+      comments: [C("u7", "Kar çok güzel yağmış ❄️", 150, 7)]
+    }),
+    P({
+      id: "p128",
+      userId: "u0", src: "media/aile-19.jpg",
+      mins: 103680, likes: 554,
+      location: "İstanbul",
+      caption: "Kar altında yürüyüş 🤍",
+      comments: []
+    }),
+    P({
+      id: "p129",
+      userId: "u0", src: "media/aile-20.jpg",
+      mins: 95040, likes: 577,
+      caption: "Gün batımını izlemek 🌅",
+      comments: []
+    }),
+    P({
+      id: "p130",
+      userId: "u0", src: "media/aile-21.jpg",
+      mins: 86400, likes: 600,
+      caption: "Küçük bir hediye 🤍",
+      comments: []
+    }),
+    P({
+      id: "p131",
+      userId: "u0", src: "media/aile-22.jpg",
+      mins: 77760, likes: 623,
+      caption: "Bir çay daha ☕️",
+      comments: []
+    }),
+    P({
+      id: "p132",
+      userId: "u0", src: "media/aile-23.jpg",
+      mins: 69120, likes: 646,
+      caption: "Piknik zamanı 🌿\n#aile",
+      comments: [C("u9", "Piknik mevsimi açıldı 🌿", 140, 9), C("u16", "Hafta sonu yine gidelim 🤍", 130, 15)]
     })
   ]);
 
@@ -940,7 +1112,7 @@ window.IG = window.IG || {};
     meId: "u0",
     /* İÇERİK SÜRÜMÜ: tohum içeriği her değiştiğinde bu değeri güncelle.
        Tarayıcıda eski kayıt varsa uygulama kendini otomatik yeniler. */
-    rev: "2026-10-16-baslik-gunseli",
+    rev: "2026-10-17-58-gonderi-aile",
     /* Profilde gösterilecek istatistikler. Takipçi/takip sayıları birebir bu
        değerler olacak şekilde normalleştirilir (demo grafiği hesaba katılır). */
     stats: { followers: 214, following: 444, posts: 58 },
