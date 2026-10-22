@@ -1440,6 +1440,21 @@ svg.ic--verified { display: inline-block; vertical-align: -1px; margin-left: 3px
 
 .chat__suggest .chip { padding: 7px 12px; font-size: 12.5px; white-space: nowrap; flex: none; }
 
+/* Salt okunur sohbet: yazma alanı yerine bilgi notu */
+.chat__readonly {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 14px 16px;
+  border-top: 1px solid var(--border);
+  color: var(--text-2);
+  font-size: 12.5px;
+}
+
+.chat__readonly svg { flex: none; opacity: 0.7; }
+
 .chat__input {
   flex: none;
   display: flex;

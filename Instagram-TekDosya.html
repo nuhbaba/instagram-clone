@@ -1463,6 +1463,21 @@ svg.ic--verified { display: inline-block; vertical-align: -1px; margin-left: 3px
 
 .chat__suggest .chip { padding: 7px 12px; font-size: 12.5px; white-space: nowrap; flex: none; }
 
+/* Salt okunur sohbet: yazma alanı yerine bilgi notu */
+.chat__readonly {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 14px 16px;
+  border-top: 1px solid var(--border);
+  color: var(--text-2);
+  font-size: 12.5px;
+}
+
+.chat__readonly svg { flex: none; opacity: 0.7; }
+
 .chat__input {
   flex: none;
   display: flex;
@@ -3304,6 +3319,20 @@ window.IG = window.IG || {};
         { id: "m91", from: "u0", mins: 34550, text: "Gerçekten mi 🥰" },
         { id: "m92", from: "u16", mins: 34540, text: "Çok güzelsin. Seni seviyorum." },
         { id: "m93", from: "u0", mins: 34530, text: "Sen de çok yakışıklısın 😊" },
+        { id: "m121", from: "u0", mins: 30540, text: "Merhaba aşkım 🤍" },
+        { id: "m122", from: "u16", mins: 30520, text: "Merhaba güzelim, nasılsın?" },
+        { id: "m123", from: "u0", mins: 30500, text: "İyiyim. İşlerim yoğundu, senin nasıl gidiyor?" },
+        { id: "m124", from: "u16", mins: 30480, text: "Benim de öyle. Akşam çay içelim mi?" },
+        { id: "m125", from: "u0", mins: 30460, text: "Olur ☕️" },
+        { id: "m126", from: "u16", mins: 30440, text: "Seni seviyorum tatlım" },
+        { id: "m127", from: "u0", mins: 30420, text: "Ben de seni çok seviyorum 🤍" },
+        { id: "m128", from: "u16", mins: 29100, text: "Nasılsın aşkım?" },
+        { id: "m129", from: "u0", mins: 29080, text: "İyiyim tatlım, sen?" },
+        { id: "m130", from: "u16", mins: 29060, text: "Ben de. Bugün çok yoruldum ama seni görünce geçti" },
+        { id: "m131", from: "u0", mins: 29040, text: "Canım benim 🤍" },
+        { id: "m132", from: "u16", mins: 29020, text: "Akşam yemeği yedin mi?" },
+        { id: "m133", from: "u0", mins: 29000, text: "Yedim, sen?" },
+        { id: "m134", from: "u16", mins: 28980, text: "Ben de. İyi geceler canım, seni seviyorum" },
         { id: "m94", from: "u16", mins: 28900, text: "Günaydın aşkım. Bugün hayatımızın ilk günü olacak 🤍" },
         { id: "m95", from: "u0", mins: 28890, text: "Günaydın 🥰 Ellerim titriyor, kuafördeyim." },
         { id: "m96", from: "u16", mins: 28880, text: "Ben de hazırlanıyorum. Seni ilk gördüğüm an için sabırsızım." },
@@ -3315,22 +3344,162 @@ window.IG = window.IG || {};
         { id: "m102", from: "u16", mins: 28380, text: "Bugün hayatımın en güzel günüydü. Seni seviyorum Günseli." },
         { id: "m103", from: "u0", mins: 28370, text: "Ben de seni seviyorum. Artık resmî olarak seninim 🤍" },
         { id: "m104", from: "u16", mins: 28360, text: "İyi ki varsın. İyi geceler karıcığım." },
+        { id: "m135", from: "u0", mins: 27660, text: "Günaydın canım ☀️" },
+        { id: "m136", from: "u16", mins: 27640, text: "Günaydın aşkım, nasılsın?" },
+        { id: "m137", from: "u0", mins: 27620, text: "İyiyim, bugün hava çok güzel" },
+        { id: "m138", from: "u16", mins: 27600, text: "Akşam yürüyüşe çıkalım mı?" },
+        { id: "m139", from: "u0", mins: 27580, text: "Olur 🤍 çok isterim" },
+        { id: "m140", from: "u16", mins: 27560, text: "İşlerin nasıl gidiyor bu arada?" },
+        { id: "m141", from: "u0", mins: 27540, text: "Gayet iyi, senin?" },
+        { id: "m142", from: "u16", mins: 27520, text: "Ben de iyiyim. İyi geceler tatlım 😘" },
+        { id: "m143", from: "u16", mins: 26220, text: "Günaydın 🤍 bugün planın var mı?" },
+        { id: "m144", from: "u0", mins: 26200, text: "Günaydın aşkım, annemlere gideceğim" },
+        { id: "m145", from: "u16", mins: 26180, text: "Selam söyle, ben de akşam uğrarım" },
+        { id: "m146", from: "u0", mins: 26160, text: "Çok sevinirim 🤍" },
+        { id: "m147", from: "u16", mins: 26140, text: "Seni özledim" },
+        { id: "m148", from: "u0", mins: 26120, text: "Ben de seni çok özledim tatlım" },
+        { id: "m149", from: "u16", mins: 24780, text: "Merhaba aşkım, nasılsın?" },
+        { id: "m150", from: "u0", mins: 24760, text: "Merhaba canım, iyiyim sen nasılsın?" },
+        { id: "m151", from: "u16", mins: 24740, text: "İşlerim yoğun ama iyiyim. Senin işlerin nasıl gidiyor?" },
+        { id: "m152", from: "u0", mins: 24720, text: "Bugün biraz yorucuydu ama geçti 🤍" },
+        { id: "m153", from: "u16", mins: 24700, text: "Akşam ne yapacaksın?" },
+        { id: "m154", from: "u0", mins: 24680, text: "Seni düşüneceğim 😊" },
+        { id: "m155", from: "u16", mins: 24660, text: "Ben de seni 🤍 iyi geceler tatlım" },
+        { id: "m156", from: "u0", mins: 23340, text: "Günaydın 🤍 bugün erken kalktım" },
+        { id: "m157", from: "u16", mins: 23320, text: "Günaydın güzelim, kahvaltı yaptın mı?" },
+        { id: "m158", from: "u0", mins: 23300, text: "Yapıyorum şimdi, sen?" },
+        { id: "m159", from: "u16", mins: 23280, text: "Ben de. Seni düşünüyorum ☕️" },
+        { id: "m160", from: "u0", mins: 23260, text: "Ben de seni 🤍" },
+        { id: "m161", from: "u16", mins: 23240, text: "Yemek yedin mi?" },
+        { id: "m162", from: "u0", mins: 23220, text: "Evet tatlım, sen kendine dikkat et" },
+        { id: "m163", from: "u16", mins: 23200, text: "Seni seviyorum 🤍" },
+        { id: "m164", from: "u16", mins: 21900, text: "Günaydın aşkım ☀️" },
+        { id: "m165", from: "u0", mins: 21880, text: "Günaydın tatlım 🤍" },
+        { id: "m166", from: "u16", mins: 21860, text: "Nasılsın? İyi uyudun mu?" },
+        { id: "m167", from: "u0", mins: 21840, text: "Çok iyi uyudum, sen nasılsın?" },
+        { id: "m168", from: "u16", mins: 21820, text: "İşlerin nasıl gidiyor?" },
+        { id: "m169", from: "u0", mins: 21800, text: "Yoğunum biraz ama iyiyim, senin nasıl?" },
+        { id: "m170", from: "u16", mins: 21780, text: "Ben de toplantıdayım. Akşam konuşalım mı?" },
+        { id: "m171", from: "u0", mins: 21760, text: "Tabii aşkım 🤍 iyi geceler tatlım" },
+        { id: "m172", from: "u0", mins: 20460, text: "Merhaba aşkım 🤍" },
+        { id: "m173", from: "u16", mins: 20440, text: "Merhaba güzelim, nasılsın?" },
+        { id: "m174", from: "u0", mins: 20420, text: "İyiyim. İşlerim yoğundu, senin nasıl gidiyor?" },
+        { id: "m175", from: "u16", mins: 20400, text: "Benim de öyle. Akşam çay içelim mi?" },
+        { id: "m176", from: "u0", mins: 20380, text: "Olur ☕️" },
+        { id: "m177", from: "u16", mins: 20360, text: "Seni seviyorum tatlım" },
+        { id: "m178", from: "u0", mins: 20340, text: "Ben de seni çok seviyorum 🤍" },
+        { id: "m179", from: "u16", mins: 19020, text: "Nasılsın aşkım?" },
+        { id: "m180", from: "u0", mins: 19000, text: "İyiyim tatlım, sen?" },
+        { id: "m181", from: "u16", mins: 18980, text: "Ben de. Bugün çok yoruldum ama seni görünce geçti" },
+        { id: "m182", from: "u0", mins: 18960, text: "Canım benim 🤍" },
+        { id: "m183", from: "u16", mins: 18940, text: "Akşam yemeği yedin mi?" },
+        { id: "m184", from: "u0", mins: 18920, text: "Yedim, sen?" },
+        { id: "m185", from: "u16", mins: 18900, text: "Ben de. İyi geceler canım, seni seviyorum" },
+        { id: "m186", from: "u0", mins: 17580, text: "Günaydın canım ☀️" },
+        { id: "m187", from: "u16", mins: 17560, text: "Günaydın aşkım, nasılsın?" },
+        { id: "m188", from: "u0", mins: 17540, text: "İyiyim, bugün hava çok güzel" },
+        { id: "m189", from: "u16", mins: 17520, text: "Akşam yürüyüşe çıkalım mı?" },
+        { id: "m190", from: "u0", mins: 17500, text: "Olur 🤍 çok isterim" },
+        { id: "m191", from: "u16", mins: 17480, text: "İşlerin nasıl gidiyor bu arada?" },
+        { id: "m192", from: "u0", mins: 17460, text: "Gayet iyi, senin?" },
+        { id: "m193", from: "u16", mins: 17440, text: "Ben de iyiyim. İyi geceler tatlım 😘" },
         { id: "m105", from: "u16", mins: 17280, text: "Deniz çok sakin. Kahvaltıya gelir misin?" },
         { id: "m106", from: "u0", mins: 17270, text: "Geliyorum ☀️ Buradan hiç dönmek istemiyorum." },
         { id: "m107", from: "u16", mins: 17260, text: "Ben de. Ama döndüğümüzde kendi evimiz var 🏡" },
         { id: "m108", from: "u0", mins: 17250, text: "O yüzden dönelim 🤍" },
         { id: "m109", from: "u16", mins: 17240, text: "Seni seviyorum." },
+        { id: "m194", from: "u16", mins: 16140, text: "Günaydın 🤍 bugün planın var mı?" },
+        { id: "m195", from: "u0", mins: 16120, text: "Günaydın aşkım, annemlere gideceğim" },
+        { id: "m196", from: "u16", mins: 16100, text: "Selam söyle, ben de akşam uğrarım" },
+        { id: "m197", from: "u0", mins: 16080, text: "Çok sevinirim 🤍" },
+        { id: "m198", from: "u16", mins: 16060, text: "Seni özledim" },
+        { id: "m199", from: "u0", mins: 16040, text: "Ben de seni çok özledim tatlım" },
+        { id: "m200", from: "u16", mins: 14700, text: "Merhaba aşkım, nasılsın?" },
+        { id: "m201", from: "u0", mins: 14680, text: "Merhaba canım, iyiyim sen nasılsın?" },
+        { id: "m202", from: "u16", mins: 14660, text: "İşlerim yoğun ama iyiyim. Senin işlerin nasıl gidiyor?" },
+        { id: "m203", from: "u0", mins: 14640, text: "Bugün biraz yorucuydu ama geçti 🤍" },
+        { id: "m204", from: "u16", mins: 14620, text: "Akşam ne yapacaksın?" },
+        { id: "m205", from: "u0", mins: 14600, text: "Seni düşüneceğim 😊" },
+        { id: "m206", from: "u16", mins: 14580, text: "Ben de seni 🤍 iyi geceler tatlım" },
+        { id: "m207", from: "u0", mins: 13260, text: "Günaydın 🤍 bugün erken kalktım" },
+        { id: "m208", from: "u16", mins: 13240, text: "Günaydın güzelim, kahvaltı yaptın mı?" },
+        { id: "m209", from: "u0", mins: 13220, text: "Yapıyorum şimdi, sen?" },
+        { id: "m210", from: "u16", mins: 13200, text: "Ben de. Seni düşünüyorum ☕️" },
+        { id: "m211", from: "u0", mins: 13180, text: "Ben de seni 🤍" },
+        { id: "m212", from: "u16", mins: 13160, text: "Yemek yedin mi?" },
+        { id: "m213", from: "u0", mins: 13140, text: "Evet tatlım, sen kendine dikkat et" },
+        { id: "m214", from: "u16", mins: 13120, text: "Seni seviyorum 🤍" },
+        { id: "m215", from: "u16", mins: 11820, text: "Günaydın aşkım ☀️" },
+        { id: "m216", from: "u0", mins: 11800, text: "Günaydın tatlım 🤍" },
+        { id: "m217", from: "u16", mins: 11780, text: "Nasılsın? İyi uyudun mu?" },
+        { id: "m218", from: "u0", mins: 11760, text: "Çok iyi uyudum, sen nasılsın?" },
+        { id: "m219", from: "u16", mins: 11740, text: "İşlerin nasıl gidiyor?" },
+        { id: "m220", from: "u0", mins: 11720, text: "Yoğunum biraz ama iyiyim, senin nasıl?" },
+        { id: "m221", from: "u16", mins: 11700, text: "Ben de toplantıdayım. Akşam konuşalım mı?" },
+        { id: "m222", from: "u0", mins: 11680, text: "Tabii aşkım 🤍 iyi geceler tatlım" },
+        { id: "m223", from: "u0", mins: 10380, text: "Merhaba aşkım 🤍" },
+        { id: "m224", from: "u16", mins: 10360, text: "Merhaba güzelim, nasılsın?" },
+        { id: "m225", from: "u0", mins: 10340, text: "İyiyim. İşlerim yoğundu, senin nasıl gidiyor?" },
+        { id: "m226", from: "u16", mins: 10320, text: "Benim de öyle. Akşam çay içelim mi?" },
+        { id: "m227", from: "u0", mins: 10300, text: "Olur ☕️" },
+        { id: "m228", from: "u16", mins: 10280, text: "Seni seviyorum tatlım" },
+        { id: "m229", from: "u0", mins: 10260, text: "Ben de seni çok seviyorum 🤍" },
+        { id: "m230", from: "u16", mins: 8940, text: "Nasılsın aşkım?" },
+        { id: "m231", from: "u0", mins: 8920, text: "İyiyim tatlım, sen?" },
+        { id: "m232", from: "u16", mins: 8900, text: "Ben de. Bugün çok yoruldum ama seni görünce geçti" },
+        { id: "m233", from: "u0", mins: 8880, text: "Canım benim 🤍" },
+        { id: "m234", from: "u16", mins: 8860, text: "Akşam yemeği yedin mi?" },
+        { id: "m235", from: "u0", mins: 8840, text: "Yedim, sen?" },
+        { id: "m236", from: "u16", mins: 8820, text: "Ben de. İyi geceler canım, seni seviyorum" },
+        { id: "m237", from: "u0", mins: 7500, text: "Günaydın canım ☀️" },
+        { id: "m238", from: "u16", mins: 7480, text: "Günaydın aşkım, nasılsın?" },
+        { id: "m239", from: "u0", mins: 7460, text: "İyiyim, bugün hava çok güzel" },
+        { id: "m240", from: "u16", mins: 7440, text: "Akşam yürüyüşe çıkalım mı?" },
+        { id: "m241", from: "u0", mins: 7420, text: "Olur 🤍 çok isterim" },
+        { id: "m242", from: "u16", mins: 7400, text: "İşlerin nasıl gidiyor bu arada?" },
+        { id: "m243", from: "u0", mins: 7380, text: "Gayet iyi, senin?" },
+        { id: "m244", from: "u16", mins: 7360, text: "Ben de iyiyim. İyi geceler tatlım 😘" },
         { id: "m110", from: "u16", mins: 7200, text: "Eve vardık, valizleri bıraktım. Ortalık çok sessiz." },
         { id: "m111", from: "u0", mins: 7190, text: "Akşam yemeği için alışveriş yapayım mı?" },
         { id: "m112", from: "u16", mins: 7180, text: "Ben yaparım. Sen dinlen, karım 🤍" },
         { id: "m113", from: "u0", mins: 7170, text: "Kocam çok tatlısın 😊" },
+        { id: "m245", from: "u16", mins: 6060, text: "Günaydın 🤍 bugün planın var mı?" },
+        { id: "m246", from: "u0", mins: 6040, text: "Günaydın aşkım, annemlere gideceğim" },
+        { id: "m247", from: "u16", mins: 6020, text: "Selam söyle, ben de akşam uğrarım" },
+        { id: "m248", from: "u0", mins: 6000, text: "Çok sevinirim 🤍" },
+        { id: "m249", from: "u16", mins: 5980, text: "Seni özledim" },
+        { id: "m250", from: "u0", mins: 5960, text: "Ben de seni çok özledim tatlım" },
+        { id: "m251", from: "u16", mins: 4620, text: "Merhaba aşkım, nasılsın?" },
+        { id: "m252", from: "u0", mins: 4600, text: "Merhaba canım, iyiyim sen nasılsın?" },
+        { id: "m253", from: "u16", mins: 4580, text: "İşlerim yoğun ama iyiyim. Senin işlerin nasıl gidiyor?" },
+        { id: "m254", from: "u0", mins: 4560, text: "Bugün biraz yorucuydu ama geçti 🤍" },
+        { id: "m255", from: "u16", mins: 4540, text: "Akşam ne yapacaksın?" },
+        { id: "m256", from: "u0", mins: 4520, text: "Seni düşüneceğim 😊" },
+        { id: "m257", from: "u16", mins: 4500, text: "Ben de seni 🤍 iyi geceler tatlım" },
+        { id: "m258", from: "u0", mins: 3180, text: "Günaydın 🤍 bugün erken kalktım" },
+        { id: "m259", from: "u16", mins: 3160, text: "Günaydın güzelim, kahvaltı yaptın mı?" },
+        { id: "m260", from: "u0", mins: 3140, text: "Yapıyorum şimdi, sen?" },
+        { id: "m261", from: "u16", mins: 3120, text: "Ben de. Seni düşünüyorum ☕️" },
+        { id: "m262", from: "u0", mins: 3100, text: "Ben de seni 🤍" },
+        { id: "m263", from: "u16", mins: 3080, text: "Yemek yedin mi?" },
+        { id: "m264", from: "u0", mins: 3060, text: "Evet tatlım, sen kendine dikkat et" },
+        { id: "m265", from: "u16", mins: 3040, text: "Seni seviyorum 🤍" },
         { id: "m114", from: "u16", mins: 2880, text: "Bugün erken çıkıyorum, seni almaya geleyim mi?" },
         { id: "m115", from: "u0", mins: 2870, text: "Olur, 18:00'de çıkıyorum 🤍" },
         { id: "m116", from: "u16", mins: 2860, text: "Kapıda olacağım. Seni seviyorum." },
+        { id: "m266", from: "u16", mins: 1740, text: "Günaydın aşkım ☀️" },
+        { id: "m267", from: "u0", mins: 1720, text: "Günaydın tatlım 🤍" },
+        { id: "m268", from: "u16", mins: 1700, text: "Nasılsın? İyi uyudun mu?" },
+        { id: "m269", from: "u0", mins: 1680, text: "Çok iyi uyudum, sen nasılsın?" },
+        { id: "m270", from: "u16", mins: 1660, text: "İşlerin nasıl gidiyor?" },
+        { id: "m271", from: "u0", mins: 1640, text: "Yoğunum biraz ama iyiyim, senin nasıl?" },
+        { id: "m272", from: "u16", mins: 1620, text: "Ben de toplantıdayım. Akşam konuşalım mı?" },
+        { id: "m273", from: "u0", mins: 1600, text: "Tabii aşkım 🤍 iyi geceler tatlım" },
         { id: "m117", from: "u16", mins: 180, text: "Günaydın güzelim 🤍 Dün akşam sana bakarken düşündüm: iyi ki seninle evlenmişim." },
         { id: "m118", from: "u0", mins: 160, text: "Günaydın aşkım 🥰 Ben de iyi ki seninle evlenmişim." },
         { id: "m119", from: "u16", mins: 60, text: "Seni seviyorum. Çok seviyorum. Her gün daha çok istiyorum seni 🤍" },
         { id: "m120", from: "u16", mins: 18, text: "Akşam için planım var, hazır ol 😉🤍" }
+      
       ]
     }
   ];
@@ -3401,7 +3570,7 @@ window.IG = window.IG || {};
     meId: "u0",
     /* İÇERİK SÜRÜMÜ: tohum içeriği her değiştiğinde bu değeri güncelle.
        Tarayıcıda eski kayıt varsa uygulama kendini otomatik yeniler. */
-    rev: "2026-10-17-58-gonderi-aile",
+    rev: "2026-10-17-gunluk-yazismalar",
     /* Profilde gösterilecek istatistikler. Takipçi/takip sayıları birebir bu
        değerler olacak şekilde normalleştirilir (demo grafiği hesaba katılır). */
     stats: { followers: 214, following: 444, posts: 58 },
@@ -5179,17 +5348,10 @@ window.IG = window.IG || {};
         '<button class="icon-btn" data-act="chat-info" aria-label="Bilgi">' + Icons.icon("info", { size: 20 }) + "</button>" +
       "</div>" +
       '<div class="chat__messages" id="chatMessages"></div>' +
-      '<div class="chat__suggest">' +
-        ["Selam! 👋", "Ne haber?", "Süper olmuş 😍", "Yarın görüşelim mi?"].map(function (s) {
-          return '<button class="chip chip--ghost" data-act="chat-suggest" data-text="' + C.esc(s) + '">' + C.esc(s) + "</button>";
-        }).join("") +
+      '<div class="chat__readonly">' +
+        Icons.icon("info", { size: 16 }) +
+        "<span>Bu sohbet salt okunur — mesajlar otomatik gelir</span>" +
       "</div>" +
-      '<form class="chat__input" data-form="chat">' +
-        '<button type="button" class="icon-btn" data-act="chat-attach" aria-label="Ek">' + Icons.icon("plus", { size: 22 }) + "</button>" +
-        '<input type="text" id="chatText" placeholder="Mesaj yaz…" autocomplete="off" aria-label="Mesaj">' +
-        '<button type="button" class="icon-btn" data-act="chat-emoji" aria-label="Emoji">' + Icons.icon("smiley", { size: 22 }) + "</button>" +
-        '<button type="submit" class="chat__send">Gönder</button>' +
-      "</form>" +
     "</div>";
   };
 

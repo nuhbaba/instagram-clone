@@ -645,17 +645,10 @@
         '<button class="icon-btn" data-act="chat-info" aria-label="Bilgi">' + Icons.icon("info", { size: 20 }) + "</button>" +
       "</div>" +
       '<div class="chat__messages" id="chatMessages"></div>' +
-      '<div class="chat__suggest">' +
-        ["Selam! 👋", "Ne haber?", "Süper olmuş 😍", "Yarın görüşelim mi?"].map(function (s) {
-          return '<button class="chip chip--ghost" data-act="chat-suggest" data-text="' + C.esc(s) + '">' + C.esc(s) + "</button>";
-        }).join("") +
+      '<div class="chat__readonly">' +
+        Icons.icon("info", { size: 16 }) +
+        "<span>Bu sohbet salt okunur — mesajlar otomatik gelir</span>" +
       "</div>" +
-      '<form class="chat__input" data-form="chat">' +
-        '<button type="button" class="icon-btn" data-act="chat-attach" aria-label="Ek">' + Icons.icon("plus", { size: 22 }) + "</button>" +
-        '<input type="text" id="chatText" placeholder="Mesaj yaz…" autocomplete="off" aria-label="Mesaj">' +
-        '<button type="button" class="icon-btn" data-act="chat-emoji" aria-label="Emoji">' + Icons.icon("smiley", { size: 22 }) + "</button>" +
-        '<button type="submit" class="chat__send">Gönder</button>' +
-      "</form>" +
     "</div>";
   };
 

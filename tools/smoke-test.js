@@ -123,7 +123,9 @@ ok("öne çıkanlarda Düğün var", Store.highlightsOf(Store.meId).some((h) => 
 console.log("\nBeyhan ile 4 aylık yazışma (nişan → düğün → evlilik)");
 const beyhanSohbet = Store.chat("d7");
 ok("Beyhan sohbeti var", !!beyhanSohbet && beyhanSohbet.userId === "u16");
-eq("Beyhan mesaj sayısı", beyhanSohbet.messages.length, 87);
+eq("Beyhan mesaj sayısı", beyhanSohbet.messages.length, 240);
+ok("günlük yazışma: en az 30 ayrı gün", new Set(beyhanSohbet.messages.map((m) => new Date(m.at).toDateString())).size >= 30);
+ok("günaydın/nasılsın mesajları", beyhanSohbet.messages.filter((m) => /günaydın|nasılsın|işlerin nasıl/i.test(m.text)).length >= 25);
 ok("sohbet sabitlenmiş", beyhanSohbet.pinned === true);
 ok("okunmamış mesaj var", beyhanSohbet.unread > 0);
 ok("kimlikler benzersiz", new Set(beyhanSohbet.messages.map((m) => m.id)).size === beyhanSohbet.messages.length);
