@@ -33,6 +33,8 @@ ana ekrana eklenen tam ekran bir uygulama olur ([ayrıntılar](TELEFONA-YUKLE.md
   WhatsApp/Drive/USB ile telefona atıp tarayıcıda açmanız yeterlidir.
 - Aynı Wi-Fi'dan PWA olarak kurmak (Ana ekrana ekle) veya internetten yayınlamak için
   adım adım anlatım: **[TELEFONA-YUKLE.md](TELEFONA-YUKLE.md)**
+- **Varsayılan giriş:** site kökü (`/`) ve uygulama simgesi doğrudan **profil
+  sayfasını** açar (`#/profile`); akışa alt menüdeki ana sayfadan geçilir
 - Tek dosyayı kaynaktan yeniden üretmek: `node tools/build-single.js`
 
 **3. Tam deneyim (kurulabilir PWA + çevrimdışı kabuk)**

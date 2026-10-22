@@ -3,7 +3,7 @@
   "short_name": "Instagram",
   "description": "Instagram benzeri, tamamen yerel çalışan mobil sosyal medya uygulaması prototipi.",
   "id": "/instagram-clone/",
-  "start_url": "./index.html",
+  "start_url": "./index.html#/profile",
   "scope": "./",
   "display": "standalone",
   "display_override": ["standalone", "fullscreen", "minimal-ui"],
@@ -20,6 +20,7 @@
     { "src": "icons/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
   "shortcuts": [
+    { "name": "Profilim", "short_name": "Profil", "url": "./index.html#/profile" },
     { "name": "Yeni gönderi", "short_name": "Oluştur", "url": "./index.html#/create" },
     { "name": "Mesajlar", "short_name": "Mesajlar", "url": "./index.html#/direct" }
   ]

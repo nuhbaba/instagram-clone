@@ -4413,7 +4413,8 @@ window.IG = window.IG || {};
     var parts = h.split("/").filter(Boolean).map(function (s) {
       try { return decodeURIComponent(s); } catch (e) { return s; }
     });
-    if (!parts.length) return { name: "feed", params: {} };
+    /* Adres çubuğunda yol yoksa doğrudan profil açılır (istenen giriş sayfası). */
+    if (!parts.length) return { name: "profile", params: { username: null } };
     var name = parts[0], params = {};
     switch (name) {
       case "profile": params.username = parts[1] || null; break;

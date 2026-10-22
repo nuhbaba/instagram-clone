@@ -165,6 +165,7 @@ function render(route) {
 console.log("\nRota çizimi");
 const routes = [
   ["/feed", "akış"],
+  ["/", "varsayılan giriş (profil)"],
   ["/explore", "keşfet"],
   ["/reels", "reels"],
   ["/activity", "bildirimler"],
@@ -221,6 +222,8 @@ const meProfile = render("/profile/beyhan_günseli");
 ok("profilde istatistikler", meProfile.includes("pstat") && meProfile.includes("gönderi"));
 ok("profilde kendi düğmeleri", meProfile.includes("Profili düzenle"));
 ok("kendi profilimde 35 gönderilik ızgara", (meProfile.match(/class="cell"/g) || []).length === 35);
+const varsayilanEkran = render("/");
+ok("adres çubuğunda yol yoksa profil açılır", varsayilanEkran.includes("beyhan_günseli") && (varsayilanEkran.match(/class="cell"/g) || []).length === 35);
 ok("profilde boş durum görünmüyor", !meProfile.includes("pempty"));
 ok("profilde tam 3 sekme (gönderi/reels/etiket)", (meProfile.match(/class="tab[ "]/g) || []).length === 3);
 ok("profilde sekmeler", meProfile.includes("tabs"));
