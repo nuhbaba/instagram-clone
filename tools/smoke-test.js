@@ -353,6 +353,22 @@ eq("eski içerik sürümü atıldı", Store.state.seedRev, IG.seed.rev);
 eq("yeni tohumdaki gönderi sayısı", Store.state.posts.length, TOPLAM_GONDERI);
 ok("kendi fotoğraflarım geri geldi", Store.postsOf(Store.meId).slice(0, 9).every((p) => GERCEK.test(p.src)));
 
+console.log("\nGecikmeli yanıt (1-5 dakika)");
+const cevapSohbeti = Store.chat("d5");
+const oncekiMesaj = cevapSohbeti.messages.length;
+Store.sendMessage("d5", "Merhaba, nasılsın?");
+eq("gönderilen mesaj hemen eklendi", Store.chat("d5").messages.length, oncekiMesaj + 1);
+const plan = Store.setPendingReply("d5", "İyiyim canım, sen nasılsın? 🤍", 120000);
+ok("yanıt 1-5 dk sonrasına planlandı", !!plan && plan.at - Date.now() > 60000 && plan.at - Date.now() <= 300000);
+eq("cevap hemen gelmiyor", Store.chat("d5").messages.length, oncekiMesaj + 1);
+ok("plan bekliyor", !!Store.pendingReply("d5"));
+const teslimEdilen = Store.deliverDueReplies(Date.now() + 125000);
+ok("süre dolunca teslim edildi", teslimEdilen.length >= 1);
+const sonCevap = Store.chat("d5").messages[Store.chat("d5").messages.length - 1];
+eq("cevap metni doğru", sonCevap.text, "İyiyim canım, sen nasılsın? 🤍");
+eq("cevap karşı taraftan", sonCevap.from, Store.chat("d5").userId);
+ok("plan temizlendi", Store.pendingReply("d5") === null);
+
 console.log("\nÖrnek gönderileri temizleme");
 const temizlenen = Store.clearPlaceholders();
 eq("örnek gönderiler kaldırıldı", temizlenen, PROFIL_ORNEK);

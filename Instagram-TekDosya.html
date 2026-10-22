@@ -4405,6 +4405,43 @@ window.IG = window.IG || {};
   function setOpenChat(id) { openChatId = id; }
   function isChatOpen(id) { return openChatId === id; }
 
+  /** Karşı tarafın gecikmeli yanıtını planlar (uygulama 1-5 dk sonra teslim eder). */
+  function setPendingReply(chatId, text, delayMs) {
+    var ch = chat(chatId);
+    if (!ch) return null;
+    ch.pending = { at: Date.now() + Math.max(0, delayMs || 0), text: text };
+    persist();
+    emit("message:" + chatId);
+    return ch.pending;
+  }
+
+  function pendingReply(chatId) {
+    var ch = chat(chatId);
+    return (ch && ch.pending) ? ch.pending : null;
+  }
+
+  /** Zamanı gelen yanıtları teslim eder. */
+  function deliverDueReplies(now) {
+    now = now || Date.now();
+    var teslim = [];
+    (state.chats || []).forEach(function (ch) {
+      if (ch.pending && ch.pending.at <= now) {
+        var metin = ch.pending.text;
+        ch.pending = null;
+        var m = { id: uid("m"), from: ch.userId, text: metin, at: now, seen: false };
+        ch.messages.push(m);
+        if (!isChatOpen(ch.id)) ch.unread = (ch.unread || 0) + 1;
+        teslim.push({ chatId: ch.id, userId: ch.userId, text: metin });
+      }
+    });
+    if (teslim.length) {
+      (state.chats || []).forEach(function (ch) { ch.typing = false; });
+      persist();
+      emit("messages:delivered");
+    }
+    return teslim;
+  }
+
   function markChatRead(chatId) {
     var ch = chat(chatId);
     if (!ch) return;
@@ -4535,6 +4572,7 @@ window.IG = window.IG || {};
     addPost: addPost, deletePost: deletePost, toggleArchive: toggleArchive,
     sendMessage: sendMessage, receiveMessage: receiveMessage,
     setOpenChat: setOpenChat, isChatOpen: isChatOpen, markChatRead: markChatRead,
+    setPendingReply: setPendingReply, pendingReply: pendingReply, deliverDueReplies: deliverDueReplies,
     markNotificationsRead: markNotificationsRead, clearNotifications: clearNotifications,
     updateProfile: updateProfile, setTheme: setTheme, toggleTheme: toggleTheme, setSetting: setSetting,
     searchUsers: searchUsers, searchHashtags: searchHashtags,
@@ -5649,10 +5687,12 @@ window.IG = window.IG || {};
         '<button class="icon-btn" data-act="chat-info" aria-label="Bilgi">' + Icons.icon("info", { size: 20 }) + "</button>" +
       "</div>" +
       '<div class="chat__messages" id="chatMessages"></div>' +
-      '<div class="chat__readonly">' +
-        Icons.icon("info", { size: 16 }) +
-        "<span>Bu sohbet salt okunur — mesajlar otomatik gelir</span>" +
-      "</div>" +
+      '<form class="chat__input" data-form="chat">' +
+        '<button type="button" class="icon-btn" data-act="chat-attach" aria-label="Ek">' + Icons.icon("plus", { size: 22 }) + "</button>" +
+        '<input type="text" id="chatText" placeholder="Mesaj yaz…" autocomplete="off" aria-label="Mesaj">' +
+        '<button type="button" class="icon-btn" data-act="chat-emoji" aria-label="Emoji">' + Icons.icon("smiley", { size: 22 }) + "</button>" +
+        '<button type="submit" class="chat__send">Gönder</button>' +
+      "</form>" +
     "</div>";
   };
 
@@ -6735,13 +6775,12 @@ window.IG = window.IG || {};
 
     var ch = Store.chat(chatId);
     if (!ch) return;
-    ch.typing = true;
+    /* Karşı taraf anında yanıt vermez: 1-5 dakika arasında rastgele bir süre
+       sonra cevap gelir (her sohbette aynı davranış). */
+    var gecikme = 60000 + Math.floor(Math.random() * 240000);
+    Store.setPendingReply(chatId, reply, gecikme);
+    ch.typing = false;
     if (UI.route.name === "direct" && UI.route.params.chatId === chatId) renderChatMessages();
-    setTimeout(function () {
-      ch.typing = false;
-      Store.receiveMessage(chatId, reply);
-      if (UI.route.name === "direct" && UI.route.params.chatId === chatId) renderChatMessages();
-    }, 900 + Math.random() * 900);
   }
 
   function submitComment(text) {
@@ -7353,6 +7392,36 @@ window.IG = window.IG || {};
     });
 
     setInterval(updateClock, 20000);
+
+    /* Gecikmeli yanıtlar (1-5 dk) + "yazıyor" göstergesi */
+    function sohbetZamanlayici() {
+      var teslim = Store.deliverDueReplies();
+      if (teslim.length) {
+        teslim.forEach(function (t) {
+          var acik = UI.route.name === "direct" && UI.route.params.chatId === t.chatId;
+          if (acik) {
+            renderChatMessages();
+          } else {
+            var u = Store.user(t.userId);
+            C.toast((u ? u.name.split(" ")[0] : "Yeni mesaj") + ": " + t.text, { icon: "messenger", duration: 4200 });
+          }
+        });
+        updateBadges();
+      }
+      if (UI.route.name === "direct" && UI.route.params.chatId) {
+        var ch = Store.chat(UI.route.params.chatId);
+        if (ch) {
+          var bekle = Store.pendingReply(ch.id);
+          var yaz = !!(bekle && bekle.at - Date.now() <= 15000);
+          if (!!ch.typing !== yaz) {
+            ch.typing = yaz;
+            renderChatMessages();
+          }
+        }
+      }
+    }
+    sohbetZamanlayici();
+    setInterval(sohbetZamanlayici, 1000);
 
     // İlk karşılama bildirimi
     setTimeout(function () {

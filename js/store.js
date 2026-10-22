@@ -512,6 +512,43 @@ window.IG = window.IG || {};
   function setOpenChat(id) { openChatId = id; }
   function isChatOpen(id) { return openChatId === id; }
 
+  /** Karşı tarafın gecikmeli yanıtını planlar (uygulama 1-5 dk sonra teslim eder). */
+  function setPendingReply(chatId, text, delayMs) {
+    var ch = chat(chatId);
+    if (!ch) return null;
+    ch.pending = { at: Date.now() + Math.max(0, delayMs || 0), text: text };
+    persist();
+    emit("message:" + chatId);
+    return ch.pending;
+  }
+
+  function pendingReply(chatId) {
+    var ch = chat(chatId);
+    return (ch && ch.pending) ? ch.pending : null;
+  }
+
+  /** Zamanı gelen yanıtları teslim eder. */
+  function deliverDueReplies(now) {
+    now = now || Date.now();
+    var teslim = [];
+    (state.chats || []).forEach(function (ch) {
+      if (ch.pending && ch.pending.at <= now) {
+        var metin = ch.pending.text;
+        ch.pending = null;
+        var m = { id: uid("m"), from: ch.userId, text: metin, at: now, seen: false };
+        ch.messages.push(m);
+        if (!isChatOpen(ch.id)) ch.unread = (ch.unread || 0) + 1;
+        teslim.push({ chatId: ch.id, userId: ch.userId, text: metin });
+      }
+    });
+    if (teslim.length) {
+      (state.chats || []).forEach(function (ch) { ch.typing = false; });
+      persist();
+      emit("messages:delivered");
+    }
+    return teslim;
+  }
+
   function markChatRead(chatId) {
     var ch = chat(chatId);
     if (!ch) return;
@@ -642,6 +679,7 @@ window.IG = window.IG || {};
     addPost: addPost, deletePost: deletePost, toggleArchive: toggleArchive,
     sendMessage: sendMessage, receiveMessage: receiveMessage,
     setOpenChat: setOpenChat, isChatOpen: isChatOpen, markChatRead: markChatRead,
+    setPendingReply: setPendingReply, pendingReply: pendingReply, deliverDueReplies: deliverDueReplies,
     markNotificationsRead: markNotificationsRead, clearNotifications: clearNotifications,
     updateProfile: updateProfile, setTheme: setTheme, toggleTheme: toggleTheme, setSetting: setSetting,
     searchUsers: searchUsers, searchHashtags: searchHashtags,

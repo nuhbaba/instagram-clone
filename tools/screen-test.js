@@ -263,8 +263,8 @@ ok("sohbet ekranı boş kalmıyor", q("#chatMessages").innerHTML.length > 100);
 
 const chatScreen = render("/direct/d2");
 ok("sohbet başlığı kullanıcı adı", chatScreen.includes("selin.arslan") && !chatScreen.includes("elifkaman</b>"));
-ok("sohbet salt okunur (yazma alanı yok)", !chatScreen.includes("chat__input") && !chatScreen.includes("Mesaj yaz"));
-ok("sohbet salt okunur bilgisi var", chatScreen.includes("chat__readonly") && chatScreen.includes("otomatik gelir"));
+ok("sohbet giriş alanı geri geldi", chatScreen.includes("chat__input") && chatScreen.includes("Mesaj yaz"));
+ok("gecikmeli yanıt altyapısı", typeof IG.Store.setPendingReply === "function" && typeof IG.Store.deliverDueReplies === "function");
 const chatHTML = q("#chatMessages").innerHTML;
 ok("sohbetlerde düğün konuşması", /düğün|çekim|gelinlik|kına|albüm/i.test(chatHTML),
   "kutu içeriği: " + chatHTML.slice(0, 90).replace(/\s+/g, " "));

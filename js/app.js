@@ -645,10 +645,12 @@
         '<button class="icon-btn" data-act="chat-info" aria-label="Bilgi">' + Icons.icon("info", { size: 20 }) + "</button>" +
       "</div>" +
       '<div class="chat__messages" id="chatMessages"></div>' +
-      '<div class="chat__readonly">' +
-        Icons.icon("info", { size: 16 }) +
-        "<span>Bu sohbet salt okunur — mesajlar otomatik gelir</span>" +
-      "</div>" +
+      '<form class="chat__input" data-form="chat">' +
+        '<button type="button" class="icon-btn" data-act="chat-attach" aria-label="Ek">' + Icons.icon("plus", { size: 22 }) + "</button>" +
+        '<input type="text" id="chatText" placeholder="Mesaj yaz…" autocomplete="off" aria-label="Mesaj">' +
+        '<button type="button" class="icon-btn" data-act="chat-emoji" aria-label="Emoji">' + Icons.icon("smiley", { size: 22 }) + "</button>" +
+        '<button type="submit" class="chat__send">Gönder</button>' +
+      "</form>" +
     "</div>";
   };
 
@@ -1731,13 +1733,12 @@
 
     var ch = Store.chat(chatId);
     if (!ch) return;
-    ch.typing = true;
+    /* Karşı taraf anında yanıt vermez: 1-5 dakika arasında rastgele bir süre
+       sonra cevap gelir (her sohbette aynı davranış). */
+    var gecikme = 60000 + Math.floor(Math.random() * 240000);
+    Store.setPendingReply(chatId, reply, gecikme);
+    ch.typing = false;
     if (UI.route.name === "direct" && UI.route.params.chatId === chatId) renderChatMessages();
-    setTimeout(function () {
-      ch.typing = false;
-      Store.receiveMessage(chatId, reply);
-      if (UI.route.name === "direct" && UI.route.params.chatId === chatId) renderChatMessages();
-    }, 900 + Math.random() * 900);
   }
 
   function submitComment(text) {
@@ -2349,6 +2350,36 @@
     });
 
     setInterval(updateClock, 20000);
+
+    /* Gecikmeli yanıtlar (1-5 dk) + "yazıyor" göstergesi */
+    function sohbetZamanlayici() {
+      var teslim = Store.deliverDueReplies();
+      if (teslim.length) {
+        teslim.forEach(function (t) {
+          var acik = UI.route.name === "direct" && UI.route.params.chatId === t.chatId;
+          if (acik) {
+            renderChatMessages();
+          } else {
+            var u = Store.user(t.userId);
+            C.toast((u ? u.name.split(" ")[0] : "Yeni mesaj") + ": " + t.text, { icon: "messenger", duration: 4200 });
+          }
+        });
+        updateBadges();
+      }
+      if (UI.route.name === "direct" && UI.route.params.chatId) {
+        var ch = Store.chat(UI.route.params.chatId);
+        if (ch) {
+          var bekle = Store.pendingReply(ch.id);
+          var yaz = !!(bekle && bekle.at - Date.now() <= 15000);
+          if (!!ch.typing !== yaz) {
+            ch.typing = yaz;
+            renderChatMessages();
+          }
+        }
+      }
+    }
+    sohbetZamanlayici();
+    setInterval(sohbetZamanlayici, 1000);
 
     // İlk karşılama bildirimi
     setTimeout(function () {
