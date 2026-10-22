@@ -502,12 +502,19 @@
     var isNew = UI.create.isNew && isMe;
     var hasBio = !!(u.bio && u.bio.trim());
 
+    /* Profilde görünen gönderi sayısı: kendi profilimde sabit bir sayı gösterilebilir
+       (Instagram'da görünen "58 gönderi" gibi); daha fazla gönderi eklenirse artar. */
+    var gosterilenGonderi = Store.postCount(u.id);
+    if (isMe && IG.seed.stats && typeof IG.seed.stats.posts === "number") {
+      gosterilenGonderi = Math.max(IG.seed.stats.posts, gosterilenGonderi);
+    }
+
     return '<div class="screen__inner screen__inner--flush">' +
       '<div class="phead">' +
         '<div class="phead__top">' +
           '<span class="phead__avatar">' + avatarHTML + "</span>" +
           '<div class="phead__stats">' +
-            C.stat(C.formatCountExact(Store.postCount(u.id)), "gönderi") +
+            C.stat(C.formatCountExact(gosterilenGonderi), "gönderi") +
             C.stat(C.formatCount(Store.followersCount(u)), "takipçi", "followers", u.id) +
             C.stat(C.formatCount(Store.followingCount(u)), "takip", "following", u.id) +
           "</div>" +

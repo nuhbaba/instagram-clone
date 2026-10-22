@@ -23,7 +23,7 @@ window.IG = window.IG || {};
       /* Bu hesap senin profilin: gönderilerini uygulamadan ekleyerek doldurursun.
          Profil fotoğrafı proje içindeki media/ klasöründe saklanır (yerel dosya),
          böylece yayındaki sitede de herkese görünür. */
-      id: "u0", username: "beyhan_günseli", name: "Günseli Beyhan", avatar: "media/gunseli-01.jpg",
+      id: "u0", username: "gunseli_beyhan", name: "günseli arabacıoğlu 🎓 гюнсели", avatar: "media/gunseli-01.jpg",
       bio: "", link: "", verified: false, private: false,
       followersBase: 0, followingBase: 0, category: ""
     },
@@ -940,10 +940,10 @@ window.IG = window.IG || {};
     meId: "u0",
     /* İÇERİK SÜRÜMÜ: tohum içeriği her değiştiğinde bu değeri güncelle.
        Tarayıcıda eski kayıt varsa uygulama kendini otomatik yeniler. */
-    rev: "2026-10-16-gercek-fotograflar-beyhan",
+    rev: "2026-10-16-baslik-gunseli",
     /* Profilde gösterilecek istatistikler. Takipçi/takip sayıları birebir bu
        değerler olacak şekilde normalleştirilir (demo grafiği hesaba katılır). */
-    stats: { followers: 215, following: 444, posts: 56 },
+    stats: { followers: 214, following: 444, posts: 58 },
     users: USERS,
     posts: POSTS,
     stories: STORIES,

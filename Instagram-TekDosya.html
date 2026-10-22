@@ -2312,7 +2312,7 @@ window.IG = window.IG || {};
       /* Bu hesap senin profilin: gönderilerini uygulamadan ekleyerek doldurursun.
          Profil fotoğrafı proje içindeki media/ klasöründe saklanır (yerel dosya),
          böylece yayındaki sitede de herkese görünür. */
-      id: "u0", username: "beyhan_günseli", name: "Günseli Beyhan", avatar: "media/gunseli-01.jpg",
+      id: "u0", username: "gunseli_beyhan", name: "günseli arabacıoğlu 🎓 гюнсели", avatar: "media/gunseli-01.jpg",
       bio: "", link: "", verified: false, private: false,
       followersBase: 0, followingBase: 0, category: ""
     },
@@ -3229,10 +3229,10 @@ window.IG = window.IG || {};
     meId: "u0",
     /* İÇERİK SÜRÜMÜ: tohum içeriği her değiştiğinde bu değeri güncelle.
        Tarayıcıda eski kayıt varsa uygulama kendini otomatik yeniler. */
-    rev: "2026-10-16-gercek-fotograflar-beyhan",
+    rev: "2026-10-16-baslik-gunseli",
     /* Profilde gösterilecek istatistikler. Takipçi/takip sayıları birebir bu
        değerler olacak şekilde normalleştirilir (demo grafiği hesaba katılır). */
-    stats: { followers: 215, following: 444, posts: 56 },
+    stats: { followers: 214, following: 444, posts: 58 },
     users: USERS,
     posts: POSTS,
     stories: STORIES,
@@ -4864,12 +4864,19 @@ window.IG = window.IG || {};
     var isNew = UI.create.isNew && isMe;
     var hasBio = !!(u.bio && u.bio.trim());
 
+    /* Profilde görünen gönderi sayısı: kendi profilimde sabit bir sayı gösterilebilir
+       (Instagram'da görünen "58 gönderi" gibi); daha fazla gönderi eklenirse artar. */
+    var gosterilenGonderi = Store.postCount(u.id);
+    if (isMe && IG.seed.stats && typeof IG.seed.stats.posts === "number") {
+      gosterilenGonderi = Math.max(IG.seed.stats.posts, gosterilenGonderi);
+    }
+
     return '<div class="screen__inner screen__inner--flush">' +
       '<div class="phead">' +
         '<div class="phead__top">' +
           '<span class="phead__avatar">' + avatarHTML + "</span>" +
           '<div class="phead__stats">' +
-            C.stat(C.formatCountExact(Store.postCount(u.id)), "gönderi") +
+            C.stat(C.formatCountExact(gosterilenGonderi), "gönderi") +
             C.stat(C.formatCount(Store.followersCount(u)), "takipçi", "followers", u.id) +
             C.stat(C.formatCount(Store.followingCount(u)), "takip", "following", u.id) +
           "</div>" +

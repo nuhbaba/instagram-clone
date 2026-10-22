@@ -95,12 +95,12 @@ eq("profildeki düğün gönderisi", Store.placeholderCount(), PROFIL_ORNEK);
 eq("hikâye sayısı", Store.state.stories.length, 8);
 eq("sohbet sayısı", Store.state.chats.length, 7);
 eq("bildirim sayısı", Store.state.notifications.length, 9);
-ok("me kullanıcısı bulundu", Store.me() && Store.me().username === "beyhan_günseli");
+ok("me kullanıcısı bulundu", Store.me() && Store.me().username === "gunseli_beyhan");
 eq("profildeki gönderi sayısı", Store.postCount(Store.meId), PROFIL_ORNEK + YENI_GONDERI);
 eq("kendi hikâyem yok", Store.storiesFor(Store.meId), null);
 
 console.log("\nProfil istatistikleri (istenen sayılar)");
-eq("takipçi 215", Store.followersCount(Store.me()), 215);
+eq("takipçi 214", Store.followersCount(Store.me()), 214);
 eq("takip 444", Store.followingCount(Store.me()), 444);
 eq("profil gönderi sayısı (yer tutucu + gerçek)", Store.postCount(Store.meId), PROFIL_ORNEK + YENI_GONDERI);
 
@@ -352,9 +352,9 @@ eq("örnek gönderi kalmadı", Store.placeholderCount(), 0);
 
 Store.reset();
 eq("sıfırlama sonrası gönderi sayısı", Store.state.posts.length, TOPLAM_GONDERI);
-eq("sıfırlama sonrası profil", Store.me().username, "beyhan_günseli");
+eq("sıfırlama sonrası profil", Store.me().username, "gunseli_beyhan");
 eq("sıfırlama sonrası profil gönderisi", Store.postCount(Store.meId), PROFIL_ORNEK + YENI_GONDERI);
-eq("sıfırlama sonrası takipçi 215", Store.followersCount(Store.me()), 215);
+eq("sıfırlama sonrası takipçi 214", Store.followersCount(Store.me()), 214);
 
 /* --- özet -------------------------------------------------------------- */
 console.log("\n" + "─".repeat(58));

@@ -169,8 +169,8 @@ const routes = [
   ["/explore", "keşfet"],
   ["/reels", "reels"],
   ["/activity", "bildirimler"],
-  ["/profile/beyhan_günseli", "profil (ben)"],
-    ["/profile/beyhan_g%C3%BCnseli", "profil (ben) - kodlanmis adres"],
+  ["/profile/gunseli_beyhan", "profil (ben)"],
+    ["/profile/gunseli_beyhan", "profil (ben) - kodlanmis adres"],
   ["/profile/elifkaman", "profil (başkası)"],
   ["/saved", "kaydedilenler"],
   ["/direct", "mesajlar"],
@@ -218,12 +218,12 @@ const activity = render("/activity");
 ok("bildirimler listesi", activity.includes("notif__text"));
 ok("bildirimlerde takip düğmesi", activity.includes('data-act="follow"'));
 
-const meProfile = render("/profile/beyhan_günseli");
+const meProfile = render("/profile/gunseli_beyhan");
 ok("profilde istatistikler", meProfile.includes("pstat") && meProfile.includes("gönderi"));
 ok("profilde kendi düğmeleri", meProfile.includes("Profili düzenle"));
 ok("kendi profilimde 35 gönderilik ızgara", (meProfile.match(/class="cell"/g) || []).length === 35);
 const varsayilanEkran = render("/");
-ok("adres çubuğunda yol yoksa profil açılır", varsayilanEkran.includes("beyhan_günseli") && (varsayilanEkran.match(/class="cell"/g) || []).length === 35);
+ok("adres çubuğunda yol yoksa profil açılır", varsayilanEkran.includes("gunseli_beyhan") && (varsayilanEkran.match(/class="cell"/g) || []).length === 35);
 ok("profilde boş durum görünmüyor", !meProfile.includes("pempty"));
 ok("profilde tam 3 sekme (gönderi/reels/etiket)", (meProfile.match(/class="tab[ "]/g) || []).length === 3);
 ok("profilde sekmeler", meProfile.includes("tabs"));
